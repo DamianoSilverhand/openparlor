@@ -3,6 +3,7 @@ import { confetti } from '/tv/common.js';
 import { isMuted } from '/shared/sound.js';
 
 export const LETTERS = ['A', 'B', 'C', 'D'];
+const TARGET = { kid: 'For the kids', teen: 'For the teens', grownup: 'For the grown-ups' };
 const hint = (t) => h('div', { class: 'hint-line' }, t);
 
 export function screen(s) {
@@ -15,12 +16,13 @@ export function screen(s) {
   return { key, build: builders[g.phase] };
 }
 
-function teamChip(t, s, done) {
+// spotId: the one player answering for the team on this question (shown instead of the whole team).
+function teamChip(t, s, done, spotId) {
   const get = byId(s.players);
   return h('span', { class: 'tchip' + (done ? ' done' : ''), style: { '--tc': t.color } },
     h('span', { class: 'swatch' }),
     t.name,
-    h('span', { class: 'mem' }, t.members.map((id) => get(id)).filter(Boolean).slice(0, 5).map((p) => avatar(p))),
+    h('span', { class: 'mem' + (spotId ? ' spot' : '') }, (spotId ? [spotId] : t.members).map((id) => get(id)).filter(Boolean).slice(0, 5).map((p) => avatar(p))),
     done && h('span', { class: 'mark' }, '✓'),
   );
 }
@@ -42,6 +44,9 @@ function intro(s) {
         ),
       ),
     ),
+    h('p', { class: 'sub', style: { textAlign: 'center', marginTop: '1.4rem' } }, g.solo
+      ? 'Each question is aimed at one age group. It is worth full points to that group and half points to everyone else.'
+      : 'Each question is aimed at one age group. The player in your team at that level answers, and the rest of the team helps.'),
     h('div', { class: 'big-timer' }, t.el),
   );
   t.update(g);
@@ -98,6 +103,7 @@ function question(s) {
     head.replaceChildren(
       h('span', { class: 'pill' }, g.finale ? 'Final question' : `Round ${g.round} of ${g.totalRounds}  ·  Question ${g.qi} of ${g.qTotal}`),
       h('span', { class: 'badges' },
+        g.target && h('span', { class: 'badge tgt' }, TARGET[g.target]),
         g.double && h('span', { class: 'badge dbl' }, 'Double points'),
         h('span', { class: 'code' }, g.category),
       ),
@@ -111,9 +117,10 @@ function question(s) {
     t.el.parentElement.style.visibility = reveal ? 'hidden' : 'visible';
     if (!reveal) {
       const teams = g.teams.filter((tm) => g.active.includes(tm.id));
-      chips.replaceChildren(...teams.map((tm) => teamChip(tm, s, g.answered.includes(tm.id))));
+      const spotOf = (id) => (g.spots.find((x) => x.team === id) || {}).pid;
+      chips.replaceChildren(...teams.map((tm) => teamChip(tm, s, g.answered.includes(tm.id), spotOf(tm.id))));
       results.replaceChildren(chips);
-      fact.textContent = '';
+      fact.textContent = g.target ? (g.solo ? 'Full points if this is your age group, half points if it is not.' : 'The player in each team at this age group answers. Everyone else helps.') : '';
     } else {
       results.replaceChildren(
         ...g.results.map((r) => {
@@ -122,7 +129,7 @@ function question(s) {
           return h('div', { class: 'res ' + (r.correct ? 'ok' : 'no'), style: { '--tc': tm.color } },
             h('span', { class: 'swatch' }),
             h('b', null, tm.name),
-            h('span', { class: 'ans' }, r.choice == null ? 'No answer' : `${LETTERS[r.choice]}${by && !g.solo ? ` (${by.name})` : ''}`),
+            h('span', { class: 'ans' }, r.choice == null ? 'No answer' : `${LETTERS[r.choice]}${by && !g.solo ? ` (${by.name})` : ''}${r.half ? ', half points' : ''}`),
             h('span', { class: 'pts' }, r.pts ? `${r.pts > 0 ? '+' : ''}${r.pts}` : '0'),
           );
         }),

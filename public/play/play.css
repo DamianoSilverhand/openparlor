@@ -179,3 +179,6 @@
 .nd-btn { font-family: var(--display); font-weight: 900; font-size: 1.8rem; background: var(--card); border: var(--border); border-radius: 14px; box-shadow: 4px 4px 0 var(--ink); padding: 22px 8px; cursor: pointer; touch-action: manipulation; color: var(--ink); }
 .nd-btn:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--ink); }
 .me-r { display: flex; align-items: center; gap: 12px; }
+.qopt:disabled { opacity: 0.55; box-shadow: none; cursor: default; }
+.qhead .badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.badge.tgt { background: var(--teal); }

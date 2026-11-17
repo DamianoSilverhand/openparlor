@@ -202,3 +202,5 @@ body { overflow: hidden; height: 100vh; }
 .big-total { font-family: var(--display); font-weight: 900; font-size: 11rem; line-height: 1; margin: 0.6rem 0 1.2rem; color: var(--tomato); }
 .rec-list { font-size: 1.6rem; display: grid; gap: 0.4rem; background: var(--mustard); }
 .final .board { align-content: start; align-self: start; }
+.badge.tgt { background: var(--teal); }
+.mem.spot .avatar { --s: 2.2rem; border-width: 3px; box-shadow: 0 0 0 3px var(--mustard); margin-left: 0; }

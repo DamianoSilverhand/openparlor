@@ -2,6 +2,7 @@ import { h, avatar, timer, byId, ordinal } from '/shared/ui.js';
 import { hostButton } from '/play/whosaidthat.js';
 
 const LETTERS = ['A', 'B', 'C', 'D'];
+const TARGET = { kid: 'For the kids', teen: 'For the teens', grownup: 'For the grown-ups' };
 const game = (a, extra) => ({ t: 'g', a, ...extra });
 
 export function screen(s, ctx) {
@@ -50,7 +51,9 @@ function intro(s, ctx) {
     h('p', { class: 'lead' }, g.solo ? "You're playing on your own." : "You're on team"),
     h('div', { class: 'card pad team-hero', style: { '--tc': t.color } }, h('h1', null, t.name)),
     mates.length > 0 && h('p', { class: 'lead' }, 'With ', mates.map((p, i) => [i ? ', ' : '', h('b', { style: { color: 'var(--ink)' } }, p.name)])),
-    h('p', { class: 'lead' }, 'Talk the answers over with your team. Kids see fewer choices to make it fair.'),
+    h('p', { class: 'lead' }, g.solo
+      ? 'Each question is aimed at one age group: full points for that group, half points for everyone else.'
+      : 'Each question is aimed at one age group. The player on your team at that level answers, and everyone else helps.'),
     t2.el,
     hostButton(s, ctx, 'Skip ahead', false),
   );
@@ -94,7 +97,7 @@ function question(s, ctx) {
   const el = h('div', { class: 'screen' },
     teamBar(s),
     t.el,
-    h('div', { class: 'qhead' }, g.double && h('span', { class: 'badge dbl' }, 'Double points'), h('span', { class: 'cat' }, g.finale ? 'Final question' : g.category)),
+    h('div', { class: 'qhead' }, h('span', { class: 'badges' }, g.target && h('span', { class: 'badge tgt' }, TARGET[g.target]), g.double && h('span', { class: 'badge dbl' }, 'Double points')), h('span', { class: 'cat' }, g.finale ? 'Final question' : g.category)),
     h('div', { class: 'card quote' }, h('h2', null, g.q)),
     opts,
     info,
@@ -104,9 +107,13 @@ function question(s, ctx) {
     const g = s.game;
     t.update(g);
     if (g.teamChoice != null) chosen = g.teamChoice;
+    btns.forEach((b) => (b.disabled = !g.canAnswer));
     paint();
     const by = g.teamBy && get(g.teamBy);
-    info.textContent = chosen == null ? 'Talk it over, then tap an answer.' : by && by.id !== s.me ? `${by.name} picked ${LETTERS[chosen]}. Tap another to change it.` : `You picked ${LETTERS[chosen]}. Teammates can still change it.`;
+    const spot = g.spotPid && get(g.spotPid);
+    if (!g.canAnswer) info.textContent = `Help ${spot ? spot.name : 'your teammate'} with this one. ${spot ? spot.name : 'They'} will tap the answer${chosen != null ? ` (picked ${LETTERS[chosen]})` : ''}.`;
+    else if (g.target && !g.finale && !s.game.solo) info.textContent = chosen == null ? "You're up! Talk it over with your team, then tap the answer." : `You picked ${LETTERS[chosen]}. You can still change it.`;
+    else info.textContent = chosen == null ? 'Talk it over, then tap an answer.' : by && by.id !== s.me ? `${by.name} picked ${LETTERS[chosen]}. Tap another to change it.` : `You picked ${LETTERS[chosen]}. Teammates can still change it.`;
   }
   t.update(g);
   update(s);
@@ -119,7 +126,7 @@ function reveal(s, ctx) {
   const r = g.results.find((x) => x.team === g.myTeam);
   const right = g.options[g.correct];
   let card;
-  if (r && r.correct) card = h('div', { class: 'card pad big-result good' }, h('h2', null, 'Correct!'), h('p', null, `+${r.pts} points${g.double ? ' (double!)' : ''}`));
+  if (r && r.correct) card = h('div', { class: 'card pad big-result good' }, h('h2', null, 'Correct!'), h('p', null, `+${r.pts} points${g.double ? ' (double!)' : ''}${r.half ? ' (half: this one was for another age group)' : ''}`));
   else if (r && r.choice != null) card = h('div', { class: 'card pad big-result' }, h('h2', null, 'Not quite'), h('p', null, r.pts < 0 ? `${r.pts} points` : 'No points this time'));
   else card = h('div', { class: 'card pad big-result' }, h('h2', null, 'Out of time'), h('p', null, r && r.pts < 0 ? `${r.pts} points` : 'No answer from your team'));
   const el = h('div', { class: 'screen' },

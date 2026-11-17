@@ -19,9 +19,13 @@ const CATEGORY_MS = 4500;
 const REVEAL_MS = 8000;
 const SCORES_MS = 10000;
 const WAGER_MS = 20000;
-const BASE = { 1: 100, 2: 200, 3: 300 };
-const TIERS = [1, 1, 2, 3]; // difficulty of the four questions in each round
-const SHOWN = { kid: 2, teen: 3, grownup: 4 }; // answer choices each age group sees
+// Every question is aimed at one age group, so it is the right difficulty for the person who answers.
+// Each question is worth the same, so no age group gets the "cheap" ones.
+const BASE_POINTS = 200;
+const SLOTS = 4; // questions per round
+const LEVEL_ORDER = ['kid', 'teen', 'grownup'];
+const PREF = { kid: [1, 2], teen: [2, 1, 3], grownup: [3, 2] }; // question tiers each age group is asked, best first
+const SHOWN = { kid: 3, teen: 4, grownup: 4 }; // answer choices the person answering sees
 const RANK = { grownup: 2, teen: 1, kid: 0 };
 const TEAM_DEFS = [
   { name: 'Red Foxes', color: '#e8472b' },
@@ -45,6 +49,10 @@ class Quiz {
     this.gains = new Map();
     this.stats = new Map();
     this.assignTeams();
+    this.turns = new Map(); // how often each player has been the one answering
+    this.presentLevels = LEVEL_ORDER.filter((l) => this.teams.some((t) => t.members.some((id) => ((this.room.players.get(id) || {}).level || 'grownup') === l)));
+    this.target = null;
+    this.spot = new Map();
     this.catMap = filterLocal(CATS, this.s.local);
     if (CATS[this.s.cats]) this.catMap[this.s.cats] = CATS[this.s.cats];
     const ids = Object.keys(this.catMap);
@@ -107,18 +115,23 @@ class Quiz {
     clearTimeout(this.timer);
   }
 
-  pickQuestion(catId, tier) {
+  // Pick an unused question whose difficulty suits the age group (level) it is aimed at.
+  pickQuestion(catId, level) {
+    const prefs = PREF[level] || PREF.grownup;
     const free = (list) => shuffle(list).find((q) => !this.used.has(q));
     const tryCat = (cat, t) => free((this.catMap[cat].questions || []).filter((q) => q.d === t));
     let q = null;
-    for (const t of [tier, tier - 1, tier + 1, tier - 2, tier + 2]) {
-      if (t < 1 || t > 3) continue;
+    for (const t of prefs) {
       q = tryCat(catId, t);
       if (q) break;
     }
     if (!q) {
       for (const c of shuffle(Object.keys(this.catMap))) {
-        q = tryCat(c, tier) || free(this.catMap[c].questions);
+        for (const t of prefs) {
+          q = tryCat(c, t);
+          if (q) break;
+        }
+        q = q || free(this.catMap[c].questions);
         if (q) {
           catId = c;
           break;
@@ -127,7 +140,7 @@ class Quiz {
     }
     if (!q) {
       this.used.clear();
-      return this.pickQuestion(catId, tier);
+      return this.pickQuestion(catId, level);
     }
     this.used.add(q);
     const options = shuffle([q.a, ...q.w.slice(0, 3)]);
@@ -141,6 +154,7 @@ class Quiz {
     this.qi = 0;
     this.catId = this.cats[this.round - 1];
     this.doubleAt = 2 + Math.floor(Math.random() * 3); // question 2, 3 or 4
+    this.targets = this.slotTargets();
     this.phase = 'category';
     this.later(CATEGORY_MS, () => this.nextQuestion());
     this.room.update();
@@ -148,10 +162,38 @@ class Quiz {
 
   nextQuestion() {
     this.qi++;
-    if (this.qi > TIERS.length) return this.toScores();
-    this.cur = this.pickQuestion(this.catId, TIERS[this.qi - 1]);
+    if (this.qi > SLOTS) return this.toScores();
+    this.target = this.targets[this.qi - 1];
+    this.cur = this.pickQuestion(this.catId, this.target);
     this.cur.double = this.qi === this.doubleAt;
     this.openQuestion(this.s.time + this.readExtra());
+  }
+
+  // Which age group each question in a round is aimed at. Every group in play gets a turn, and the
+  // starting group rotates from round to round.
+  slotTargets() {
+    const L = this.presentLevels.length ? this.presentLevels : ['grownup'];
+    const base = [...L];
+    while (base.length < SLOTS) base.push(L[base.length % L.length]);
+    const r = (this.round - 1) % base.length;
+    return base.slice(r).concat(base.slice(0, r));
+  }
+
+  // The player on a team who answers this question: the member closest to the target age group,
+  // taking turns when several fit.
+  pickSpotlight(team) {
+    const members = team.members.map((id) => this.room.players.get(id)).filter((p) => p && p.connected);
+    if (!members.length) return null;
+    const want = RANK[this.target];
+    const rank = (p) => RANK[p.level || 'grownup'];
+    members.sort((a, b) => Math.abs(rank(a) - want) - Math.abs(rank(b) - want) || (this.turns.get(a.id) || 0) - (this.turns.get(b.id) || 0));
+    this.turns.set(members[0].id, (this.turns.get(members[0].id) || 0) + 1);
+    return members[0].id;
+  }
+
+  subsetFor(level) {
+    const wrong = shuffle(this.cur.options.map((_, i) => i).filter((i) => i !== this.cur.correct)).slice(0, SHOWN[level] - 1);
+    return [this.cur.correct, ...wrong].sort((a, b) => a - b);
   }
 
   // Reading aloud takes a few seconds, so give teams that long back.
@@ -163,12 +205,17 @@ class Quiz {
     this.answers = new Map();
     this.tapped = new Set(); // players who have tapped at least once
     this.visible = new Map();
+    this.spot = new Map();
     for (const t of this.teams) {
-      for (const id of t.members) {
-        const p = this.room.players.get(id);
-        const want = SHOWN[(p && p.level) || 'grownup'];
-        const wrong = shuffle(this.cur.options.map((_, i) => i).filter((i) => i !== this.cur.correct)).slice(0, want - 1);
-        this.visible.set(id, [this.cur.correct, ...wrong].sort((a, b) => a - b));
+      if (this.target) {
+        // The whole team sees the same choices as the player answering.
+        const sp = this.pickSpotlight(t);
+        if (sp) this.spot.set(t.id, sp);
+        const subset = this.subsetFor(((this.room.players.get(sp) || {}).level) || 'grownup');
+        for (const id of t.members) this.visible.set(id, subset);
+      } else {
+        // The final question: anyone on the team can answer, each seeing choices for their own age group.
+        for (const id of t.members) this.visible.set(id, this.subsetFor(((this.room.players.get(id) || {}).level) || 'grownup'));
       }
     }
     this.phase = 'question';
@@ -178,8 +225,10 @@ class Quiz {
 
   checkProgress() {
     if (this.phase === 'question') {
-      if (this.everyoneTapped(this.tapped) && this.deadline - Date.now() > 2500) {
-        this.later(1500, () => this.reveal());
+      const active = this.activeTeams();
+      const done = this.finale ? this.everyoneTapped(this.tapped) : active.length > 0 && active.every((t) => this.answers.has(t.id));
+      if (done && this.deadline - Date.now() > 2500) {
+        this.later(this.finale ? 1500 : 2000, () => this.reveal());
         this.room.update();
       }
     } else if (this.phase === 'wager') {
@@ -207,21 +256,28 @@ class Quiz {
       const correct = !!ans && ans.idx === this.cur.correct;
       let pts = 0;
       let wager = 0;
+      let half = false;
       if (this.finale) {
         wager = this.wagers.get(t.id) || 0;
         pts = correct ? wager : -Math.min(wager, t.score);
         if (correct && wager) this.stat(t.id).wager += wager;
       } else if (correct) {
-        const base = BASE[this.cur.d];
         const left = Math.max(0, Math.min(1, (this.deadline - ans.at) / this.timerTotal));
-        const bonus = Math.round((base * 0.5 * left) / 5) * 5;
+        const bonus = Math.round((BASE_POINTS * 0.5 * left) / 5) * 5;
         this.stat(t.id).speed += bonus;
-        pts = (base + bonus) * (this.cur.double ? 2 : 1);
+        // Half points if a question aimed at one age group is answered by another.
+        const lvl = ((this.room.players.get(this.spot.get(t.id)) || {}).level) || 'grownup';
+        // In solo play there is only one person, so a mismatch is half points. A team that has nobody at
+        // that age group is not penalised; a team whose matching player left is.
+        const lvlOf = (id) => ((this.room.players.get(id) || {}).level) || 'grownup';
+        const hasMatch = t.members.some((id) => (this.room.players.get(id) || {}).connected && lvlOf(id) === this.target);
+        half = lvl !== this.target && (this.solo || hasMatch);
+        pts = Math.round(((BASE_POINTS + bonus) * (this.cur.double ? 2 : 1) * (half ? 0.5 : 1)) / 5) * 5;
       }
       if (correct) this.stat(t.id).correct++;
       t.score = Math.max(0, t.score + pts);
       this.gains.set(t.id, pts);
-      this.results.push({ team: t.id, choice: ans ? ans.idx : null, by: ans ? ans.pid : null, correct, pts, wager });
+      this.results.push({ team: t.id, choice: ans ? ans.idx : null, by: ans ? ans.pid : null, correct, pts, wager, half });
     }
     this.syncScores();
     this.phase = 'reveal';
@@ -256,10 +312,15 @@ class Quiz {
 
   startWager() {
     this.finale = true;
+    this.target = null;
+    this.spot = new Map();
     this.wagers = new Map();
     this.tappedWager = new Set();
     const cats = shuffle(Object.keys(this.catMap));
-    this.cur = this.pickQuestion(cats[0], 3);
+    // Kids in the room make the final question medium; otherwise it is the hard one.
+    const L = this.presentLevels;
+    const finalLevel = L.includes('kid') ? (L.length === 1 ? 'kid' : 'teen') : 'grownup';
+    this.cur = this.pickQuestion(cats[0], finalLevel);
     this.cur.double = false;
     this.gains = new Map();
     this.phase = 'wager';
@@ -287,6 +348,12 @@ class Quiz {
       case 'answer': {
         if (this.phase !== 'question' || !teamId) return;
         if (!(this.visible.get(pid) || []).includes(msg.idx)) return;
+        // Only the player whose age group the question is aimed at answers for the team.
+        if (!this.finale) {
+          const sp = this.spot.get(teamId);
+          const spPlayer = this.room.players.get(sp);
+          if (sp && sp !== pid && spPlayer && spPlayer.connected) return;
+        }
         this.answers.set(teamId, { pid, idx: msg.idx, at: Date.now() });
         this.tapped.add(pid);
         room.update();
@@ -341,7 +408,8 @@ class Quiz {
       round: this.round,
       totalRounds: this.totalRounds,
       qi: this.qi,
-      qTotal: TIERS.length,
+      qTotal: SLOTS,
+      presentLevels: this.presentLevels,
       finale: this.finale,
       readAloud: this.s.read === 'on',
       deadline: this.deadline,
@@ -361,12 +429,19 @@ class Quiz {
     if (this.phase === 'question' || this.phase === 'reveal') {
       g.q = this.cur.q;
       g.options = this.cur.options;
+      g.target = this.finale ? null : this.target;
+      g.spots = [...this.spot].map(([team, p]) => ({ team, pid: p }));
     }
     if (this.phase === 'question') {
       g.answered = [...this.answers.keys()];
       g.active = this.activeTeams().map((t) => t.id);
       if (pid && myTeam) {
         g.mine = this.visible.get(pid) || [];
+        // Who answers for my team, and is it me? (If they have left, anyone on the team may answer.)
+        const sp = this.spot.get(myTeam);
+        const spPlayer = this.room.players.get(sp);
+        g.spotPid = sp || null;
+        g.canAnswer = this.finale || !sp || sp === pid || !(spPlayer && spPlayer.connected);
         const a = this.answers.get(myTeam);
         g.teamChoice = a ? a.idx : null;
         g.teamBy = a ? a.pid : null;
@@ -406,7 +481,7 @@ module.exports = {
   desc: 'Teams of mixed ages answer questions, with a big final wager.',
   minPlayers: 2,
   usesLevels: true,
-  levelHint: 'Kids see fewer answer choices, so the questions feel fair. Teams get a mix of ages.',
+  levelHint: 'Each question is aimed at one age group: easy for kids, harder for grown-ups. The player in your team at that level answers, and the rest help. Teams get a mix of ages.',
   defaults: { teams: 2, rounds: 3, time: 30, finale: 'on', read: 'off', local: 'off', cats: 'mix' },
   options: [
     { key: 'teams', label: 'Teams', values: [[2, '2 teams'], [3, '3 teams'], [4, '4 teams'], ['solo', 'Everyone solo']] },
