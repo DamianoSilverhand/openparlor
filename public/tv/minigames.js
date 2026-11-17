@@ -1,5 +1,5 @@
 import { h, avatar, tag, timer, byId, serverNow, onTick } from '/shared/ui.js';
-import { finalScreen } from '/tv/common.js';
+import { finalScreen, confetti } from '/tv/common.js';
 
 export function screen(s) {
   const g = s.game;
@@ -19,6 +19,7 @@ function intro(s) {
       h('p', null, 'Up next'),
       h('div', { class: 'card cat-card' }, h('h1', null, g.mg.name)),
       h('p', { style: { marginTop: '1.6rem', color: 'var(--ink)' } }, g.mg.howto),
+      g.team && h('p', { style: { marginTop: '0.6rem' } }, 'Playing together: everyone\'s scores add up to a family total.'),
     ),
     h('div', { class: 'lineup' }, g.lineup.map((n, i) => h('span', { class: 'lu' + (i + 1 === g.idx ? ' now' : i + 1 < g.idx ? ' past' : '') }, n))),
     h('div', { class: 'big-timer' }, t.el),
@@ -83,15 +84,33 @@ function results(s) {
   const totals = new Map(g.standings.map((x) => [x.id, x.score]));
   const max = Math.max(1, ...g.rows.map((r) => r.score));
   const missing = s.players.filter((p) => !g.rows.some((r) => r.id === p.id) && p.connected);
+  const tr = g.teamRound;
+  const banner = g.team
+    ? h('div', { class: 'card family-total' },
+        h('span', { class: 'ft-label' }, 'Family total'),
+        h('span', { class: 'ft-num' }, tr.total),
+        tr.record
+          ? h('span', { class: 'ft-note rec' }, tr.previous ? `New family record! The old one was ${tr.previous}.` : 'A first family record to beat!')
+          : tr.previous
+            ? h('span', { class: 'ft-note' }, `Family record for ${tr.count} players: ${tr.previous}`)
+            : null,
+      )
+    : null;
   const el = h('div', { class: 'stage' },
     head(g, h('span', { class: 'code' }, `${g.mg.name.toUpperCase()}: RESULTS`)),
+    banner,
     h('div', { class: 'board' },
       g.rows.map((r, i) =>
         h('div', { class: 'row', style: { animationDelay: `${i * 70}ms` } },
-          h('span', { class: 'rank' }, r.rank + 1),
+          h('span', { class: 'rank' }, g.team ? '' : r.rank + 1),
           h('div', { class: 'meter' },
             h('div', { class: 'fill', style: { width: `${Math.max(6, (r.score / max) * 100)}%` } }),
-            h('div', { class: 'in' }, tag(get(r.id)), h('span', { class: 'score' }, h('span', { class: 'gain' }, `+${r.pts}`), `${r.score}`, h('span', { class: 'total' }, `${totals.get(r.id)} total`))),
+            h('div', { class: 'in' },
+              tag(get(r.id)),
+              g.team
+                ? h('span', { class: 'score' }, `${r.score}`)
+                : h('span', { class: 'score' }, h('span', { class: 'gain' }, `+${r.pts}`), `${r.score}`, h('span', { class: 'total' }, `${totals.get(r.id)} total`)),
+            ),
           ),
         ),
       ),
@@ -104,7 +123,40 @@ function results(s) {
 }
 
 // ---- final ---------------------------------------------------------------------------------------
+function teamFinal(s) {
+  const g = s.game;
+  const get = byId(s.players);
+  const max = Math.max(1, ...g.standings.map((x) => x.score));
+  const broken = g.setRecords.filter((r) => r.record);
+  return h('div', { class: 'stage' },
+    h('div', { class: 'bar' }, h('span', { class: 'pill' }, 'You did it together'), h('span', { class: 'code' }, 'FAMILY MINI-GAMES')),
+    h('div', { class: 'final' },
+      h('div', null,
+        h('h1', null, 'Family total'),
+        h('div', { class: 'big-total' }, g.teamTotal),
+        broken.length > 0
+          ? h('div', { class: 'card pad rec-list' }, h('b', null, 'New family records'), broken.map((r) => h('div', null, `${r.name}: ${r.total}`)))
+          : h('p', { class: 'hint' }, 'Play again to try to beat your family records.'),
+      ),
+      h('div', { class: 'board' },
+        g.standings.map((x, i) =>
+          h('div', { class: 'row', style: { animationDelay: `${i * 70}ms` } },
+            h('span', { class: 'rank' }, ''),
+            h('div', { class: 'meter' },
+              h('div', { class: 'fill', style: { width: `${Math.max(6, (x.score / max) * 100)}%` } }),
+              h('div', { class: 'in' }, tag(get(x.id)), h('span', { class: 'score' }, `${x.score}`)),
+            ),
+          ),
+        ),
+        h('p', { class: 'hint' }, 'Anyone can tap ', h('b', null, 'Play again'), ' or ', h('b', null, 'Back to the lobby'), ' on their phone.'),
+      ),
+    ),
+    confetti(),
+  );
+}
+
 function final(s) {
+  if (s.game.team) return { el: teamFinal(s), update() {} };
   const a = s.game.awards;
   return {
     el: finalScreen(s, [

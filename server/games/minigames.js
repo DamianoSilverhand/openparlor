@@ -1,4 +1,20 @@
+const fs = require('fs');
+const path = require('path');
 const { shuffle } = require('../util');
+
+// Family records for "play together" mode, kept between sessions. The key is the game plus the number of players.
+const RECORDS_FILE = path.join(__dirname, '../../data/records.json');
+let RECORDS = {};
+try {
+  RECORDS = JSON.parse(fs.readFileSync(RECORDS_FILE, 'utf8'));
+} catch {}
+function saveRecord(key, total) {
+  RECORDS[key] = { total, date: new Date().toISOString().slice(0, 10) };
+  try {
+    fs.mkdirSync(path.dirname(RECORDS_FILE), { recursive: true });
+    fs.writeFileSync(RECORDS_FILE, JSON.stringify(RECORDS, null, 2));
+  } catch {}
+}
 
 // The mini-games themselves run on the phones. The server picks the set, hands out a shared seed and
 // start time, collects each player's score, and awards points for finishing 1st, 2nd, 3rd and so on.
@@ -30,6 +46,7 @@ class MiniGames {
     this.timerTotal = 0;
     this.stats = new Map();
     this.gains = new Map();
+    this.setRecords = [];
     for (const p of room.players.values()) p.score = 0;
     this.startIntro();
   }
@@ -96,17 +113,36 @@ class MiniGames {
     if (this.phase !== 'play') return;
     const rows = this.roster.filter((id) => this.results.has(id)).map((id) => ({ id, score: this.results.get(id) }));
     rows.sort((a, b) => b.score - a.score);
-    let rank = 0;
-    rows.forEach((r, i) => {
-      if (i === 0 || r.score !== rows[i - 1].score) rank = i;
-      r.rank = rank;
-      r.pts = POINTS[rank] || OTHER_POINTS;
-      const p = this.room.players.get(r.id);
-      if (p) p.score += r.pts;
-      this.gains.set(r.id, r.pts);
-      if (rank === 0) this.stat(r.id).wins++;
-      this.stat(r.id).best = Math.max(this.stat(r.id).best, r.score / this.def.max);
-    });
+    if (this.s.mode === 'team') {
+      // Playing together: everyone's score goes into one family total. There are no winners.
+      rows.forEach((r, i) => {
+        r.rank = i;
+        r.pts = null;
+        const p = this.room.players.get(r.id);
+        if (p) p.score += r.score;
+        this.gains.set(r.id, r.score);
+        this.stat(r.id).best = Math.max(this.stat(r.id).best, r.score / this.def.max);
+      });
+      const total = rows.reduce((sum, r) => sum + r.score, 0);
+      const key = `${this.id}:${rows.length}`;
+      const previous = RECORDS[key] ? RECORDS[key].total : 0;
+      const record = rows.length >= 2 && total > previous;
+      if (record) saveRecord(key, total);
+      this.teamRound = { total, previous, record, count: rows.length };
+      this.setRecords.push({ name: this.def.name, total, previous, record });
+    } else {
+      let rank = 0;
+      rows.forEach((r, i) => {
+        if (i === 0 || r.score !== rows[i - 1].score) rank = i;
+        r.rank = rank;
+        r.pts = POINTS[rank] || OTHER_POINTS;
+        const p = this.room.players.get(r.id);
+        if (p) p.score += r.pts;
+        this.gains.set(r.id, r.pts);
+        if (rank === 0) this.stat(r.id).wins++;
+        this.stat(r.id).best = Math.max(this.stat(r.id).best, r.score / this.def.max);
+      });
+    }
     this.rows = rows;
     this.phase = 'results';
     this.later(RESULTS_MS, () => this.afterResults());
@@ -188,6 +224,7 @@ class MiniGames {
       title: 'Family Mini-Games',
       mg: { id: this.id, name: this.def.name, howto: this.def.howto, duration: this.def.duration, max: this.def.max },
       lineup: this.order.map((id) => MINI[id].name),
+      team: this.s.mode === 'team',
     };
     if (this.phase === 'play') {
       g.seed = this.seed;
@@ -205,10 +242,15 @@ class MiniGames {
     if (this.phase === 'results') {
       g.rows = this.rows;
       g.standings = this.standings();
+      if (g.team) g.teamRound = this.teamRound;
     }
     if (this.phase === 'final') {
       g.standings = this.standings();
       g.awards = this.awards();
+      if (g.team) {
+        g.teamTotal = this.standings().reduce((sum, x) => sum + x.score, 0);
+        g.setRecords = this.setRecords;
+      }
     }
     return g;
   }
@@ -228,9 +270,10 @@ module.exports = {
   minPlayers: 2,
   usesLevels: true,
   levelHint: 'Younger players get a gentler challenge (smaller boards, easier words and sums, extra lives, a bigger reaction window), so everyone has a fair shot.',
-  defaults: { games: 5, handicap: 'on' },
+  defaults: { games: 5, handicap: 'on', mode: 'race' },
   options: [
     { key: 'games', label: 'Games in the set', values: [[3, '3'], [4, '4'], [5, '5'], [6, '6']] },
+    { key: 'mode', label: 'How to play', values: [['race', 'Race (ranked)'], ['team', 'Play together']] },
     { key: 'handicap', label: 'Fair-play handicaps', values: [['on', 'On (by age)'], ['off', 'Off']] },
   ],
   create: (room) => new MiniGames(room),

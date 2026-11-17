@@ -14,7 +14,7 @@ const game = (a, extra) => ({ t: 'g', a, ...extra });
 export function screen(s, ctx) {
   const g = s.game;
   const key = g.phase === 'final' ? 'final' : `${g.phase}:${g.idx}`;
-  const build = { intro, play, results, final }[g.phase];
+  const build = { intro, play, results: g.team ? resultsTogether : results, final: g.team ? finalTogether : final }[g.phase];
   return { key, build: (s) => build(s, ctx) };
 }
 
@@ -27,6 +27,7 @@ function intro(s, ctx) {
     h('p', { class: 'lead' }, `Game ${g.idx} of ${g.total}`),
     h('div', { class: 'card pad prompt' }, h('h2', null, g.mg.name)),
     h('p', { class: 'lead' }, g.mg.howto),
+    g.team && h('p', { class: 'lead', style: { fontWeight: 800 } }, "Playing together: everyone's scores add up to a family total."),
     s.settings.handicap === 'on' && h('p', { class: 'lead', style: { fontSize: '0.9rem' } }, 'Handicaps are on, so each age gets a fair challenge.'),
     t.el,
     hostButton(s, ctx, 'Skip ahead', false),
@@ -133,4 +134,45 @@ function results(s, ctx) {
   );
   t.update(g);
   return { el, update: (s) => t.update(s.game) };
+}
+
+// ---- play-together versions of results and final -------------------------------------
+function resultsTogether(s, ctx) {
+  const g = s.game;
+  const get = byId(s.players);
+  const t = timer();
+  const tr = g.teamRound;
+  const el = h('div', { class: 'screen' },
+    meBar(s),
+    h('h1', { class: 'title' }, `Family total: ${tr.total}`),
+    tr.record
+      ? h('div', { class: 'card pad big-result good' }, h('h2', null, 'New family record!'), h('p', null, tr.previous ? `The old record was ${tr.previous}.` : 'Now you have one to beat.'))
+      : tr.previous ? h('p', { class: 'lead' }, `The family record for ${tr.count} players is ${tr.previous}.`) : null,
+    h('div', { class: 'rank-list' },
+      g.rows.map((r) =>
+        h('div', { class: 'r' + (r.id === s.me ? ' me' : '') }, h('span', { class: 'tag' }, avatar(get(r.id)), get(r.id) ? get(r.id).name : '?'), h('span', null, r.score)),
+      ),
+    ),
+    t.el,
+    hostButton(s, ctx, g.idx >= g.total ? 'See your total' : 'Next game', true),
+  );
+  t.update(g);
+  return { el, update: (s) => t.update(s.game) };
+}
+
+function finalTogether(s, ctx) {
+  const g = s.game;
+  const get = byId(s.players);
+  const broken = g.setRecords.filter((r) => r.record);
+  const el = h('div', { class: 'screen' },
+    meBar(s),
+    h('h1', { class: 'title' }, `Together you scored ${g.teamTotal}`),
+    broken.length > 0 && h('div', { class: 'card pad big-result good' }, h('h2', null, 'New family records'), broken.map((r) => h('p', null, `${r.name}: ${r.total}`))),
+    h('div', { class: 'rank-list' },
+      g.standings.map((x) => h('div', { class: 'r' + (x.id === s.me ? ' me' : '') }, h('span', { class: 'tag' }, avatar(get(x.id)), get(x.id).name), h('span', null, x.score))),
+    ),
+    h('button', { class: 'btn block push', onclick: () => ctx.send({ t: 'again' }) }, 'Play again'),
+    h('button', { class: 'btn plain block', onclick: () => ctx.send({ t: 'lobby' }) }, 'Back to the lobby'),
+  );
+  return { el, update() {} };
 }
