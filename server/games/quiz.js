@@ -16,7 +16,7 @@ if (FAMILY.length >= 4) CATS.family = { name: 'Our Family', questions: FAMILY };
 
 const INTRO_MS = 12000;
 const CATEGORY_MS = 4500;
-const REVEAL_MS = Number(process.env.QUIZ_REVEAL_MS) || 8000;
+const REVEAL_MS = 8000;
 const SCORES_MS = 10000;
 const WAGER_MS = 20000;
 const BASE = { 1: 100, 2: 200, 3: 300 };

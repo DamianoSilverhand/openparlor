@@ -15,7 +15,7 @@ const OTHER_POINTS = 3;
 const INTRO_MS = 9000;
 const COUNTDOWN_MS = 3200;
 const GRACE_MS = 3000;
-const RESULTS_MS = Number(process.env.MINI_RESULTS_MS) || 10000;
+const RESULTS_MS = 10000;
 
 class MiniGames {
   constructor(room) {
