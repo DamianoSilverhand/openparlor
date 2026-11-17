@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Family Game Night</title>
+  <link rel="stylesheet" href="/shared/style.css">
+  <style>
+    main { max-width: 760px; margin: 0 auto; padding: 8vh 20px 40px; }
+    h1 { font-size: clamp(2.8rem, 11vw, 5.5rem); }
+    h1 span { display: block; color: var(--tomato); }
+    .lead { margin: 18px 0 36px; font-size: 1.2rem; color: var(--soft); max-width: 30em; }
+    .choices { display: grid; gap: 18px; }
+    .choice { padding: 22px 24px; text-align: left; display: block; width: 100%; text-decoration: none; color: inherit; font: inherit; cursor: pointer; }
+    .choice:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--ink); }
+    .choice h2 { font-size: 1.6rem; }
+    .choice p { color: var(--soft); margin-top: 6px; }
+    .choice.a { background: var(--mustard); }
+    .choice.a p { color: var(--ink); }
+    .tilt { transform: rotate(-0.6deg); }
+    .foot { margin-top: 34px; color: var(--soft); font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Family<span>Game Night</span></h1>
+    <p class="lead">Put the game on the big screen, then everyone joins from their own phone. No sign-ups, no internet needed.</p>
+    <div class="choices">
+      <button class="card choice a tilt" id="host">
+        <h2>Put it on the big screen</h2>
+        <p>Open this page on the TV or laptop and start a new room.</p>
+      </button>
+      <a class="card choice" href="/play">
+        <h2>Join from this phone</h2>
+        <p>Type the four-letter code you can see on the TV.</p>
+      </a>
+    </div>
+    <p class="foot" id="addr"></p>
+  </main>
+  <script>
+    document.getElementById('host').onclick = async () => {
+      const r = await fetch('/api/room', { method: 'POST' });
+      const { code } = await r.json();
+      location.href = '/tv?room=' + code;
+    };
+    fetch('/api/info').then(r => r.json()).then(i => {
+      document.getElementById('addr').textContent = 'Phones can find this at ' + i.base.replace('http://', '');
+    });
+  </script>
+</body>
+</html>
