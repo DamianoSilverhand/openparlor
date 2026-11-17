@@ -173,8 +173,9 @@ class Quiz {
   // starting group rotates from round to round.
   slotTargets() {
     const L = this.presentLevels.length ? this.presentLevels : ['grownup'];
-    const base = [...L];
-    while (base.length < SLOTS) base.push(L[base.length % L.length]);
+    // With three groups in play one of them gets a second question. Give that extra turn to a
+    // different group each round, so no age group is favoured over a whole game.
+    const base = L.length === 1 ? Array(SLOTS).fill(L[0]) : L.length === 2 ? [...L, ...L] : [...L, L[(this.round - 1) % L.length]];
     const r = (this.round - 1) % base.length;
     return base.slice(r).concat(base.slice(0, r));
   }
