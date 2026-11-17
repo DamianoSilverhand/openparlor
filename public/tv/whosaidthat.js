@@ -7,7 +7,7 @@ const chipFor = (p, done) =>
 
 export function screen(s) {
   const g = s.game;
-  const key = g.phase + (g.phase === 'vote' || g.phase === 'reveal' ? `:${g.round}:${g.idx}` : g.phase === 'answer' ? `:${g.round}` : '');
+  const key = g.phase + (g.phase === 'vote' || g.phase === 'reveal' ? `:${g.round}:${g.itemId}` : g.phase === 'answer' ? `:${g.round}` : '');
   const builders = { answer, vote, reveal, scores, final };
   return { key, build: builders[g.phase] };
 }

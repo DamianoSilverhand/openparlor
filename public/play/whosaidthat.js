@@ -4,8 +4,8 @@ export function screen(s, ctx) {
   const g = s.game;
   const key =
     g.phase === 'answer' ? `answer:${g.round}:${g.iAnswered ? 1 : 0}`
-    : g.phase === 'vote' ? `vote:${g.round}:${g.idx}:${g.isAuthor ? 1 : 0}`
-    : g.phase === 'reveal' ? `reveal:${g.round}:${g.idx}`
+    : g.phase === 'vote' ? `vote:${g.round}:${g.itemId}:${g.isAuthor ? 1 : 0}`
+    : g.phase === 'reveal' ? `reveal:${g.round}:${g.itemId}`
     : g.phase;
   const b = { answer, vote, reveal, scores, final }[g.phase];
   return { key, build: (s) => b(s, ctx) };

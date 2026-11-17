@@ -66,6 +66,7 @@ class WhoSaidThat {
     this.prompt = this.prompts[this.round - 1];
     this.answers = new Map();
     this.passed = new Set(); // players who chose to pass on this prompt
+    this.hidden = new Set(); // authors whose answer the host hid this round
     this.items = [];
     this.idx = -1;
     this.gains = new Map();
@@ -77,7 +78,9 @@ class WhoSaidThat {
 
   endAnswers() {
     if (this.phase !== 'answer') return;
+    this.itemSeq = this.itemSeq || 0;
     const list = [...this.answers].map(([author, text]) => ({
+      id: ++this.itemSeq, // changes for every answer, so screens always refresh when one is hidden
       author,
       text,
       votes: new Map(),
@@ -199,6 +202,7 @@ class WhoSaidThat {
       case 'drop': {
         // The host can hide an answer that is awkward or unsuitable. It is not scored.
         if (pid !== room.hostId || this.phase !== 'vote') return;
+        this.hidden.add(this.cur.author);
         this.items.splice(this.idx, 1);
         this.idx--;
         this.nextItem();
@@ -207,7 +211,7 @@ class WhoSaidThat {
       case 'vote': {
         const it = this.cur;
         if (this.phase !== 'vote' || !it || pid === it.author) return;
-        if (!this.answers.has(msg.guess) || msg.guess === pid) return;
+        if (!this.answers.has(msg.guess) || this.hidden.has(msg.guess) || msg.guess === pid) return;
         it.votes.set(pid, msg.guess);
         room.update();
         this.checkProgress();
@@ -277,6 +281,7 @@ class WhoSaidThat {
     if (this.phase === 'vote' || this.phase === 'reveal') {
       const it = this.cur;
       g.idx = this.idx;
+      g.itemId = it.id;
       g.total = this.items.length;
       g.text = it.text;
       g.voted = [...it.votes.keys()];
@@ -286,7 +291,7 @@ class WhoSaidThat {
         g.isAuthor = it.author === pid;
         g.myVote = it.votes.get(pid) || null;
         g.myLaughs = it.laughs.get(pid) || 0;
-        g.options = [...this.answers.keys()].filter((id) => id !== pid);
+        g.options = [...this.answers.keys()].filter((id) => id !== pid && !this.hidden.has(id));
       }
       if (this.phase === 'reveal') {
         g.author = it.author;
