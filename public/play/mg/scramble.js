@@ -11,9 +11,9 @@ const WORDS = {
 
 // Zambian words for the optional local setting. The first spelling is scrambled; any listed spelling is accepted.
 const LOCAL = {
-  kid: [['hippo'], ['maize'], ['drum'], ['fish'], ['kafue']],
-  teen: [['zambia'], ['lusaka'], ['kwacha'], ['baobab'], ['safari'], ['kitwe'], ['copper'], ['impala'], ['nshima', ['nsima', 'sima']]],
-  grownup: [['livingstone'], ['copperbelt'], ['chipolopolo'], ['crocodile'], ['giraffe'], ['zambezi'], ['chitenge', ['chitenje']], ['kapenta']],
+  kid: [['hippo'], ['maize'], ['drum'], ['fish'], ['kafue'], ['hut'], ['cow'], ['okra'], ['river'], ['baby'], ['taxi'], ['sugar'], ['bike'], ['kiosk'], ['bush'], ['tent']],
+  teen: [['zambia'], ['lusaka'], ['kwacha'], ['baobab'], ['safari'], ['kitwe'], ['copper'], ['impala'], ['nshima', ['nsima', 'sima']], ['village'], ['market'], ['cassava'], ['kasama'], ['mongu'], ['sunset'], ['charcoal']],
+  grownup: [['livingstone'], ['copperbelt'], ['chipolopolo'], ['crocodile'], ['giraffe'], ['zambezi'], ['chitenge', ['chitenje']], ['kapenta'], ['luangwa'], ['chipata'], ['solwezi'], ['minibus'], ['wildlife'], ['mosquito'], ['waterfall'], ['kafue']],
 };
 const entry = (w) => (Array.isArray(w) ? { word: w[0], ok: [w[0], ...(w[1] || [])] } : { word: w, ok: [w] });
 
@@ -22,8 +22,8 @@ export function start(ctx) {
   const level = WORDS[ctx.level] ? ctx.level : 'grownup';
   const general = WORDS[level].map(entry);
   const local = LOCAL[level].map(entry);
-  // "Only Zambian" uses the local words first, then general ones so the round is not over too soon.
-  const list = ctx.local === 'only' ? [...shuffled(r, local), ...shuffled(r, general)] : ctx.local === 'mixed' ? shuffled(r, [...general, ...local]) : shuffled(r, general);
+  // "Only Zambian" uses just the local words; "Mixed in" adds them to the general ones.
+  const list = ctx.local === 'only' ? shuffled(r, local) : ctx.local === 'mixed' ? shuffled(r, [...general, ...local]) : shuffled(r, general);
   const t = timeouts();
   let i = 0;
   let solved = 0;

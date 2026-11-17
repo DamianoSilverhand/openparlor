@@ -23,10 +23,10 @@ The host picks the game and its settings in the lobby on their phone. For the Qu
 Everything is plain JSON in `content/`. Restart the server after editing.
 
 - **Our Family quiz topic**: add at least four questions to `content/family-questions.json` (the file explains the format, and `d` 1, 2 or 3 sets how hard each question is) and an "Our Family" topic appears. It is used in every mode, so it is a good place for questions only your family can answer.
-- **Zambian content** (optional): the Quiz, Draw & Guess, Who Said That? and Word Scramble each have a "Zambian content" setting: *Off*, *Mixed in* or *Only Zambian*. It is off by default, so it never appears unless the host chooses it. The Zambian packs are marked `"local": true` in `questions.json`, `words.json` and `prompts.json`, and Word Scramble has its own short list near the top of `public/play/mg/scramble.js`. Please have someone in the family check the answers and wording, and add or remove whatever fits.
+- **Zambian content** (optional): the Quiz, Draw & Guess, Who Said That? and Word Scramble each have a "Zambian content" setting: *Off*, *Mixed in* or *Only Zambian*. It is off by default, so it never appears unless the host chooses it. *Only Zambian* takes precedence over the topic or pack setting, so only Zambian questions, words, prompts and scramble words are used. The Zambian packs are marked `"local": true` in `questions.json`, `words.json` and `prompts.json`, and Word Scramble has its own short list near the top of `public/play/mg/scramble.js`. Please have someone in the family check the answers and wording, and add or remove whatever fits.
 - **Other languages**: the games do not assume any language. To add words in the languages your family uses, add them to the Zambian packs the same way as any other entry. In Word Scramble a word can list other accepted spellings, for example `['nshima', ['nsima', 'sima']]`.
 
-Play-together records are saved in `data/records.json`, which is not committed.
+Play-together records are saved in `data/records.json`, which is not committed. A record is kept for each game, number of players and handicap setting, and only counts when every player who started the round has a score.
 
 ## Sound
 

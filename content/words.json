@@ -33,9 +33,9 @@
     "zambia": {
       "name": "Zambia & home",
       "local": true,
-      "easy": ["nshima", "maize", "mango", "goat", "chicken", "hippo", "crocodile", "lion", "rain", "drum", "fire", "fish"],
-      "medium": ["baobab tree", "minibus", "football match", "fishing boat", "thatched hut", "zebra", "fish eagle", "charcoal stove", "market stall", "water pot"],
-      "hard": ["Victoria Falls", "safari truck", "copper mine", "traditional dance", "market day", "sunset on the river"]
+      "easy": ["nshima", "maize", "mango", "goat", "chicken", "hippo", "crocodile", "lion", "rain", "drum", "fire", "fish", "bucket", "broom", "bed", "taxi", "phone"],
+      "medium": ["baobab tree", "minibus", "football match", "fishing boat", "thatched hut", "zebra", "fish eagle", "charcoal stove", "market stall", "water pot", "washing line", "school uniform", "radio", "bus stop", "kitchen table"],
+      "hard": ["Victoria Falls", "safari truck", "copper mine", "traditional dance", "market day", "sunset on the river", "power cut", "family wedding", "birthday party"]
     }
   }
 }

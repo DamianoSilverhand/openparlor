@@ -13,7 +13,8 @@ const POINTS_LAUGH = 10;
 const MAX_LAUGHS = 3;
 
 function promptPool(pack, local) {
-  if (pack && CONTENT.packs[pack]) return CONTENT.packs[pack].prompts;
+  // "Only Zambian" takes precedence over a chosen pack.
+  if (local !== 'only' && pack && CONTENT.packs[pack]) return CONTENT.packs[pack].prompts;
   return Object.values(filterLocal(CONTENT.packs, local)).flatMap((p) => p.prompts);
 }
 

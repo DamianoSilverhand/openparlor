@@ -54,11 +54,13 @@ class Quiz {
     this.target = null;
     this.spot = new Map();
     this.catMap = filterLocal(CATS, this.s.local);
-    if (CATS[this.s.cats]) this.catMap[this.s.cats] = CATS[this.s.cats];
+    // "Only Zambian" takes precedence: a chosen topic is ignored so no general topic sneaks back in.
+    const onlyLocal = this.s.local === 'only';
+    if (CATS[this.s.cats] && !onlyLocal) this.catMap[this.s.cats] = CATS[this.s.cats];
     const ids = Object.keys(this.catMap);
     this.totalRounds = this.s.rounds;
     const order = shuffle(ids);
-    this.cats = this.s.cats === 'mix' || !CATS[this.s.cats] ? Array.from({ length: this.totalRounds }, (_, i) => order[i % order.length]) : Array(this.totalRounds).fill(this.s.cats);
+    this.cats = onlyLocal || this.s.cats === 'mix' || !CATS[this.s.cats] ? Array.from({ length: this.totalRounds }, (_, i) => order[i % order.length]) : Array(this.totalRounds).fill(this.s.cats);
     this.phase = 'intro';
     this.later(INTRO_MS, () => this.startRound());
     this.syncScores();

@@ -24,7 +24,8 @@ function distance(a, b) {
 }
 
 function wordPool(pack, tier, local) {
-  const packs = pack === 'mix' || !WORDS[pack] ? Object.values(filterLocal(WORDS, local)) : [WORDS[pack]];
+  // "Only Zambian" takes precedence over a chosen topic.
+  const packs = pack === 'mix' || !WORDS[pack] || local === 'only' ? Object.values(filterLocal(WORDS, local)) : [WORDS[pack]];
   return packs.flatMap((p) => p[tier] || []);
 }
 
