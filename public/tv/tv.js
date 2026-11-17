@@ -1,8 +1,9 @@
 import { h, avatar, byId, setServerNow } from '/shared/ui.js';
 import { connect } from '/shared/net.js';
 import * as whosaidthat from '/tv/whosaidthat.js';
+import * as draw from '/tv/draw.js';
 
-const GAMES = { whosaidthat };
+const GAMES = { whosaidthat, draw };
 const app = document.getElementById('app');
 const room = (new URLSearchParams(location.search).get('room') || '').toUpperCase();
 let info = null;
@@ -15,6 +16,7 @@ const net = connect({
   onOpen: () => net.send({ t: 'tv', room }),
   onMessage: (m) => {
     if (m.t === 'error') return showError(m.message);
+    if (m.t === 'draw') return draw.onEvent(m);
     if (m.t !== 'state') return;
     setServerNow(m.now);
     last = m;

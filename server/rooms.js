@@ -3,6 +3,7 @@ const { clean } = require('./util');
 
 const GAMES = {
   whosaidthat: require('./games/whosaidthat'),
+  draw: require('./games/draw'),
 };
 
 const CODE_LETTERS = 'ABCDEFGHJKMNPQRSTUVWXYZ';

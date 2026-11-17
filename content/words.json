@@ -1,0 +1,34 @@
+{
+  "packs": {
+    "animals": {
+      "name": "Animals",
+      "easy": ["cat", "dog", "fish", "bird", "cow", "pig", "duck", "frog", "snake", "elephant", "mouse", "rabbit"],
+      "medium": ["giraffe", "penguin", "octopus", "butterfly", "kangaroo", "turtle", "owl", "spider"],
+      "hard": ["flamingo", "chameleon", "hedgehog", "jellyfish", "seahorse", "peacock"]
+    },
+    "food": {
+      "name": "Food",
+      "easy": ["apple", "banana", "pizza", "cake", "egg", "ice cream", "cookie", "carrot", "bread", "cheese"],
+      "medium": ["hamburger", "spaghetti", "popcorn", "pancakes", "watermelon", "sandwich", "lollipop", "donut"],
+      "hard": ["sushi", "croissant", "cupcake", "pretzel", "broccoli", "pineapple"]
+    },
+    "actions": {
+      "name": "Actions",
+      "easy": ["sleeping", "running", "jumping", "eating", "crying", "laughing", "dancing", "reading"],
+      "medium": ["swimming", "brushing teeth", "riding a bike", "fishing", "singing", "climbing", "cooking", "painting"],
+      "hard": ["sneezing", "juggling", "skateboarding", "yawning", "tiptoeing", "painting a wall"]
+    },
+    "things": {
+      "name": "Things",
+      "easy": ["sun", "house", "tree", "car", "ball", "book", "star", "flower", "hat", "shoe", "moon", "boat"],
+      "medium": ["bicycle", "umbrella", "guitar", "rocket", "clock", "key", "glasses", "castle", "snowman", "robot"],
+      "hard": ["lighthouse", "telescope", "compass", "vacuum cleaner", "windmill", "treasure map", "wheelbarrow", "trampoline"]
+    },
+    "places": {
+      "name": "Places",
+      "easy": ["beach", "school", "park", "farm", "zoo", "mountain"],
+      "medium": ["playground", "airport", "swimming pool", "campsite", "bakery", "library"],
+      "hard": ["volcano", "pyramid", "haunted house", "space station", "waterfall", "igloo"]
+    }
+  }
+}

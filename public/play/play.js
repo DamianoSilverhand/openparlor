@@ -1,8 +1,9 @@
 import { h, avatar, AVATARS, byId, setServerNow } from '/shared/ui.js';
 import { connect } from '/shared/net.js';
 import * as whosaidthat from '/play/whosaidthat.js';
+import * as draw from '/play/draw.js';
 
-const GAMES = { whosaidthat };
+const GAMES = { whosaidthat, draw };
 const app = document.getElementById('app');
 const room = (new URLSearchParams(location.search).get('room') || '').toUpperCase().slice(0, 4);
 

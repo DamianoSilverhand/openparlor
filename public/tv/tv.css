@@ -95,3 +95,33 @@ body { overflow: hidden; height: 100vh; }
 .center-msg h1 { font-size: 4rem; margin-bottom: 1.2rem; }
 .center-msg p { font-size: 1.6rem; color: var(--soft); margin-bottom: 1.6rem; }
 .center-msg .btn { font-size: 1.6rem; }
+
+/* draw & guess */
+.hidden { display: none !important; }
+.draw-layout { flex: 1; min-height: 0; display: grid; grid-template-columns: auto 1fr; gap: 2.4rem; }
+.canvas-card { height: 100%; aspect-ratio: 4 / 3; padding: 0; overflow: hidden; align-self: start; max-height: 100%; background: #fffdf7; }
+.draw-canvas { display: block; width: 100%; height: 100%; }
+.side { display: flex; flex-direction: column; gap: 1.1rem; min-width: 0; min-height: 0; }
+.side .who { display: flex; align-items: center; gap: 1rem; }
+.side .who small { display: block; font-weight: 700; color: var(--soft); font-size: 1.2rem; }
+.side .who h2 { font-size: 2.6rem; }
+.tiles { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tile { display: grid; place-items: center; width: 3.1rem; height: 3.9rem; background: var(--card); border: var(--border); border-radius: 8px; box-shadow: 3px 3px 0 var(--ink); font-family: var(--display); font-weight: 900; font-size: 2.4rem; text-transform: uppercase; }
+.tile.shown { background: var(--mustard); }
+.gap { width: 1.4rem; }
+.side .sub { margin: 0; font-size: 1.3rem; }
+.feed { display: flex; flex-direction: column; gap: 0.5rem; overflow: hidden; min-height: 0; }
+.feed .line { display: flex; align-items: center; gap: 0.6rem; font-size: 1.4rem; animation: rise 0.25s both; }
+.feed .line .avatar { --s: 2rem; border-width: 2px; }
+.feed .say { background: var(--card); border: 2px solid var(--ink); border-radius: 10px; padding: 0.1rem 0.7rem; font-weight: 700; }
+.feed .ok { color: var(--leaf); font-weight: 800; }
+.the-word { font-size: 6rem; text-transform: capitalize; }
+.gains { padding: 1.1rem 1.5rem; display: grid; gap: 0.7rem; font-size: 1.6rem; }
+.gains .g { display: flex; justify-content: space-between; align-items: center; }
+.gains b { font-family: var(--display); color: var(--teal); }
+.gallery { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.4rem; align-content: start; overflow: hidden; }
+.shot { padding: 0.5rem; }
+.shot .thumb { display: block; width: 100%; border-radius: 8px; }
+.shot .cap { padding: 0.5rem 0.3rem 0.1rem; font-size: 1.15rem; }
+.feed .line { min-width: 0; }
+.feed .say { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
