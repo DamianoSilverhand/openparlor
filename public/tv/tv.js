@@ -2,8 +2,9 @@ import { h, avatar, byId, setServerNow } from '/shared/ui.js';
 import { connect } from '/shared/net.js';
 import * as whosaidthat from '/tv/whosaidthat.js';
 import * as draw from '/tv/draw.js';
+import * as quiz from '/tv/quiz.js';
 
-const GAMES = { whosaidthat, draw };
+const GAMES = { whosaidthat, draw, quiz };
 const app = document.getElementById('app');
 const room = (new URLSearchParams(location.search).get('room') || '').toUpperCase();
 let info = null;

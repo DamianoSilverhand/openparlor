@@ -2,8 +2,9 @@ import { h, avatar, AVATARS, byId, setServerNow } from '/shared/ui.js';
 import { connect } from '/shared/net.js';
 import * as whosaidthat from '/play/whosaidthat.js';
 import * as draw from '/play/draw.js';
+import * as quiz from '/play/quiz.js';
 
-const GAMES = { whosaidthat, draw };
+const GAMES = { whosaidthat, draw, quiz };
 const app = document.getElementById('app');
 const room = (new URLSearchParams(location.search).get('room') || '').toUpperCase().slice(0, 4);
 
@@ -153,6 +154,11 @@ function lobby(s) {
           : 'Everyone ready? Choose your settings, then start.'
         : `Waiting for ${get(s.hostId) ? get(s.hostId).name : 'the host'} to start ${s.gameName}.`),
       h('div', { class: 'players' }, s.players.map((p) => h('span', { class: 'tag' + (p.connected ? '' : ' off') }, avatar(p), p.name))),
+      s.usesLevels && h('div', { class: 'card pad' },
+        h('div', { class: 'seg-label', style: { marginTop: 0 } }, "Who's holding this phone?"),
+        seg([['kid', 'Kid'], ['teen', 'Teen'], ['grownup', 'Grown-up']], me ? me.level : 'grownup', (v) => send({ t: 'level', level: v })),
+        h('p', { class: 'lead', style: { fontSize: '0.9rem', marginTop: '8px' } }, s.levelHint),
+      ),
       isHost && h('div', { class: 'card pad' },
         h('div', { class: 'seg-label', style: { marginTop: 0 } }, 'Game'),
         seg(s.games.map((g) => [g.id, g.name]), s.gameId, (v) => send({ t: 'pickGame', id: v })),

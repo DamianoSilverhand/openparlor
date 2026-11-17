@@ -4,6 +4,7 @@ const { clean } = require('./util');
 const GAMES = {
   whosaidthat: require('./games/whosaidthat'),
   draw: require('./games/draw'),
+  quiz: require('./games/quiz'),
 };
 
 const CODE_LETTERS = 'ABCDEFGHJKMNPQRSTUVWXYZ';
@@ -63,6 +64,7 @@ class Room {
       name: n,
       avatar: a,
       score: 0,
+      level: 'grownup',
       connected: true,
       ws,
     };
@@ -116,6 +118,13 @@ class Room {
     this.touched = Date.now();
     const isHost = pid === this.hostId;
     switch (msg.t) {
+      case 'level':
+        if (!this.game && ['kid', 'teen', 'grownup'].includes(msg.level)) {
+          const me = this.players.get(pid);
+          if (me) me.level = msg.level;
+          this.update();
+        }
+        return;
       case 'pickGame':
         if (isHost && !this.game && GAMES[msg.id]) {
           this.gameId = msg.id;
@@ -170,6 +179,8 @@ class Room {
       gameName: def.name,
       gameDesc: def.desc,
       minPlayers: def.minPlayers,
+      usesLevels: !!def.usesLevels,
+      levelHint: def.levelHint || '',
       options: def.options,
       games: Object.values(GAMES).map((g) => ({ id: g.id, name: g.name })),
       settings: this.settings,
@@ -179,6 +190,7 @@ class Room {
         name: p.name,
         avatar: p.avatar,
         score: p.score,
+        level: p.level,
         connected: p.connected,
       })),
     };

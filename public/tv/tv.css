@@ -125,3 +125,52 @@ body { overflow: hidden; height: 100vh; }
 .shot .cap { padding: 0.5rem 0.3rem 0.1rem; font-size: 1.15rem; }
 .feed .line { min-width: 0; }
 .feed .say { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+
+/* family quiz show */
+.swatch { display: inline-block; width: 1.1rem; height: 1.1rem; border-radius: 50%; background: var(--tc); border: 2px solid var(--ink); flex: none; }
+.swatch.big { width: 3rem; height: 3rem; border-width: 3px; }
+.mem { display: inline-flex; margin-left: 0.3rem; }
+.mem .avatar { --s: 1.9rem; border-width: 2px; margin-left: -0.5rem; }
+.mem.big { margin: 0; }
+.mem.big .avatar { --s: 3.2rem; margin-left: -0.9rem; }
+.teams { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1.6rem; align-content: start; margin-top: 0.6rem; }
+.teams.solo { grid-template-columns: repeat(4, 1fr); }
+.team-card { overflow: hidden; animation: pop 0.4s both; }
+.team-card .band { background: var(--tc); border-bottom: var(--border); padding: 0.9rem 1.2rem; font-family: var(--display); font-weight: 900; font-size: 2.2rem; }
+.roster-col { padding: 1rem 1.2rem; display: grid; gap: 0.7rem; }
+.who-row { display: flex; align-items: center; gap: 0.7rem; font-family: var(--display); font-weight: 800; font-size: 1.6rem; }
+.who-row .avatar { --s: 2.6rem; }
+.cat-msg p { font-size: 2rem; font-weight: 700; color: var(--soft); margin: 0; }
+.cat-card { background: var(--mustard); padding: 2.4rem 3.4rem; margin-top: 1.2rem; transform: rotate(-0.8deg); animation: pop 0.5s both; }
+.cat-card h1 { font-size: 6rem; margin: 0; }
+.badges { display: flex; align-items: center; gap: 1.4rem; }
+.badge { font-family: var(--display); font-weight: 900; background: var(--tomato); color: #fff; border: var(--border); border-radius: 99px; padding: 0.2rem 1rem; font-size: 1.4rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.q-card { padding: 2rem 2.6rem; margin-bottom: 1.4rem; background: var(--card); }
+.q-card h2 { font-size: 3.2rem; font-weight: 800; line-height: 1.12; }
+.opts { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 1.4rem; }
+.opt-tv { display: flex; align-items: center; gap: 1.1rem; border: var(--border); border-radius: 14px; box-shadow: 4px 4px 0 var(--ink); padding: 1rem 1.3rem; font-family: var(--display); font-weight: 800; font-size: 2.1rem; background: var(--card); min-height: 5.2rem; }
+.opt-tv .let { display: grid; place-items: center; width: 3rem; height: 3rem; border: var(--border); border-radius: 50%; background: var(--c); color: #fff; flex: none; }
+.opt-tv.o0 { --c: var(--tomato); }
+.opt-tv.o1 { --c: #3e5c99; }
+.opt-tv.o2 { --c: var(--leaf); }
+.opt-tv.o3 { --c: #c98a00; }
+.revealed .opt-tv.wrong { opacity: 0.35; box-shadow: none; }
+.revealed .opt-tv.right { background: var(--leaf); color: #fff; }
+.revealed .opt-tv.right .let { background: #fff; color: var(--leaf); }
+.revealed .opt-tv.right .tick::after { content: '✓'; font-size: 2.4rem; margin-left: auto; }
+.opt-tv .tick { margin-left: auto; }
+.under { margin-top: 1.2rem; min-height: 6rem; display: flex; flex-direction: column; gap: 0.8rem; }
+.tchip { display: inline-flex; align-items: center; gap: 0.6rem; background: var(--card); border: var(--border); border-radius: 99px; padding: 0.3rem 1rem; font-family: var(--display); font-weight: 800; font-size: 1.4rem; opacity: 0.65; }
+.tchip.done { opacity: 1; background: var(--tc); }
+.tchip.done .swatch { background: var(--card); }
+.results { display: flex; flex-wrap: wrap; gap: 0.7rem 1rem; }
+.res { display: inline-flex; align-items: center; gap: 0.6rem; background: var(--card); border: var(--border); border-radius: 12px; padding: 0.4rem 1rem; font-size: 1.4rem; }
+.res.no { opacity: 0.7; }
+.res .ans { color: var(--soft); font-weight: 700; }
+.res .pts { font-family: var(--display); font-weight: 900; color: var(--teal); }
+.res.no .pts { color: var(--tomato); }
+.fact { font-size: 1.35rem; font-weight: 600; color: var(--soft); margin: 0; }
+.wager-scores { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.8rem 1.6rem; font-size: 1.5rem; font-weight: 800; font-family: var(--display); }
+.wager-scores .ws { display: inline-flex; align-items: center; gap: 0.5rem; }
+.row .meter .fill { border-right: var(--border); }
+.row .tag { gap: 0.4rem; }
