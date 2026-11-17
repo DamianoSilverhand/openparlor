@@ -148,7 +148,12 @@ class Quiz {
     if (this.qi > TIERS.length) return this.toScores();
     this.cur = this.pickQuestion(this.catId, TIERS[this.qi - 1]);
     this.cur.double = this.qi === this.doubleAt;
-    this.openQuestion(this.s.time);
+    this.openQuestion(this.s.time + this.readExtra());
+  }
+
+  // Reading aloud takes a few seconds, so give teams that long back.
+  readExtra() {
+    return this.s.read === 'on' ? 8 : 0;
   }
 
   openQuestion(seconds) {
@@ -261,7 +266,7 @@ class Quiz {
 
   startFinaleQuestion() {
     if (this.phase !== 'wager') return;
-    this.openQuestion(this.s.time + 10);
+    this.openQuestion(this.s.time + 10 + this.readExtra());
   }
 
   toFinal() {
@@ -335,6 +340,7 @@ class Quiz {
       qi: this.qi,
       qTotal: TIERS.length,
       finale: this.finale,
+      readAloud: this.s.read === 'on',
       deadline: this.deadline,
       timerTotal: this.timerTotal,
       title: 'Family Quiz Show',
@@ -398,12 +404,13 @@ module.exports = {
   minPlayers: 2,
   usesLevels: true,
   levelHint: 'Kids see fewer answer choices, so the questions feel fair. Teams get a mix of ages.',
-  defaults: { teams: 2, rounds: 3, time: 20, finale: 'on', cats: 'mix' },
+  defaults: { teams: 2, rounds: 3, time: 30, finale: 'on', read: 'off', cats: 'mix' },
   options: [
     { key: 'teams', label: 'Teams', values: [[2, '2 teams'], [3, '3 teams'], [4, '4 teams'], ['solo', 'Everyone solo']] },
     { key: 'rounds', label: 'Rounds', values: [[2, '2'], [3, '3'], [4, '4']] },
     { key: 'time', label: 'Time per question', values: [[15, '15s'], [20, '20s'], [30, '30s'], [45, '45s']] },
     { key: 'finale', label: 'Final wager', values: [['on', 'On'], ['off', 'Off']] },
+    { key: 'read', label: 'Read questions aloud on the TV', values: [['off', 'Off'], ['on', 'On']] },
     { key: 'cats', label: 'Topics', values: [['mix', 'Mix'], ...Object.entries(CATS).map(([k, v]) => [k, v.name])] },
   ],
   create: (room) => new Quiz(room),

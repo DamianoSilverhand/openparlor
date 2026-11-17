@@ -1,5 +1,6 @@
 import { h, avatar, timer, byId, ordinal } from '/shared/ui.js';
 import { confetti } from '/tv/common.js';
+import { isMuted } from '/shared/sound.js';
 
 export const LETTERS = ['A', 'B', 'C', 'D'];
 const hint = (t) => h('div', { class: 'hint-line' }, t);
@@ -75,6 +76,13 @@ function question(s) {
     g.options.map((text, i) => h('div', { class: `opt-tv o${i}` }, h('span', { class: 'let' }, LETTERS[i]), h('span', { class: 'txt' }, text), h('span', { class: 'tick' }))),
   );
   const results = h('div', { class: 'results' });
+  // Optional: speak the question and answers with the browser's built-in voice.
+  if (g.readAloud && g.phase === 'question' && 'speechSynthesis' in window && !isMuted()) {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(`${g.q} ${g.options.map((o, i) => `${LETTERS[i]}. ${o}.`).join(' ')}`);
+    u.rate = 0.9;
+    speechSynthesis.speak(u);
+  }
   const fact = h('p', { class: 'fact' });
   const el = h('div', { class: 'stage' },
     head,
@@ -123,7 +131,7 @@ function question(s) {
     }
   }
   update(s);
-  return { el, update };
+  return { el, update, destroy: () => 'speechSynthesis' in window && speechSynthesis.cancel() };
 }
 
 // ---- wager ------------------------------------------------------------------------------------------------
