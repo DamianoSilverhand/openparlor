@@ -195,10 +195,10 @@ body { overflow: hidden; height: 100vh; }
 .snd-float { top: 0.8rem; right: 1rem; bottom: auto; font-size: 0.95rem; }
 .snd-hint { top: 0.9rem; right: 4.2rem; bottom: auto; }
 .family-total { display: flex; align-items: baseline; gap: 1.4rem; padding: 1rem 1.8rem; margin-bottom: 1.2rem; background: var(--mustard); max-width: 62rem; }
-.ft-label { font-family: var(--display); font-weight: 800; font-size: 1.8rem; }
+.ft-label { font-family: var(--display); font-weight: 800; font-size: 1.8rem; white-space: nowrap; }
 .ft-num { font-family: var(--display); font-weight: 900; font-size: 4rem; line-height: 1; }
 .ft-note { font-weight: 700; font-size: 1.4rem; margin-left: auto; }
-.ft-note.rec { color: var(--tomato); font-weight: 900; }
+.ft-note.rec { color: var(--ink); font-weight: 900; }
 .big-total { font-family: var(--display); font-weight: 900; font-size: 11rem; line-height: 1; margin: 0.6rem 0 1.2rem; color: var(--tomato); }
 .rec-list { font-size: 1.6rem; display: grid; gap: 0.4rem; background: var(--mustard); }
 .final .board { align-content: start; align-self: start; }
