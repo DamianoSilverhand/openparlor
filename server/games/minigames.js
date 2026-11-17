@@ -133,7 +133,7 @@ class MiniGames {
       const previous = RECORDS[key] ? RECORDS[key].total : 0;
       const record = complete && count >= 2 && total > previous;
       if (record) saveRecord(key, total);
-      this.teamRound = { total, previous, record, count, complete, handicap: this.s.handicap };
+      this.teamRound = { total, previous, record, count, complete, handicap: this.s.handicap, local: this.s.local };
       this.setRecords.push({ name: this.def.name, total, previous, record });
     } else {
       let rank = 0;

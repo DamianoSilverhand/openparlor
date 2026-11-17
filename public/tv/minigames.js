@@ -92,7 +92,7 @@ function results(s) {
         tr.record
           ? h('span', { class: 'ft-note rec' }, tr.previous ? `New family record! The old one was ${tr.previous}.` : 'A first family record to beat!')
           : tr.previous
-            ? h('span', { class: 'ft-note' }, `Family record for ${tr.count} players${tr.handicap === 'on' ? ', handicaps on' : ', handicaps off'}: ${tr.previous}`)
+            ? h('span', { class: 'ft-note' }, `Family record for ${tr.count} players${tr.handicap === 'on' ? ', handicaps on' : ', handicaps off'}${tr.local === 'only' ? ', Zambian content' : tr.local === 'mixed' ? ', mixed content' : ''}: ${tr.previous}`)
             : null,
         !tr.complete && h('span', { class: 'ft-note' }, 'Records need a score from everyone who started.'),
       )

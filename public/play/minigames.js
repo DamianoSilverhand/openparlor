@@ -147,7 +147,7 @@ function resultsTogether(s, ctx) {
     h('h1', { class: 'title' }, `Family total: ${tr.total}`),
     tr.record
       ? h('div', { class: 'card pad big-result good' }, h('h2', null, 'New family record!'), h('p', null, tr.previous ? `The old record was ${tr.previous}.` : 'Now you have one to beat.'))
-      : tr.previous ? h('p', { class: 'lead' }, `The family record for ${tr.count} players${tr.handicap === 'on' ? ' with handicaps' : ' without handicaps'} is ${tr.previous}.`) : null,
+      : tr.previous ? h('p', { class: 'lead' }, `The family record for ${tr.count} players${tr.handicap === 'on' ? ' with handicaps' : ' without handicaps'}${tr.local === 'only' ? ' and Zambian content' : tr.local === 'mixed' ? ' and mixed content' : ''} is ${tr.previous}.`) : null,
     !tr.complete && h('p', { class: 'lead' }, 'Records need a score from everyone who started.'),
     h('div', { class: 'rank-list' },
       g.rows.map((r) =>
