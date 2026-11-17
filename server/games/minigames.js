@@ -3,7 +3,8 @@ const path = require('path');
 const { shuffle, LOCAL_OPTION } = require('../util');
 
 // Family records for "play together" mode, kept between sessions. The key is the game, the number of players
-// who started the round, and the handicap setting, since handicaps change scores.
+// who started the round, the handicap setting (handicaps change scores) and the Zambian-content setting
+// (it changes the Word Scramble word list).
 const RECORDS_FILE = path.join(__dirname, '../../data/records.json');
 let RECORDS = {};
 try {
@@ -128,7 +129,7 @@ class MiniGames {
       const count = this.roster.length;
       // A record needs a score from everyone who started the round, so a dropped phone can't set a low one.
       const complete = rows.length === count;
-      const key = `${this.id}:${count}:${this.s.handicap}`;
+      const key = `${this.id}:${count}:${this.s.handicap}:${this.s.local}`;
       const previous = RECORDS[key] ? RECORDS[key].total : 0;
       const record = complete && count >= 2 && total > previous;
       if (record) saveRecord(key, total);
