@@ -1,4 +1,4 @@
-import { h, avatar, timer, byId } from '/shared/ui.js';
+import { h, avatar, timer, byId, soundToggle } from '/shared/ui.js';
 
 export function screen(s, ctx) {
   const g = s.game;
@@ -17,7 +17,7 @@ export function meBar(s) {
   const me = byId(s.players)(s.me);
   return h('div', { class: 'me' },
     h('span', { class: 'who' }, me && avatar(me), me && me.name),
-    h('span', { class: 'score' }, h('small', null, 'Score'), me ? me.score : 0),
+    h('span', { class: 'me-r' }, h('span', { class: 'score' }, h('small', null, 'Score'), me ? me.score : 0), soundToggle()),
   );
 }
 

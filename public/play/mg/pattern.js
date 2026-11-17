@@ -1,4 +1,5 @@
 import { h } from '/shared/ui.js';
+import { play } from '/shared/sound.js';
 import { rng, timeouts } from './util.js';
 
 const PADS = ['#e8472b', '#6fb3e0', '#6baa4f', '#f2b632'];
@@ -18,12 +19,13 @@ export function start(ctx) {
 
   const info = h('div', { class: 'mg-info' });
   const status = h('div', { class: 'cc-status' });
-  const pads = PADS.map((c, i) => h('button', { class: 'cc-pad', style: { '--c': c }, 'aria-label': `Pad ${i + 1}`, onpointerdown: (e) => { e.preventDefault(); tap(i); } }));
+  const pads = PADS.map((c, i) => h('button', { class: 'cc-pad', 'data-quiet': '', style: { '--c': c }, 'aria-label': `Pad ${i + 1}`, onpointerdown: (e) => { e.preventDefault(); tap(i); } }));
   ctx.root.replaceChildren(info, status, h('div', { class: 'cc-grid' }, pads));
 
   const paintInfo = () => (info.textContent = `Round ${round}  ·  ${'♥'.repeat(lives)}`);
   const light = (i, ms) => {
     pads[i].classList.add('lit');
+    play(`pad${i}`);
     t.set(() => pads[i].classList.remove('lit'), ms);
   };
   function show() {
@@ -48,11 +50,13 @@ export function start(ctx) {
         round++;
         state = 'wait';
         status.textContent = 'Nice!';
+        t.set(() => play('correct'), 250);
         t.set(show, 800);
       }
     } else {
       lives--;
       state = 'wait';
+      t.set(() => play('buzz'), 150);
       if (lives <= 0) {
         status.textContent = 'Out of lives';
         paintInfo();

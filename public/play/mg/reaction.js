@@ -1,4 +1,5 @@
 import { h } from '/shared/ui.js';
+import { play } from '/shared/sound.js';
 import { rng, timeouts } from './util.js';
 
 const FACTOR = { kid: 0.7, teen: 0.9, grownup: 1 }; // bigger window for younger players
@@ -38,6 +39,7 @@ export function start(ctx) {
     state = 'go';
     t0 = performance.now();
     paint('go', 'TAP!');
+    play('go');
   }
   function tap(e) {
     e.preventDefault();
@@ -45,11 +47,13 @@ export function start(ctx) {
       t.clearAll();
       state = 'pause';
       penalty += 400;
+      play('buzz');
       paint('early', 'Too early!', '+0.4 seconds');
       t.set(wait, 1000);
     } else if (state === 'go') {
       const ms = (performance.now() - t0) * f;
       times.push(ms);
+      play('good');
       state = 'pause';
       ctx.progress(score());
       paint('hit', `${Math.round(ms)} ms`, f < 1 ? 'Counting your bonus' : '');

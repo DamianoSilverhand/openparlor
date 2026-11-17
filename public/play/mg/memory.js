@@ -1,4 +1,5 @@
 import { h } from '/shared/ui.js';
+import { play } from '/shared/sound.js';
 import { rng, shuffled, timeouts } from './util.js';
 
 const FACES = ['🐶', '🐱', '🐸', '🦊', '🐼', '🐵', '🦁', '🐷', '🐮', '🐔', '🐢', '🐙', '🦄', '🐝'];
@@ -18,7 +19,7 @@ export function start(ctx) {
   const t0 = performance.now();
 
   const info = h('div', { class: 'mg-info' });
-  const cards = deck.map((f, i) => h('button', { class: 'mem-card', 'aria-label': 'Card', onclick: () => flip(i) }, h('span', { class: 'face' }, f)));
+  const cards = deck.map((f, i) => h('button', { class: 'mem-card', 'data-quiet': '', 'aria-label': 'Card', onclick: () => flip(i) }, h('span', { class: 'face' }, f)));
   const grid = h('div', { class: 'mem-grid', style: { '--cols': cols } }, cards);
   ctx.root.replaceChildren(info, grid);
 
@@ -36,11 +37,13 @@ export function start(ctx) {
   function flip(i) {
     if (locked || matched.has(i) || open.includes(i)) return;
     cards[i].classList.add('up');
+    play('tap');
     open.push(i);
     if (open.length < 2) return;
     moves++;
     const [a, b] = open;
     if (deck[a] === deck[b]) {
+      play('match');
       matched.add(a);
       matched.add(b);
       cards[a].classList.add('done');
@@ -51,6 +54,7 @@ export function start(ctx) {
       if (matched.size === deck.length) ctx.finish(score());
     } else {
       locked = true;
+      play('bad');
       paintInfo();
       t.set(() => {
         cards[a].classList.remove('up');

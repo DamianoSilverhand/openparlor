@@ -1,4 +1,5 @@
-import { h, avatar, byId, setServerNow } from '/shared/ui.js';
+import { h, avatar, byId, setServerNow, serverNow, soundToggle } from '/shared/ui.js';
+import { play, isRunning, isMuted, onChange } from '/shared/sound.js';
 import { connect } from '/shared/net.js';
 import * as whosaidthat from '/tv/whosaidthat.js';
 import * as draw from '/tv/draw.js';
@@ -23,6 +24,7 @@ const net = connect({
     setServerNow(m.now);
     last = m;
     render(m);
+    cues(m);
   },
 });
 
@@ -110,3 +112,86 @@ function lobby(s) {
   update(s);
   return { el, update };
 }
+
+// ---- sound: the big screen plays the shared moments ------------------------------------
+const snd = soundToggle('snd-float');
+const sndHint = h('div', { class: 'snd-hint' }, 'Click anywhere to turn sound on');
+document.body.append(snd, sndHint);
+const syncHint = () => (sndHint.style.display = isRunning() || isMuted() ? 'none' : 'block');
+onChange(syncHint);
+syncHint();
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'm' || e.key === 'M') snd.click();
+});
+
+const TIMED = { whosaidthat: ['answer', 'vote'], draw: ['choose', 'draw'], quiz: ['question', 'wager'] };
+let prevState = null;
+let tickTag = null;
+const len = (a) => (Array.isArray(a) ? a.length : 0);
+const keyOf = (s) => (s.inGame && s.game ? [s.gameId, s.game.phase, s.game.round, s.game.idx, s.game.qi, s.game.turn].join(':') : 'lobby');
+
+function cues(s) {
+  const prev = prevState;
+  prevState = s;
+  if (!prev) return;
+  if (!s.inGame) {
+    if (prev.inGame) play('whoosh');
+    else if (s.players.length > prev.players.length) play('pop');
+    return;
+  }
+  const g = s.game;
+  const pg = prev.inGame ? prev.game : null;
+  if (keyOf(s) !== keyOf(prev)) {
+    tickTag = null;
+    return onPhase(s.gameId, g);
+  }
+  if (!pg) return;
+  if (s.gameId === 'draw') {
+    if (len(g.guessed) > len(pg.guessed)) play('correct');
+  } else if (s.gameId === 'whosaidthat') {
+    if (len(g.answered) > len(pg.answered) || len(g.voted) > len(pg.voted)) play('lock');
+    if ((g.laughs || 0) > (pg.laughs || 0)) play('pop');
+  } else if (s.gameId === 'quiz') {
+    if (len(g.answered) > len(pg.answered) || len(g.wagered) > len(pg.wagered)) play('lock');
+  } else if (s.gameId === 'minigames') {
+    if (len(g.done) > len(pg.done)) play('lock');
+  }
+}
+
+function onPhase(id, g) {
+  const P = g.phase;
+  if (P === 'final') return play('fanfare');
+  if (P === 'scores') return play('coin');
+  if (id === 'whosaidthat') play(P === 'reveal' ? 'drum' : 'whoosh');
+  else if (id === 'draw') play(P === 'draw' ? 'go' : P === 'result' ? (len(g.guessed) ? 'coin' : 'wrong') : 'whoosh');
+  else if (id === 'quiz') {
+    if (P === 'reveal') play(g.results.some((r) => r.correct) ? 'correct' : 'wrong');
+    else if (P === 'wager') play('drum');
+    else play(P === 'question' ? (g.finale ? 'drum' : 'go') : 'whoosh');
+  } else if (id === 'minigames') {
+    if (P === 'results') play('coin');
+    else if (P === 'intro') play('whoosh');
+  }
+}
+
+// Last-three-seconds ticks, and the 3-2-1-GO before each mini-game.
+setInterval(() => {
+  const s = prevState;
+  if (!s || !s.inGame || !s.game) return;
+  const g = s.game;
+  let target = null;
+  if (s.gameId === 'minigames' && g.phase === 'play') {
+    const left = g.startAt - serverNow();
+    const remain = g.endAt - serverNow();
+    if (left > 0) target = `count:${Math.ceil(left / 1000)}`;
+    else if (left > -400) target = 'go';
+    else if (remain > 0 && remain <= 3000) target = `end:${Math.ceil(remain / 1000)}`;
+  } else if (g.deadline && (TIMED[s.gameId] || []).includes(g.phase)) {
+    const left = Math.ceil((g.deadline - serverNow()) / 1000);
+    if (left >= 1 && left <= 3) target = `t:${left}`;
+  }
+  if (target && target !== tickTag) {
+    tickTag = target;
+    play(target === 'go' ? 'go' : 'tick');
+  }
+}, 150);

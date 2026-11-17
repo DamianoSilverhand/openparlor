@@ -1,4 +1,5 @@
 import { h } from '/shared/ui.js';
+import { play } from '/shared/sound.js';
 import { rng, int, timeouts } from './util.js';
 
 const COLORS = [
@@ -20,7 +21,7 @@ export function start(ctx) {
   const info = h('div', { class: 'mg-info' });
   const word = h('div', { class: 'cl-word' });
   const flash = h('div', { class: 'cl-flash' });
-  const btns = COLORS.map((col, i) => h('button', { class: 'cl-btn', style: { background: col.c }, onpointerdown: (e) => { e.preventDefault(); answer(i); } }, col.n));
+  const btns = COLORS.map((col, i) => h('button', { class: 'cl-btn', 'data-quiet': '', style: { background: col.c }, onpointerdown: (e) => { e.preventDefault(); answer(i); } }, col.n));
   ctx.root.replaceChildren(info, h('div', { class: 'cl-card card' }, word, flash), h('div', { class: 'cl-grid' }, btns));
 
   const score = () => Math.max(0, correct * 60 - wrong * 40);
@@ -34,10 +35,12 @@ export function start(ctx) {
   function answer(i) {
     if (i === ink) {
       correct++;
+      play('good');
       flash.textContent = 'Yes!';
       flash.className = 'cl-flash ok';
     } else {
       wrong++;
+      play('bad');
       flash.textContent = 'No';
       flash.className = 'cl-flash bad';
     }

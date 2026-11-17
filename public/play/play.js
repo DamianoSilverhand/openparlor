@@ -1,4 +1,5 @@
-import { h, avatar, AVATARS, byId, setServerNow } from '/shared/ui.js';
+import { h, avatar, AVATARS, byId, setServerNow, soundToggle } from '/shared/ui.js';
+import { play } from '/shared/sound.js';
 import { connect } from '/shared/net.js';
 import * as whosaidthat from '/play/whosaidthat.js';
 import * as draw from '/play/draw.js';
@@ -119,6 +120,7 @@ if (!room) {
         setServerNow(m.now);
         last = m;
         render(m);
+        cues(m);
       }
     },
   });
@@ -147,7 +149,7 @@ function lobby(s) {
     const need = s.minPlayers - connected;
     const set = (patch) => send({ t: 'settings', settings: { ...s.settings, ...patch } });
     el.replaceChildren(...[
-      h('div', { class: 'me' }, h('span', { class: 'who' }, me && avatar(me), me && me.name)),
+      h('div', { class: 'me' }, h('span', { class: 'who' }, me && avatar(me), me && me.name), soundToggle()),
       h('h1', { class: 'title' }, isHost ? "You're the host" : "You're in"),
       h('p', { class: 'lead' }, isHost
         ? need > 0
@@ -170,4 +172,51 @@ function lobby(s) {
   }
   update(s);
   return { el, update };
+}
+
+// ---- sound: private feedback on your own phone --------------------------------------
+document.addEventListener('pointerdown', (e) => {
+  const b = e.target.closest && e.target.closest('button');
+  if (b && !b.disabled && !b.hasAttribute('data-quiet')) play('tap');
+});
+
+let prev = null;
+const phaseKey = (g) => [g.phase, g.round, g.idx, g.qi, g.turn].join(':');
+
+function cues(s) {
+  const p = prev;
+  prev = s;
+  if (!p || !s.inGame || !s.game || !p.inGame || !p.game) return;
+  const g = s.game;
+  const pg = p.game;
+  const changed = phaseKey(g) !== phaseKey(pg);
+  if (changed && g.phase === 'final') {
+    const place = g.myTeam !== undefined ? g.standings.findIndex((x) => x.id === g.myTeam) : g.standings.findIndex((x) => x.id === s.me);
+    return play(place === 0 ? 'fanfare' : place > 0 && place < 3 ? 'coin' : 'tap');
+  }
+  if (s.gameId === 'whosaidthat') {
+    if (changed && g.phase === 'reveal') {
+      if (g.isAuthor) play(g.fooled.length ? 'correct' : 'wrong');
+      else if (g.correct.includes(s.me)) play('correct');
+      else if (g.myVote) play('wrong');
+    }
+  } else if (s.gameId === 'draw') {
+    if (g.phase === 'draw' && !pg.iGuessed && g.iGuessed) play('correct');
+    else if (g.phase === 'draw' && g.myGuesses && pg.myGuesses && g.myGuesses.length > pg.myGuesses.length) play(g.myGuesses[g.myGuesses.length - 1].close ? 'good' : 'bad');
+    if (changed && g.phase === 'result') {
+      const mine = g.gains.find((x) => x.id === s.me);
+      if (mine) play('coin');
+      else if (g.drawer !== s.me) play('bad');
+    }
+  } else if (s.gameId === 'quiz') {
+    if (changed && g.phase === 'reveal') {
+      const r = g.results.find((x) => x.team === g.myTeam);
+      if (r) play(r.correct ? 'correct' : 'wrong');
+    }
+  } else if (s.gameId === 'minigames') {
+    if (changed && g.phase === 'results') {
+      const mine = g.rows.find((r) => r.id === s.me);
+      if (mine) play(mine.rank === 0 ? 'fanfare' : 'coin');
+    }
+  }
 }

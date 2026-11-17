@@ -47,6 +47,8 @@ export function tag(p, extra) {
   return h('span', { class: 'tag' }, avatar(p), h('span', { class: 'tag-name' }, p ? p.name : '?'), extra);
 }
 
+import { isMuted, setMuted, onChange } from '/shared/sound.js';
+
 // ---- server clock + countdown ---------------------------------------------
 let offset = 0;
 export const setServerNow = (n) => (offset = n - Date.now());
@@ -99,3 +101,19 @@ export function byId(players) {
 }
 
 export const ordinal = (n) => ['1st', '2nd', '3rd'][n] || `${n + 1}th`;
+
+// A small sound on/off button. The icon follows the shared setting.
+const ICON_ON = '<svg viewBox="0 0 24 24" width="1.2em" height="1.2em" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3z" fill="currentColor"/><path d="M15 8.5a5 5 0 0 1 0 7M17.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+const ICON_OFF = '<svg viewBox="0 0 24 24" width="1.2em" height="1.2em" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3z" fill="currentColor"/><path d="M16 9l5 6M21 9l-5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+const paintSnd = (b) => {
+  b.innerHTML = isMuted() ? ICON_OFF : ICON_ON;
+  b.setAttribute('aria-label', isMuted() ? 'Turn sound on' : 'Turn sound off');
+  b.title = isMuted() ? 'Sound is off' : 'Sound is on';
+};
+onChange(() => document.querySelectorAll('.snd').forEach(paintSnd));
+export function soundToggle(extraClass = '') {
+  const b = h('button', { class: `snd ${extraClass}`.trim(), 'data-quiet': '' });
+  paintSnd(b);
+  b.addEventListener('click', () => setMuted(!isMuted()));
+  return b;
+}

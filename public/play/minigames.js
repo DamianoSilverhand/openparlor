@@ -1,4 +1,5 @@
 import { h, avatar, timer, byId, serverNow, onTick } from '/shared/ui.js';
+import { play as sfx } from '/shared/sound.js';
 import { meBar, hostButton, final } from '/play/whosaidthat.js';
 import * as memory from '/play/mg/memory.js';
 import * as scramble from '/play/mg/scramble.js';
@@ -64,6 +65,7 @@ function play(s, ctx) {
     if (api) api.destroy();
     clearTimeout(stopId);
     ctx.send(game('result', { score }));
+    sfx('coin');
     showDone(Math.round(score));
   };
   const progress = (score) => {

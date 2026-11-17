@@ -1,4 +1,5 @@
 import { h } from '/shared/ui.js';
+import { play } from '/shared/sound.js';
 import { rng, int, pick, shuffled, timeouts } from './util.js';
 
 function problem(r, level) {
@@ -52,11 +53,16 @@ export function start(ctx) {
     cur = problem(r, ctx.level);
     prob.textContent = cur.text;
     info.textContent = `Right ${correct}  ·  Wrong ${wrong}`;
-    grid.replaceChildren(...options(r, cur.answer).map((v) => h('button', { class: 'nd-btn', onpointerdown: (e) => { e.preventDefault(); choose(v, e.currentTarget); } }, String(v))));
+    grid.replaceChildren(...options(r, cur.answer).map((v) => h('button', { class: 'nd-btn', 'data-quiet': '', onpointerdown: (e) => { e.preventDefault(); choose(v, e.currentTarget); } }, String(v))));
   }
   function choose(v, btn) {
-    if (v === cur.answer) correct++;
-    else wrong++;
+    if (v === cur.answer) {
+      correct++;
+      play('good');
+    } else {
+      wrong++;
+      play('bad');
+    }
     prob.classList.toggle('bad', v !== cur.answer);
     t.set(() => prob.classList.remove('bad'), 250);
     ctx.progress(score());

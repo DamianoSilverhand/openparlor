@@ -1,4 +1,5 @@
 import { h } from '/shared/ui.js';
+import { play } from '/shared/sound.js';
 import { rng, shuffled, timeouts } from './util.js';
 
 // Words picked so that none has a common anagram.
@@ -27,9 +28,11 @@ export function start(ctx) {
   const go = () => {
     if (input.value.trim().toLowerCase() === list[i]) {
       solved++;
+      play('correct');
       ctx.progress(solved * 100);
       next();
     } else {
+      play('buzz');
       input.classList.add('shake');
       t.set(() => input.classList.remove('shake'), 400);
       input.select();
