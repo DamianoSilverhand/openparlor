@@ -65,7 +65,7 @@ class Room {
       name: n,
       avatar: a,
       score: 0,
-      level: 'grownup',
+      level: null, // chosen in the lobby for games that use age levels
       connected: true,
       ws,
     };
@@ -96,11 +96,19 @@ class Room {
     this.update();
   }
 
+  // Players who still need to choose Kid, Teen or Grown-up (only matters for games that use levels).
+  unchosen() {
+    const def = GAMES[this.gameId];
+    if (!def || !def.usesLevels) return [];
+    return [...this.players.values()].filter((p) => p.connected && !p.level);
+  }
+
   startGame() {
     const def = GAMES[this.gameId];
-    if (!def || this.connectedCount() < def.minPlayers) return;
+    if (!def || this.connectedCount() < def.minPlayers || this.unchosen().length) return false;
     if (this.game) this.game.destroy();
     this.game = def.create(this);
+    return true;
   }
 
   endGame() {
@@ -145,7 +153,8 @@ class Room {
         if (isHost && !this.game) this.startGame();
         return;
       case 'again':
-        if ((isHost || this.atFinal()) && this.game) this.startGame();
+        // If someone joined late and has not picked a level, go back to the lobby so they can.
+        if ((isHost || this.atFinal()) && this.game && !this.startGame()) this.endGame();
         return;
       case 'lobby':
         if (isHost || this.atFinal()) {
@@ -182,6 +191,7 @@ class Room {
       minPlayers: def.minPlayers,
       usesLevels: !!def.usesLevels,
       levelHint: def.levelHint || '',
+      waitingOn: this.unchosen().map((p) => p.name),
       options: def.options,
       games: Object.values(GAMES).map((g) => ({ id: g.id, name: g.name })),
       settings: this.settings,

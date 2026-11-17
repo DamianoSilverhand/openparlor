@@ -51,7 +51,7 @@ class MiniGames {
   }
   levelOf(id) {
     const p = this.room.players.get(id);
-    return this.s.handicap === 'on' && p ? p.level : 'grownup';
+    return this.s.handicap === 'on' && p && p.level ? p.level : 'grownup';
   }
   connectedRoster() {
     return this.roster.filter((id) => (this.room.players.get(id) || {}).connected);

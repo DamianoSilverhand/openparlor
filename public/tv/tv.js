@@ -104,7 +104,9 @@ function lobby(s) {
     const need = s.minPlayers - s.players.filter((p) => p.connected).length;
     const host = get(s.hostId);
     hint.replaceChildren(
-      need > 0
+      s.waitingOn && s.waitingOn.length > 0
+        ? h('span', null, `Waiting for ${s.waitingOn.join(', ')} to pick Kid, Teen or Grown-up on their phone.`)
+        : need > 0
         ? h('span', null, `Waiting for ${need} more ${need === 1 ? 'player' : 'players'}. `)
         : h('span', null, h('b', null, host ? host.name : 'The host'), ' can start the game from their phone.'),
     );

@@ -159,7 +159,8 @@ function lobby(s) {
       h('div', { class: 'players' }, s.players.map((p) => h('span', { class: 'tag' + (p.connected ? '' : ' off') }, avatar(p), p.name))),
       s.usesLevels && h('div', { class: 'card pad' },
         h('div', { class: 'seg-label', style: { marginTop: 0 } }, "Who's holding this phone?"),
-        seg([['kid', 'Kid'], ['teen', 'Teen'], ['grownup', 'Grown-up']], me ? me.level : 'grownup', (v) => send({ t: 'level', level: v })),
+        me && !me.level && h('p', { class: 'lead', style: { fontSize: '0.9rem', color: 'var(--tomato)', fontWeight: 800, marginBottom: '6px' } }, 'Please pick one before the game starts.'),
+        seg([['kid', 'Kid'], ['teen', 'Teen'], ['grownup', 'Grown-up']], me ? me.level : null, (v) => send({ t: 'level', level: v })),
         h('p', { class: 'lead', style: { fontSize: '0.9rem', marginTop: '8px' } }, s.levelHint),
       ),
       isHost && h('div', { class: 'card pad' },
@@ -167,7 +168,8 @@ function lobby(s) {
         seg(s.games.map((g) => [g.id, g.name]), s.gameId, (v) => send({ t: 'pickGame', id: v })),
         s.options.map((o) => [h('div', { class: 'seg-label' }, o.label), seg(o.values, s.settings[o.key], (v) => set({ [o.key]: v }))]),
       ),
-      isHost && h('button', { class: 'btn block push', disabled: need > 0, onclick: () => send({ t: 'start' }) }, 'Start the game'),
+      isHost && s.waitingOn.length > 0 && h('p', { class: 'status' }, `Waiting for ${s.waitingOn.join(', ')} to pick Kid, Teen or Grown-up.`),
+      isHost && h('button', { class: 'btn block push', disabled: need > 0 || s.waitingOn.length > 0, onclick: () => send({ t: 'start' }) }, 'Start the game'),
     ].filter(Boolean));
   }
   update(s);
