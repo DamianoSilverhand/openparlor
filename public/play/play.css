@@ -126,3 +126,55 @@
 .qopt.o3 { --c: #c98a00; }
 .qopt.on { background: var(--teal); color: #fff; }
 .qopt.on .let { background: #fff; color: var(--ink); }
+
+/* mini-games */
+.mg { position: relative; }
+.mg-head { display: flex; align-items: center; justify-content: space-between; font-family: var(--display); font-size: 1.1rem; }
+.mg-clock { font-weight: 900; font-size: 1.5rem; }
+.mg-clock.low { color: var(--tomato); }
+.mg-root { display: flex; flex-direction: column; gap: 12px; flex: 1; }
+.mg-info { text-align: center; font-family: var(--display); font-weight: 800; color: var(--soft); }
+.mg-row { display: flex; gap: 10px; }
+.mg-row .btn { flex: 1; }
+.mg-overlay { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(243, 234, 219, 0.95); font-family: var(--display); font-weight: 900; font-size: 9rem; color: var(--tomato); z-index: 5; }
+.shake { animation: shake 0.35s; }
+@keyframes shake { 20% { transform: translateX(-8px); } 40% { transform: translateX(8px); } 60% { transform: translateX(-6px); } 80% { transform: translateX(6px); } }
+/* memory */
+.mem-grid { display: grid; grid-template-columns: repeat(var(--cols), 1fr); gap: 8px; }
+.mem-card { aspect-ratio: 1; border: var(--border); border-radius: 12px; background: var(--tomato); box-shadow: 3px 3px 0 var(--ink); cursor: pointer; padding: 0; font-size: 2rem; display: grid; place-items: center; }
+.mem-card .face { opacity: 0; transform: scale(0.6); transition: 0.15s; }
+.mem-card.up, .mem-card.done { background: var(--card); }
+.mem-card.up .face, .mem-card.done .face { opacity: 1; transform: none; }
+.mem-card.done { background: #d6ecc9; box-shadow: none; }
+/* scramble */
+.scr-tiles { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 8px 0; }
+.scr-tile { display: grid; place-items: center; width: 2.6rem; height: 3.2rem; background: var(--mustard); border: var(--border); border-radius: 9px; font-family: var(--display); font-weight: 900; font-size: 1.8rem; text-transform: uppercase; }
+.scr-input { text-align: center; font-size: 1.4rem; }
+/* quick tap */
+.rx-pad { flex: 1; min-height: 55vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; border: var(--border); border-radius: 18px; box-shadow: var(--shadow); user-select: none; touch-action: manipulation; text-align: center; }
+.rx-msg { font-family: var(--display); font-weight: 900; font-size: 2.4rem; }
+.rx-sub { font-weight: 700; }
+.rx-pad.wait { background: var(--tomato); color: #fff; }
+.rx-pad.go { background: var(--leaf); color: #fff; }
+.rx-pad.early { background: var(--mustard); }
+.rx-pad.hit { background: var(--sky); }
+/* copy cat */
+.cc-status { text-align: center; font-family: var(--display); font-weight: 800; font-size: 1.3rem; min-height: 1.8rem; }
+.cc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; flex: 1; }
+.cc-pad { background: var(--c); border: var(--border); border-radius: 18px; box-shadow: 4px 4px 0 var(--ink); min-height: 30vh; opacity: 0.45; cursor: pointer; padding: 0; touch-action: manipulation; transition: opacity 0.08s, transform 0.08s; }
+.cc-pad.lit { opacity: 1; transform: scale(1.04); box-shadow: 0 0 0 5px var(--paper), 0 0 0 8px var(--ink); }
+/* colour clash */
+.cl-card { text-align: center; padding: 28px 12px; position: relative; }
+.cl-word { font-family: var(--display); font-weight: 900; font-size: 3.6rem; letter-spacing: 0.02em; }
+.cl-flash { position: absolute; right: 12px; top: 8px; font-weight: 800; font-family: var(--display); }
+.cl-flash.ok { color: var(--leaf); }
+.cl-flash.bad { color: var(--tomato); }
+.cl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.cl-btn { border: var(--border); border-radius: 14px; box-shadow: 4px 4px 0 var(--ink); color: #fff; font-family: var(--display); font-weight: 900; font-size: 1.2rem; padding: 22px 8px; cursor: pointer; touch-action: manipulation; }
+/* number dash */
+.nd-card { text-align: center; padding: 26px 12px; }
+.nd-prob { font-family: var(--display); font-weight: 900; font-size: 3rem; }
+.nd-prob.bad { color: var(--tomato); }
+.nd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.nd-btn { font-family: var(--display); font-weight: 900; font-size: 1.8rem; background: var(--card); border: var(--border); border-radius: 14px; box-shadow: 4px 4px 0 var(--ink); padding: 22px 8px; cursor: pointer; touch-action: manipulation; color: var(--ink); }
+.nd-btn:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--ink); }

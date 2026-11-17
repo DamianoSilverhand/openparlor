@@ -64,6 +64,11 @@ setInterval(() => {
   }
 }, 100);
 
+// Run fn about ten times a second for as long as el is on the page.
+export function onTick(el, fn) {
+  tickers.add({ el, fn, seen: false });
+}
+
 // A countdown bar with the seconds left. Call update(game) whenever state changes.
 export function timer() {
   const fill = h('i');

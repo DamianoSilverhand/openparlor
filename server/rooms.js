@@ -5,6 +5,7 @@ const GAMES = {
   whosaidthat: require('./games/whosaidthat'),
   draw: require('./games/draw'),
   quiz: require('./games/quiz'),
+  minigames: require('./games/minigames'),
 };
 
 const CODE_LETTERS = 'ABCDEFGHJKMNPQRSTUVWXYZ';

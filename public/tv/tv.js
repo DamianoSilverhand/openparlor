@@ -3,8 +3,9 @@ import { connect } from '/shared/net.js';
 import * as whosaidthat from '/tv/whosaidthat.js';
 import * as draw from '/tv/draw.js';
 import * as quiz from '/tv/quiz.js';
+import * as minigames from '/tv/minigames.js';
 
-const GAMES = { whosaidthat, draw, quiz };
+const GAMES = { whosaidthat, draw, quiz, minigames };
 const app = document.getElementById('app');
 const room = (new URLSearchParams(location.search).get('room') || '').toUpperCase();
 let info = null;
