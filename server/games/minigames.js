@@ -133,8 +133,10 @@ class MiniGames {
       const previous = RECORDS[key] ? RECORDS[key].total : 0;
       const record = complete && count >= 2 && total > previous;
       if (record) saveRecord(key, total);
-      this.teamRound = { total, previous, record, count, complete, handicap: this.s.handicap, local: this.s.local };
-      this.setRecords.push({ name: this.def.name, total, previous, record });
+      // A plain-English description of what this record is for, so every message can say what it compares against.
+      const scope = `${count} players, handicaps ${this.s.handicap}${this.s.local === 'only' ? ', Zambian content' : this.s.local === 'mixed' ? ', mixed content' : ''}`;
+      this.teamRound = { total, previous, record, count, complete, scope };
+      this.setRecords.push({ name: this.def.name, total, previous, record, scope });
     } else {
       let rank = 0;
       rows.forEach((r, i) => {

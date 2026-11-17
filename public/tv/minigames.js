@@ -90,9 +90,9 @@ function results(s) {
         h('span', { class: 'ft-label' }, 'Family total'),
         h('span', { class: 'ft-num' }, tr.total),
         tr.record
-          ? h('span', { class: 'ft-note rec' }, tr.previous ? `New family record! The old one was ${tr.previous}.` : 'A first family record to beat!')
+          ? h('span', { class: 'ft-note rec' }, tr.previous ? `New family record for ${tr.scope}! The old one was ${tr.previous}.` : `A first family record for ${tr.scope}!`)
           : tr.previous
-            ? h('span', { class: 'ft-note' }, `Family record for ${tr.count} players${tr.handicap === 'on' ? ', handicaps on' : ', handicaps off'}${tr.local === 'only' ? ', Zambian content' : tr.local === 'mixed' ? ', mixed content' : ''}: ${tr.previous}`)
+            ? h('span', { class: 'ft-note' }, `Family record for ${tr.scope}: ${tr.previous}`)
             : null,
         !tr.complete && h('span', { class: 'ft-note' }, 'Records need a score from everyone who started.'),
       )
@@ -136,7 +136,7 @@ function teamFinal(s) {
         h('h1', null, 'Family total'),
         h('div', { class: 'big-total' }, g.teamTotal),
         broken.length > 0
-          ? h('div', { class: 'card pad rec-list' }, h('b', null, 'New family records'), broken.map((r) => h('div', null, `${r.name}: ${r.total}`)))
+          ? h('div', { class: 'card pad rec-list' }, h('b', null, 'New family records'), broken.map((r) => h('div', null, `${r.name}: ${r.total} (${r.scope})`)))
           : h('p', { class: 'hint' }, 'Play again to try to beat your family records.'),
       ),
       h('div', { class: 'board' },

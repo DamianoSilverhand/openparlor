@@ -146,8 +146,8 @@ function resultsTogether(s, ctx) {
     meBar(s),
     h('h1', { class: 'title' }, `Family total: ${tr.total}`),
     tr.record
-      ? h('div', { class: 'card pad big-result good' }, h('h2', null, 'New family record!'), h('p', null, tr.previous ? `The old record was ${tr.previous}.` : 'Now you have one to beat.'))
-      : tr.previous ? h('p', { class: 'lead' }, `The family record for ${tr.count} players${tr.handicap === 'on' ? ' with handicaps' : ' without handicaps'}${tr.local === 'only' ? ' and Zambian content' : tr.local === 'mixed' ? ' and mixed content' : ''} is ${tr.previous}.`) : null,
+      ? h('div', { class: 'card pad big-result good' }, h('h2', null, 'New family record!'), h('p', null, tr.previous ? `For ${tr.scope}. The old record was ${tr.previous}.` : `For ${tr.scope}. Now you have one to beat.`))
+      : tr.previous ? h('p', { class: 'lead' }, `The family record for ${tr.scope} is ${tr.previous}.`) : null,
     !tr.complete && h('p', { class: 'lead' }, 'Records need a score from everyone who started.'),
     h('div', { class: 'rank-list' },
       g.rows.map((r) =>
@@ -168,7 +168,7 @@ function finalTogether(s, ctx) {
   const el = h('div', { class: 'screen' },
     meBar(s),
     h('h1', { class: 'title' }, `Together you scored ${g.teamTotal}`),
-    broken.length > 0 && h('div', { class: 'card pad big-result good' }, h('h2', null, 'New family records'), broken.map((r) => h('p', null, `${r.name}: ${r.total}`))),
+    broken.length > 0 && h('div', { class: 'card pad big-result good' }, h('h2', null, 'New family records'), broken.map((r) => h('p', null, `${r.name}: ${r.total} (${r.scope})`))),
     h('div', { class: 'rank-list' },
       g.standings.map((x) => h('div', { class: 'r' + (x.id === s.me ? ' me' : '') }, h('span', { class: 'tag' }, avatar(get(x.id)), get(x.id).name), h('span', null, x.score))),
     ),
