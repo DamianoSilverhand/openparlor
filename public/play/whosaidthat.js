@@ -28,6 +28,12 @@ export function hostButton(s, ctx, label, primary) {
     : h('button', { class: 'link', onclick: () => ctx.send(game('next')) }, label);
 }
 
+// Lets the host remove an answer from the round if it is awkward or unsuitable.
+function hideLink(s, ctx) {
+  if (s.me !== s.hostId) return null;
+  return h('button', { class: 'link', onclick: () => ctx.send(game('drop')) }, 'Hide this answer (host)');
+}
+
 function laughButton(g, ctx) {
   if (g.isAuthor) return null;
   const btn = h('button', { class: 'btn plain small laugh' });
@@ -64,6 +70,7 @@ function answer(s, ctx) {
       h('div', { class: 'card prompt' }, h('h2', null, g.prompt)),
       h('div', null, area, count),
       h('button', { class: 'btn block push', onclick: lock }, 'Lock it in'),
+      h('button', { class: 'btn plain block', onclick: () => ctx.send(game('pass')) }, 'Pass on this one'),
       hostButton(s, ctx, 'Skip ahead', false),
     );
     t.update(g);
@@ -74,7 +81,7 @@ function answer(s, ctx) {
     meBar(s),
     t.el,
     h('div', { class: 'card prompt' }, h('h2', null, g.prompt)),
-    h('div', { class: 'card pad' }, h('p', { class: 'lead' }, 'Your answer'), h('h2', { style: { fontSize: '1.3rem', marginTop: '4px' } }, g.myText)),
+    h('div', { class: 'card pad' }, g.myText ? [h('p', { class: 'lead' }, 'Your answer'), h('h2', { style: { fontSize: '1.3rem', marginTop: '4px' } }, g.myText)] : h('p', { class: 'lead' }, 'You passed on this one.')),
     status,
     hostButton(s, ctx, 'Skip ahead', false),
   );
@@ -105,6 +112,7 @@ function vote(s, ctx) {
       h('div', { class: 'card pad big-result fool' }, h('h2', null, "That one's yours"), h('p', null, 'Keep a straight face.')),
       status,
       hostButton(s, ctx, 'Skip ahead', false),
+      hideLink(s, ctx),
     );
     const update = (s) => {
       t.update(s.game);
@@ -136,6 +144,7 @@ function vote(s, ctx) {
     laugh && laugh.btn,
     status,
     hostButton(s, ctx, 'Skip ahead', false),
+    hideLink(s, ctx),
   );
   function update(s) {
     const g = s.game;

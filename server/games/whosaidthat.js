@@ -65,6 +65,7 @@ class WhoSaidThat {
     this.round++;
     this.prompt = this.prompts[this.round - 1];
     this.answers = new Map();
+    this.passed = new Set(); // players who chose to pass on this prompt
     this.items = [];
     this.idx = -1;
     this.gains = new Map();
@@ -157,7 +158,7 @@ class WhoSaidThat {
     const conn = this.connected();
     if (!conn.length) return;
     if (this.phase === 'answer') {
-      if (conn.every((p) => this.answers.has(p.id)) && this.deadline - Date.now() > 2500) {
+      if (conn.every((p) => this.answers.has(p.id) || this.passed.has(p.id)) && this.deadline - Date.now() > 2500) {
         this.later(1200, () => this.endAnswers());
         this.room.update();
       }
@@ -186,6 +187,21 @@ class WhoSaidThat {
         this.answers.set(pid, text);
         room.update();
         this.checkProgress();
+        return;
+      }
+      case 'pass': {
+        if (this.phase !== 'answer' || this.answers.has(pid) || this.passed.has(pid)) return;
+        this.passed.add(pid);
+        room.update();
+        this.checkProgress();
+        return;
+      }
+      case 'drop': {
+        // The host can hide an answer that is awkward or unsuitable. It is not scored.
+        if (pid !== room.hostId || this.phase !== 'vote') return;
+        this.items.splice(this.idx, 1);
+        this.idx--;
+        this.nextItem();
         return;
       }
       case 'vote': {
@@ -250,9 +266,10 @@ class WhoSaidThat {
     const conn = this.connected().map((p) => p.id);
 
     if (this.phase === 'answer') {
-      g.answered = [...this.answers.keys()];
+      // A pass looks the same as an answer on the big screen, so nobody is singled out.
+      g.answered = [...this.answers.keys(), ...this.passed];
       if (pid) {
-        g.iAnswered = this.answers.has(pid);
+        g.iAnswered = this.answers.has(pid) || this.passed.has(pid);
         g.myText = this.answers.get(pid) || '';
       }
     }
@@ -313,7 +330,7 @@ module.exports = {
   defaults: { rounds: 5, answerTime: 45, pack: 'mix' },
   options: [
     { key: 'rounds', label: 'Rounds', values: [[3, '3'], [5, '5'], [8, '8']] },
-    { key: 'answerTime', label: 'Time to answer', values: [[30, '30s'], [45, '45s'], [60, '60s'], [90, '90s']] },
+    { key: 'answerTime', label: 'Time to answer', values: [[30, '30s'], [45, '45s'], [60, '60s'], [90, '90s'], [120, '2 min']] },
     { key: 'pack', label: 'Prompts', values: [['mix', 'Mix'], ...Object.entries(PACKS)] },
   ],
   create: (room) => new WhoSaidThat(room),
