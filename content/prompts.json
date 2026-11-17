@@ -66,6 +66,26 @@
         "What is the monster under the bed scared of?",
         "What would you do if you woke up as a cat?"
       ]
+    },
+    "zambia": {
+      "name": "Home & Zambia",
+      "local": true,
+      "prompts": [
+        "What is the best thing to eat with nshima?",
+        "Describe the best family meal you have ever had.",
+        "What is the best market food or snack you have ever tasted?",
+        "If the whole family went on safari, which animal would you most want to see?",
+        "What would you tell a visitor to Zambia to try first?",
+        "What is your favourite thing about the rainy season?",
+        "What is the best thing about your school?",
+        "What do you miss most when you are away from home?",
+        "Which song makes everyone in the family start dancing?",
+        "What would be on the menu at the perfect family barbecue?",
+        "Which animal is most like our family, and why?",
+        "What is the best place you have ever visited with the family?",
+        "What is your favourite thing to do on a weekend at home?",
+        "What is the funniest thing that has happened on a long journey?"
+      ]
     }
   }
 }

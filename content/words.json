@@ -29,6 +29,13 @@
       "easy": ["beach", "school", "park", "farm", "zoo", "mountain"],
       "medium": ["playground", "airport", "swimming pool", "campsite", "bakery", "library"],
       "hard": ["volcano", "pyramid", "haunted house", "space station", "waterfall", "igloo"]
+    },
+    "zambia": {
+      "name": "Zambia & home",
+      "local": true,
+      "easy": ["nshima", "maize", "mango", "goat", "chicken", "hippo", "crocodile", "lion", "rain", "drum", "fire", "fish"],
+      "medium": ["baobab tree", "minibus", "football match", "fishing boat", "thatched hut", "zebra", "fish eagle", "charcoal stove", "market stall", "water pot"],
+      "hard": ["Victoria Falls", "safari truck", "copper mine", "traditional dance", "market day", "sunset on the river"]
     }
   }
 }

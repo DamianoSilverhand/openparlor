@@ -16,4 +16,17 @@ function shuffle(arr) {
   return a;
 }
 
-module.exports = { clean, shuffle };
+// Pick which content packs to use for the "Zambian content" setting: off, mixed or only.
+// Packs marked local are the Zambian ones. Packs marked always (the family's own) are kept in every mode.
+function filterLocal(map, local) {
+  const keep = Object.entries(map).filter(([, v]) => (local === 'mixed' ? true : local === 'only' ? v.local || v.always : !v.local));
+  return Object.fromEntries(keep.length ? keep : Object.entries(map));
+}
+
+const LOCAL_OPTION = {
+  key: 'local',
+  label: 'Zambian content',
+  values: [['off', 'Off'], ['mixed', 'Mixed in'], ['only', 'Only Zambian']],
+};
+
+module.exports = { clean, shuffle, filterLocal, LOCAL_OPTION };

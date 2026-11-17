@@ -79,7 +79,7 @@ function play(s, ctx) {
     started = true;
     overlay.style.display = 'none';
     root.replaceChildren();
-    api = MODS[g.mg.id].start({ root, seed: g.seed, level: g.level, durationMs: g.endAt - g.startAt, progress, finish });
+    api = MODS[g.mg.id].start({ root, seed: g.seed, level: g.level, local: g.local, durationMs: g.endAt - g.startAt, progress, finish });
     stopId = setTimeout(() => finish(api.score()), Math.max(0, g.endAt - serverNow()));
   };
 

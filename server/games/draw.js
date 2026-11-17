@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { clean, shuffle } = require('../util');
+const { clean, shuffle, filterLocal, LOCAL_OPTION } = require('../util');
 
 const WORDS = JSON.parse(fs.readFileSync(path.join(__dirname, '../../content/words.json'), 'utf8')).packs;
 
@@ -23,8 +23,8 @@ function distance(a, b) {
   return d[m][n];
 }
 
-function wordPool(pack, tier) {
-  const packs = pack === 'mix' ? Object.values(WORDS) : [WORDS[pack]];
+function wordPool(pack, tier, local) {
+  const packs = pack === 'mix' || !WORDS[pack] ? Object.values(filterLocal(WORDS, local)) : [WORDS[pack]];
   return packs.flatMap((p) => p[tier] || []);
 }
 
@@ -83,8 +83,8 @@ class Draw {
     const tiers = diff === 'little' ? ['easy', 'easy', 'easy'] : diff === 'kids' ? ['easy', 'easy', 'medium'] : ['easy', 'medium', 'hard'];
     const out = [];
     for (const tier of tiers) {
-      let pool = shuffle(wordPool(this.s.pack, tier)).filter((w) => !this.used.has(w) && !out.some((o) => o.word === w));
-      if (!pool.length) pool = shuffle(wordPool(this.s.pack, tier)).filter((w) => !out.some((o) => o.word === w));
+      let pool = shuffle(wordPool(this.s.pack, tier, this.s.local)).filter((w) => !this.used.has(w) && !out.some((o) => o.word === w));
+      if (!pool.length) pool = shuffle(wordPool(this.s.pack, tier, this.s.local)).filter((w) => !out.some((o) => o.word === w));
       if (pool.length) out.push({ word: pool[0], tier });
     }
     return out;
@@ -351,11 +351,12 @@ module.exports = {
   name: 'Draw & Guess',
   desc: 'One person draws on their phone while everyone else guesses.',
   minPlayers: 3,
-  defaults: { turns: 1, drawTime: 60, difficulty: 'kids', pack: 'mix' },
+  defaults: { turns: 1, drawTime: 60, difficulty: 'kids', local: 'off', pack: 'mix' },
   options: [
     { key: 'turns', label: 'Drawings each', values: [[1, '1'], [2, '2'], [3, '3']] },
     { key: 'drawTime', label: 'Time to draw', values: [[30, '30s'], [60, '60s'], [90, '90s'], [120, '2 min']] },
     { key: 'difficulty', label: 'Words', values: [['little', 'Little kids'], ['kids', 'Kids'], ['everyone', 'Everyone']] },
+    LOCAL_OPTION,
     { key: 'pack', label: 'Topic', values: [['mix', 'Mix'], ...Object.entries(WORDS).map(([k, v]) => [k, v.name])] },
   ],
   create: (room) => new Draw(room),

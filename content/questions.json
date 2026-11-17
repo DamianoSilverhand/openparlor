@@ -1013,6 +1013,217 @@
      "d": 3
     }
    ]
+  },
+  "zambia": {
+   "name": "Zambia & Southern Africa",
+   "local": true,
+   "questions": [
+    {
+     "q": "What is the capital city of Zambia?",
+     "a": "Lusaka",
+     "w": [
+      "Ndola",
+      "Kitwe",
+      "Livingstone"
+     ],
+     "d": 1
+    },
+    {
+     "q": "Which grain is nshima most commonly made from?",
+     "a": "Maize",
+     "w": [
+      "Rice",
+      "Wheat",
+      "Oats"
+     ],
+     "d": 1,
+     "f": "Nshima is cooked from maize meal, often called mealie meal."
+    },
+    {
+     "q": "What is the money used in Zambia called?",
+     "a": "The kwacha",
+     "w": [
+      "The rand",
+      "The shilling",
+      "The pula"
+     ],
+     "d": 1
+    },
+    {
+     "q": "Which famous waterfall sits on the border of Zambia and Zimbabwe?",
+     "a": "Victoria Falls",
+     "w": [
+      "Niagara Falls",
+      "Angel Falls",
+      "Iguazu Falls"
+     ],
+     "d": 1
+    },
+    {
+     "q": "Which is the biggest land animal you might see on safari in Zambia?",
+     "a": "Elephant",
+     "w": [
+      "Lion",
+      "Zebra",
+      "Hippo"
+     ],
+     "d": 1
+    },
+    {
+     "q": "Which big river flows over Victoria Falls?",
+     "a": "The Zambezi",
+     "w": [
+      "The Nile",
+      "The Congo",
+      "The Limpopo"
+     ],
+     "d": 2
+    },
+    {
+     "q": "What is the nickname of Zambia's national football team?",
+     "a": "Chipolopolo",
+     "w": [
+      "Bafana Bafana",
+      "Super Eagles",
+      "Black Stars"
+     ],
+     "d": 2,
+     "f": "Chipolopolo means 'the Copper Bullets'."
+    },
+    {
+     "q": "In which year did Zambia become independent?",
+     "a": "1964",
+     "w": [
+      "1957",
+      "1975",
+      "1980"
+     ],
+     "d": 2,
+     "f": "Independence Day is 24 October."
+    },
+    {
+     "q": "Who was Zambia's first president?",
+     "a": "Kenneth Kaunda",
+     "w": [
+      "Julius Nyerere",
+      "Nelson Mandela",
+      "Robert Mugabe"
+     ],
+     "d": 2
+    },
+    {
+     "q": "Which metal is Zambia especially well known for mining?",
+     "a": "Copper",
+     "w": [
+      "Gold",
+      "Iron",
+      "Aluminium"
+     ],
+     "d": 2,
+     "f": "The Copperbelt region is named after it."
+    },
+    {
+     "q": "Which large lake is shared by Zambia and Zimbabwe, and was created by a dam on the Zambezi?",
+     "a": "Lake Kariba",
+     "w": [
+      "Lake Victoria",
+      "Lake Malawi",
+      "Lake Chad"
+     ],
+     "d": 2
+    },
+    {
+     "q": "Which national park in Zambia is one of the largest in Africa?",
+     "a": "Kafue National Park",
+     "w": [
+      "Serengeti",
+      "Kruger",
+      "Etosha"
+     ],
+     "d": 2
+    },
+    {
+     "q": "Which of these countries does NOT share a border with Zambia?",
+     "a": "Kenya",
+     "w": [
+      "Zimbabwe",
+      "Malawi",
+      "Tanzania"
+     ],
+     "d": 2
+    },
+    {
+     "q": "What is the capital of Zimbabwe?",
+     "a": "Harare",
+     "w": [
+      "Bulawayo",
+      "Lusaka",
+      "Gaborone"
+     ],
+     "d": 2
+    },
+    {
+     "q": "Which South African park is famous for the Big Five?",
+     "a": "Kruger National Park",
+     "w": [
+      "Etosha",
+      "Serengeti",
+      "Chobe"
+     ],
+     "d": 2
+    },
+    {
+     "q": "Which Zambian park in the Luangwa Valley is known as the home of the walking safari?",
+     "a": "South Luangwa National Park",
+     "w": [
+      "Kafue National Park",
+      "Lower Zambezi National Park",
+      "Mosi-oa-Tunya National Park"
+     ],
+     "d": 3
+    },
+    {
+     "q": "What is the local name for Victoria Falls, meaning 'the smoke that thunders'?",
+     "a": "Mosi-oa-Tunya",
+     "w": [
+      "Kariba",
+      "Kalambo",
+      "Kasanka"
+     ],
+     "d": 3
+    },
+    {
+     "q": "Zambia won the Africa Cup of Nations in 2012. Which team did they beat in the final?",
+     "a": "Ivory Coast",
+     "w": [
+      "Ghana",
+      "Nigeria",
+      "Egypt"
+     ],
+     "d": 3,
+     "f": "The final went to a penalty shoot-out."
+    },
+    {
+     "q": "Which lake in Africa's Great Rift Valley touches Zambia's northern tip, along with Tanzania, DR Congo and Burundi?",
+     "a": "Lake Tanganyika",
+     "w": [
+      "Lake Kariba",
+      "Lake Turkana",
+      "Lake Albert"
+     ],
+     "d": 3
+    },
+    {
+     "q": "Which country is home to Etosha National Park?",
+     "a": "Namibia",
+     "w": [
+      "Botswana",
+      "Zambia",
+      "Angola"
+     ],
+     "d": 3
+    }
+   ]
   }
  }
 }

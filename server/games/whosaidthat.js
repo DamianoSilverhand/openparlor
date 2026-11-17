@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { clean, shuffle } = require('../util');
+const { clean, shuffle, filterLocal, LOCAL_OPTION } = require('../util');
 
 const CONTENT = JSON.parse(fs.readFileSync(path.join(__dirname, '../../content/prompts.json'), 'utf8'));
 
@@ -12,16 +12,16 @@ const POINTS_FOOLED = 50;
 const POINTS_LAUGH = 10;
 const MAX_LAUGHS = 3;
 
-function promptPool(pack) {
+function promptPool(pack, local) {
   if (pack && CONTENT.packs[pack]) return CONTENT.packs[pack].prompts;
-  return Object.values(CONTENT.packs).flatMap((p) => p.prompts);
+  return Object.values(filterLocal(CONTENT.packs, local)).flatMap((p) => p.prompts);
 }
 
 class WhoSaidThat {
   constructor(room) {
     this.room = room;
     this.s = { ...room.settings };
-    const pool = shuffle(promptPool(this.s.pack));
+    const pool = shuffle(promptPool(this.s.pack, this.s.local));
     this.totalRounds = Math.min(this.s.rounds, pool.length);
     this.prompts = pool.slice(0, this.totalRounds);
     this.round = 0;
@@ -327,10 +327,11 @@ module.exports = {
   name: 'Who Said That?',
   desc: 'Answer silly prompts, then guess who wrote what.',
   minPlayers: 3,
-  defaults: { rounds: 5, answerTime: 45, pack: 'mix' },
+  defaults: { rounds: 5, answerTime: 45, local: 'off', pack: 'mix' },
   options: [
     { key: 'rounds', label: 'Rounds', values: [[3, '3'], [5, '5'], [8, '8']] },
     { key: 'answerTime', label: 'Time to answer', values: [[30, '30s'], [45, '45s'], [60, '60s'], [90, '90s'], [120, '2 min']] },
+    LOCAL_OPTION,
     { key: 'pack', label: 'Prompts', values: [['mix', 'Mix'], ...Object.entries(PACKS)] },
   ],
   create: (room) => new WhoSaidThat(room),

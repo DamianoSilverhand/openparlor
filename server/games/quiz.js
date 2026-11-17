@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { shuffle } = require('../util');
+const { shuffle, filterLocal, LOCAL_OPTION } = require('../util');
 
 const read = (f) => {
   try {
@@ -12,7 +12,7 @@ const read = (f) => {
 const BANK = read('questions.json').categories;
 const FAMILY = ((read('family-questions.json') || {}).questions || []).filter((q) => q && q.q && q.a && Array.isArray(q.w) && q.w.length >= 1);
 const CATS = { ...BANK };
-if (FAMILY.length >= 4) CATS.family = { name: 'Our Family', questions: FAMILY };
+if (FAMILY.length >= 4) CATS.family = { name: 'Our Family', questions: FAMILY, always: true };
 
 const INTRO_MS = 12000;
 const CATEGORY_MS = 4500;
@@ -45,9 +45,12 @@ class Quiz {
     this.gains = new Map();
     this.stats = new Map();
     this.assignTeams();
-    const ids = Object.keys(CATS);
+    this.catMap = filterLocal(CATS, this.s.local);
+    if (CATS[this.s.cats]) this.catMap[this.s.cats] = CATS[this.s.cats];
+    const ids = Object.keys(this.catMap);
     this.totalRounds = this.s.rounds;
-    this.cats = this.s.cats === 'mix' || !CATS[this.s.cats] ? shuffle(ids).slice(0, this.totalRounds) : Array(this.totalRounds).fill(this.s.cats);
+    const order = shuffle(ids);
+    this.cats = this.s.cats === 'mix' || !CATS[this.s.cats] ? Array.from({ length: this.totalRounds }, (_, i) => order[i % order.length]) : Array(this.totalRounds).fill(this.s.cats);
     this.phase = 'intro';
     this.later(INTRO_MS, () => this.startRound());
     this.syncScores();
@@ -106,7 +109,7 @@ class Quiz {
 
   pickQuestion(catId, tier) {
     const free = (list) => shuffle(list).find((q) => !this.used.has(q));
-    const tryCat = (cat, t) => free((CATS[cat].questions || []).filter((q) => q.d === t));
+    const tryCat = (cat, t) => free((this.catMap[cat].questions || []).filter((q) => q.d === t));
     let q = null;
     for (const t of [tier, tier - 1, tier + 1, tier - 2, tier + 2]) {
       if (t < 1 || t > 3) continue;
@@ -114,8 +117,8 @@ class Quiz {
       if (q) break;
     }
     if (!q) {
-      for (const c of shuffle(Object.keys(CATS))) {
-        q = tryCat(c, tier) || free(CATS[c].questions);
+      for (const c of shuffle(Object.keys(this.catMap))) {
+        q = tryCat(c, tier) || free(this.catMap[c].questions);
         if (q) {
           catId = c;
           break;
@@ -255,7 +258,7 @@ class Quiz {
     this.finale = true;
     this.wagers = new Map();
     this.tappedWager = new Set();
-    const cats = shuffle(Object.keys(CATS));
+    const cats = shuffle(Object.keys(this.catMap));
     this.cur = this.pickQuestion(cats[0], 3);
     this.cur.double = false;
     this.gains = new Map();
@@ -349,7 +352,7 @@ class Quiz {
     };
     const myTeam = pid ? this.teamOf.get(pid) || null : null;
     if (pid) g.myTeam = myTeam;
-    if (['category', 'question', 'reveal', 'wager'].includes(this.phase)) g.category = (CATS[this.finale ? this.cur.cat : this.catId] || {}).name;
+    if (['category', 'question', 'reveal', 'wager'].includes(this.phase)) g.category = (this.catMap[this.finale ? this.cur.cat : this.catId] || {}).name;
 
     if (this.phase === 'question' || this.phase === 'reveal' || this.phase === 'wager') {
       g.d = this.cur.d;
@@ -404,13 +407,14 @@ module.exports = {
   minPlayers: 2,
   usesLevels: true,
   levelHint: 'Kids see fewer answer choices, so the questions feel fair. Teams get a mix of ages.',
-  defaults: { teams: 2, rounds: 3, time: 30, finale: 'on', read: 'off', cats: 'mix' },
+  defaults: { teams: 2, rounds: 3, time: 30, finale: 'on', read: 'off', local: 'off', cats: 'mix' },
   options: [
     { key: 'teams', label: 'Teams', values: [[2, '2 teams'], [3, '3 teams'], [4, '4 teams'], ['solo', 'Everyone solo']] },
     { key: 'rounds', label: 'Rounds', values: [[2, '2'], [3, '3'], [4, '4']] },
     { key: 'time', label: 'Time per question', values: [[15, '15s'], [20, '20s'], [30, '30s'], [45, '45s']] },
     { key: 'finale', label: 'Final wager', values: [['on', 'On'], ['off', 'Off']] },
     { key: 'read', label: 'Read questions aloud on the TV', values: [['off', 'Off'], ['on', 'On']] },
+    LOCAL_OPTION,
     { key: 'cats', label: 'Topics', values: [['mix', 'Mix'], ...Object.entries(CATS).map(([k, v]) => [k, v.name])] },
   ],
   create: (room) => new Quiz(room),

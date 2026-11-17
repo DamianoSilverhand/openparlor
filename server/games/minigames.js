@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { shuffle } = require('../util');
+const { shuffle, LOCAL_OPTION } = require('../util');
 
 // Family records for "play together" mode, kept between sessions. The key is the game plus the number of players.
 const RECORDS_FILE = path.join(__dirname, '../../data/records.json');
@@ -225,6 +225,7 @@ class MiniGames {
       mg: { id: this.id, name: this.def.name, howto: this.def.howto, duration: this.def.duration, max: this.def.max },
       lineup: this.order.map((id) => MINI[id].name),
       team: this.s.mode === 'team',
+      local: this.s.local,
     };
     if (this.phase === 'play') {
       g.seed = this.seed;
@@ -270,10 +271,11 @@ module.exports = {
   minPlayers: 2,
   usesLevels: true,
   levelHint: 'Younger players get a gentler challenge (smaller boards, easier words and sums, extra lives, a bigger reaction window), so everyone has a fair shot.',
-  defaults: { games: 5, handicap: 'on', mode: 'race' },
+  defaults: { games: 5, handicap: 'on', mode: 'race', local: 'off' },
   options: [
     { key: 'games', label: 'Games in the set', values: [[3, '3'], [4, '4'], [5, '5'], [6, '6']] },
     { key: 'mode', label: 'How to play', values: [['race', 'Race (ranked)'], ['team', 'Play together']] },
+    { ...LOCAL_OPTION, label: 'Zambian words in Word Scramble' },
     { key: 'handicap', label: 'Fair-play handicaps', values: [['on', 'On (by age)'], ['off', 'Off']] },
   ],
   create: (room) => new MiniGames(room),
