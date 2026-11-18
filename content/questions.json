@@ -1287,14 +1287,14 @@
      "f": "The motto expresses unity among Zambia's many communities."
     },
     {
-     "q": "Lusaka National Park is near which city?",
-     "a": "Lusaka",
+     "q": "Which national park is found just outside Zambia's capital city?",
+     "a": "Lusaka National Park",
      "w": [
-      "Kitwe",
-      "Mongu",
-      "Chipata"
+      "Kasanka National Park",
+      "Lower Zambezi National Park",
+      "Liuwa Plain National Park"
      ],
-     "d": 1
+     "d": 2
     },
     {
      "q": "Which Zambian city is the gateway to Victoria Falls?",
@@ -1538,7 +1538,7 @@
       "Australia",
       "Zimbabwe"
      ],
-     "d": 1,
+     "d": 2,
      "f": "She spent much of her childhood in Botswana."
     },
     {
@@ -1549,7 +1549,7 @@
       "Slapdee",
       "Pompi"
      ],
-     "d": 1
+     "d": 3
     },
     {
      "q": "What is the name of Zambia's rock style that mixes psychedelic rock with local musical sounds?",
@@ -1592,7 +1592,7 @@
      "d": 2
     },
     {
-     "q": "Which band led by Emmanuel 'Jagari' Chanda was part of the early Zamrock scene?",
+     "q": "Which band led by Emmanuel Chanda was part of the early Zamrock scene?",
      "a": "WITCH",
      "w": [
       "Amanaz",
@@ -1612,7 +1612,7 @@
      "d": 3
     },
     {
-     "q": "What stage name was used by WITCH frontman Emmanuel Chanda?",
+     "q": "What stage name was used by Emmanuel Chanda, the frontman of a famous Zamrock band?",
      "a": "Jagari",
      "w": [
       "Rikki",
