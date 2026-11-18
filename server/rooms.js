@@ -50,7 +50,7 @@ class Room {
     return null;
   }
 
-  addPlayer(name, avatar, ws) {
+  addPlayer(name, avatar, ws, profileId = null, level = null) {
     let n = clean(name, 14) || 'Player';
     const taken = new Set([...this.players.values()].map((p) => p.name.toLowerCase()));
     if (taken.has(n.toLowerCase())) {
@@ -59,13 +59,15 @@ class Room {
       n = `${n} ${i}`;
     }
     const a = Number.isInteger(avatar) && avatar >= 0 && avatar < AVATAR_COUNT ? avatar : this.players.size % AVATAR_COUNT;
+    const lvl = ['kid', 'teen', 'grownup'].includes(level) ? level : null;
     const p = {
       id: crypto.randomBytes(4).toString('hex'),
       token: crypto.randomBytes(12).toString('hex'),
+      profileId: profileId || null,
       name: n,
       avatar: a,
       score: 0,
-      level: null, // chosen in the lobby for games that use age levels
+      level: lvl, // chosen in the lobby for games that use age levels
       connected: true,
       ws,
     };
@@ -140,6 +142,23 @@ class Room {
           this.update();
         }
         return;
+      case 'claimHost':
+        if (!this.game && this.players.has(pid)) {
+          this.hostId = pid;
+          this.update();
+        }
+        return;
+      case 'makeHost':
+        if (isHost && !this.game && this.players.has(msg.id)) {
+          this.hostId = msg.id;
+          this.update();
+        }
+        return;
+      case 'pause':
+        if (isHost && this.game && typeof this.game.togglePause === 'function') {
+          this.game.togglePause();
+        }
+        return;
       case 'settings': {
         if (!isHost || this.game) return;
         const incoming = msg.settings || {};
@@ -205,9 +224,10 @@ class Room {
         connected: p.connected,
       })),
     };
-    for (const ws of this.tvs) this.send(ws, { ...base, view: 'tv', game: this.game ? this.game.tvState() : null });
+    const wrap = (st) => (this.game ? { paused: !!this.game.paused, pausedLeft: this.game.pausedLeft || 0, ...st } : null);
+    for (const ws of this.tvs) this.send(ws, { ...base, view: 'tv', game: wrap(this.game && this.game.tvState()) });
     for (const p of this.players.values()) {
-      if (p.ws) this.send(p.ws, { ...base, view: 'phone', me: p.id, game: this.game ? this.game.phoneState(p.id) : null });
+      if (p.ws) this.send(p.ws, { ...base, view: 'phone', me: p.id, game: wrap(this.game && this.game.phoneState(p.id)) });
     }
   }
 }

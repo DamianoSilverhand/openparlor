@@ -5,6 +5,7 @@ const os = require('os');
 const { WebSocketServer } = require('ws');
 const QRCode = require('qrcode');
 const { Rooms, MAX_PLAYERS } = require('./rooms');
+const profiles = require('./profiles');
 
 const PORT = Number(process.env.PORT) || 3100;
 const PUBLIC = path.join(__dirname, '..', 'public');
@@ -34,6 +35,23 @@ function lanAddresses() {
 function json(res, code, obj) {
   res.writeHead(code, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
   res.end(JSON.stringify(obj));
+}
+
+function readBody(req) {
+  return new Promise((resolve) => {
+    let raw = '';
+    req.on('data', (c) => {
+      raw += c;
+      if (raw.length > 32768) req.destroy();
+    });
+    req.on('end', () => {
+      try {
+        resolve(JSON.parse(raw || '{}'));
+      } catch {
+        resolve({});
+      }
+    });
+  });
 }
 
 function serveStatic(req, res, pathname) {
@@ -69,6 +87,44 @@ const server = http.createServer(async (req, res) => {
   if (pathname === '/api/room' && req.method === 'GET') {
     const room = rooms.get(url.searchParams.get('code'));
     return json(res, 200, { exists: !!room });
+  }
+  if (pathname === '/api/profiles' && req.method === 'GET') {
+    return json(res, 200, { profiles: profiles.list() });
+  }
+  if (pathname === '/api/profiles' && req.method === 'POST') {
+    const body = await readBody(req);
+    const p = profiles.upsert(body);
+    return p ? json(res, 200, { profile: p }) : json(res, 400, { error: 'bad profile' });
+  }
+  if (pathname === '/api/profiles/record' && req.method === 'POST') {
+    const body = await readBody(req);
+    const resObj = profiles.record(body.id, body.gameId, body.score, body.streak);
+    return resObj ? json(res, 200, resObj) : json(res, 404, { error: 'profile not found' });
+  }
+  if (pathname.startsWith('/api/content/') && req.method === 'GET') {
+    const name = pathname.slice('/api/content/'.length);
+    if (!/^[a-z0-9-]+$/.test(name)) return json(res, 404, { error: 'not found' });
+    const file = path.join(__dirname, '..', 'content', `${name}.json`);
+    try {
+      const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+      return json(res, 200, data);
+    } catch {
+      return json(res, 404, { error: 'not found' });
+    }
+  }
+  if (pathname === '/api/langs' && req.method === 'GET') {
+    const dir = path.join(__dirname, '..', 'content', 'lang');
+    const langs = [];
+    try {
+      for (const f of fs.readdirSync(dir)) {
+        if (!f.endsWith('.json')) continue;
+        try {
+          const d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+          langs.push({ id: d.id || f.replace(/\.json$/, ''), name: d.name || f, ...d });
+        } catch {}
+      }
+    } catch {}
+    return json(res, 200, { langs });
   }
   if (pathname === '/qr') {
     const text = (url.searchParams.get('text') || '').slice(0, 300);
@@ -121,7 +177,7 @@ wss.on('connection', (ws) => {
         p.connected = true;
       } else {
         if (room.players.size >= MAX_PLAYERS) return fail('full', 'This room is full.');
-        p = room.addPlayer(msg.name, msg.avatar, ws);
+        p = room.addPlayer(msg.name, msg.avatar, ws, msg.profileId, msg.level);
       }
       ctx.room = room;
       ctx.pid = p.id;
