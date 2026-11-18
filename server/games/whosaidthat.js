@@ -332,6 +332,15 @@ module.exports = {
   id: 'whosaidthat',
   name: 'Who Said That?',
   desc: 'Answer silly prompts, then guess who wrote what.',
+  rules: {
+    steps: [
+      'A prompt appears on the TV. Write your answer on your phone. Nobody sees who wrote what.',
+      'Then each answer is shown. Guess who wrote it by tapping a name. You never vote on your own.',
+      'Tap the laugh button on answers you love.',
+      "Don't want to answer a prompt? Tap Pass. The host can hide an answer that isn't suitable.",
+    ],
+    scoring: 'Guess the right writer: 100 points. Fool someone with your answer: 50 points each. Every laugh you get: 10 points.',
+  },
   minPlayers: 3,
   defaults: { rounds: 5, answerTime: 45, local: 'off', pack: 'mix' },
   options: [

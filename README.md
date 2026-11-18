@@ -16,6 +16,8 @@ Then open the "On your network" address it prints (for example `http://192.168.1
 - **Family Quiz Show**: teams of mixed ages, a double-points question each round, and a final wager. Questions are matched to age (**Kid (Gr 3)**, **Teen (Gr 8)**, **Grown-up**), and the player on each team at that level locks the answer while teammates tap suggestions to help. Includes **Words & Stories** and **Numbers & Logic** alongside general topics. The question timer defaults to 30 seconds, and the host can have the TV read questions aloud.
 - **Family Mini-Games**: quick rounds across 8 games (**Word Builder**, **Word Match**, **Number Dash**, **Logic Chain**, **Memory Match**, **Copy Cat**, **Colour Clash**, **Quick Tap**). The host can set **Game focus** to *Mix of all*, *Words, Math & Memory*, or *Speed & Reflexes*, and play as a ranked race or together for a saved family record.
 
+Before each game starts, the TV and every phone show a **How to play** screen with the steps and the scoring. The host taps *Got it, let's go* to skip it, or it moves on by itself after 30 seconds. Each mini-game also shows its own how-to, with an example, just before it begins. The text lives in the `rules` of each game in `server/games/`.
+
 ## Profiles, Solo Practice & Host Controls
 
 - **Saved Family Profiles**: tapping your profile on `/play` or `/solo` remembers your name, animal avatar, and challenge level (**Kid (Gr 3)**, **Teen (Gr 8)**, **Grown-up**). Mini-game personal bests and daily streaks are saved per profile in `data/profiles.json` (not committed).

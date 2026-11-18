@@ -1,4 +1,4 @@
-import { h, avatar, AVATARS, byId, setServerNow, soundToggle } from '/shared/ui.js';
+import { h, avatar, AVATARS, byId, setServerNow, soundToggle, timer } from '/shared/ui.js';
 import { play } from '/shared/sound.js';
 import { connect } from '/shared/net.js';
 import * as whosaidthat from '/play/whosaidthat.js';
@@ -173,7 +173,27 @@ function render(s) {
     const scr = GAMES[s.gameId].screen(s, { send });
     return mount(`game:${s.gameId}:${scr.key}`, scr.build, s);
   }
+  if (s.briefing && s.briefing.rules) return mount('briefing:' + s.gameId, briefing, s);
   mount('lobby', lobby, s);
+}
+
+// ---- how to play ------------------------------------------------------------------------
+function briefing(s) {
+  const r = s.briefing.rules;
+  const isHost = s.me === s.hostId;
+  const t = timer();
+  const el = h('div', { class: 'screen' },
+    h('h1', { class: 'title' }, 'How to play'),
+    h('p', { class: 'lead', style: { fontWeight: 800 } }, s.gameName),
+    h('ol', { class: 'rule-list' }, r.steps.map((x) => h('li', null, x))),
+    h('div', { class: 'card pad' }, h('div', { class: 'seg-label', style: { marginTop: 0 } }, 'Scoring'), h('p', { class: 'lead', style: { marginTop: '4px' } }, r.scoring)),
+    t.el,
+    isHost ? h('button', { class: 'btn block push', onclick: () => send({ t: 'skipRules' }) }, "Got it, let's go") : h('p', { class: 'status' }, 'Starting soon...'),
+    isHost && h('button', { class: 'link', onclick: () => send({ t: 'cancelRules' }) }, 'Back to the lobby'),
+  );
+  const up = (s) => t.update({ deadline: s.briefing ? s.briefing.until : 0, timerTotal: s.briefing ? s.briefing.total : 1 });
+  up(s);
+  return { el, update: up };
 }
 
 // ---- lobby ------------------------------------------------------------------------------

@@ -353,6 +353,15 @@ module.exports = {
   id: 'draw',
   name: 'Draw & Guess',
   desc: 'One person draws on their phone while everyone else guesses.',
+  rules: {
+    steps: [
+      'Each turn, one player is the artist. They pick a word on their phone and draw it. Everyone sees it live on the TV.',
+      'Everyone else types guesses on their phone. No speaking the answer out loud, and no writing letters in the drawing.',
+      'Letters of the word are revealed as time runs out, so the clues get easier.',
+      'When the turn ends, the next player draws. Everyone gets a turn.',
+    ],
+    scoring: 'Guess sooner for more points. Harder words are worth more. The artist earns points for every person who guesses it, plus a bonus if everyone does.',
+  },
   minPlayers: 3,
   defaults: { turns: 1, drawTime: 60, difficulty: 'kids', local: 'off', pack: 'mix' },
   options: [

@@ -1,4 +1,4 @@
-import { h, avatar, byId, setServerNow, serverNow, soundToggle } from '/shared/ui.js';
+import { h, avatar, byId, setServerNow, serverNow, soundToggle, timer } from '/shared/ui.js';
 import { play, isRunning, isMuted, onChange } from '/shared/sound.js';
 import { connect } from '/shared/net.js';
 import * as whosaidthat from '/tv/whosaidthat.js';
@@ -52,7 +52,25 @@ function render(s) {
     const scr = mod.screen(s);
     return mount(`game:${s.gameId}:${scr.key}`, scr.build, s);
   }
+  if (s.briefing && s.briefing.rules) return mount('briefing:' + s.gameId, briefing, s);
   mount('lobby', lobby, s);
+}
+
+// ---- how to play ------------------------------------------------------------
+function briefing(s) {
+  const r = s.briefing.rules;
+  const t = timer();
+  const el = h('div', { class: 'stage' },
+    h('div', { class: 'bar' }, h('span', { class: 'pill' }, 'How to play'), h('span', { class: 'code' }, s.gameName.toUpperCase())),
+    h('div', { class: 'rules' },
+      h('ol', { class: 'steps big' }, r.steps.map((x, i) => h('li', null, h('b', null, String(i + 1)), x))),
+      h('div', { class: 'card rules-score' }, h('small', null, 'Scoring'), h('p', null, r.scoring)),
+    ),
+    h('div', { class: 'big-timer' }, t.el),
+  );
+  const up = (s) => t.update({ deadline: s.briefing ? s.briefing.until : 0, timerTotal: s.briefing ? s.briefing.total : 1 });
+  up(s);
+  return { el, update: up };
 }
 
 // ---- lobby ------------------------------------------------------------------

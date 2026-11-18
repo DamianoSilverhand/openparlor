@@ -494,6 +494,15 @@ module.exports = {
   id: 'quiz',
   name: 'Family Quiz Show',
   desc: 'Teams of mixed ages answer questions, with a big final wager.',
+  rules: {
+    steps: [
+      'You play in teams. Each round has a topic and a few multiple-choice questions.',
+      'Every question is aimed at one age group: Kid, Teen or Grown-up. The player on your team at that age locks in the answer. Everyone else taps a suggestion to help them.',
+      'One question each round is worth double points.',
+      'The last question is a final wager: bet some of your points before you see it. Get it right and you win the bet. Get it wrong and you lose it.',
+    ],
+    scoring: 'Right answer: 200 points, plus a bonus for answering quickly. A wrong answer scores nothing. If a different age group answers, it is worth half points.',
+  },
   minPlayers: 2,
   usesLevels: true,
   levelHint: 'Each question is aimed at one age group: easy for kids, harder for grown-ups. The player in your team at that level answers, and the rest help. Teams get a mix of ages.',

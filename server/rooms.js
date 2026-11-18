@@ -10,6 +10,7 @@ const GAMES = {
 
 const CODE_LETTERS = 'ABCDEFGHJKMNPQRSTUVWXYZ';
 const MAX_PLAYERS = 12;
+const BRIEF_MS = 30000;
 const AVATAR_COUNT = 12;
 
 class Room {
@@ -19,6 +20,8 @@ class Room {
     this.tvs = new Set();
     this.hostId = null;
     this.game = null;
+    this.briefing = null; // { until, total } while the how-to-play screen is up
+    this.briefTimer = null;
     this.gameId = 'whosaidthat';
     this.settingsAll = {};
     for (const [id, def] of Object.entries(GAMES)) this.settingsAll[id] = { ...def.defaults };
@@ -105,6 +108,35 @@ class Room {
     return [...this.players.values()].filter((p) => p.connected && !p.level);
   }
 
+  canStart() {
+    const def = GAMES[this.gameId];
+    return !!def && this.connectedCount() >= def.minPlayers && !this.unchosen().length;
+  }
+
+  // Show the how-to-play screen first. It ends when the host taps Start, or after a while.
+  brief() {
+    if (this.game || this.briefing || !this.canStart()) return;
+    this.briefing = { until: Date.now() + BRIEF_MS, total: BRIEF_MS };
+    this.briefTimer = setTimeout(() => this.endBrief(), BRIEF_MS);
+    this.update();
+  }
+
+  endBrief() {
+    clearTimeout(this.briefTimer);
+    this.briefTimer = null;
+    if (!this.briefing) return;
+    this.briefing = null;
+    this.startGame();
+    this.update();
+  }
+
+  cancelBrief() {
+    clearTimeout(this.briefTimer);
+    this.briefTimer = null;
+    this.briefing = null;
+    this.update();
+  }
+
   startGame() {
     const def = GAMES[this.gameId];
     if (!def || this.connectedCount() < def.minPlayers || this.unchosen().length) return false;
@@ -169,7 +201,13 @@ class Room {
         return;
       }
       case 'start':
-        if (isHost && !this.game) this.startGame();
+        if (isHost && !this.game) this.brief();
+        return;
+      case 'skipRules':
+        if (isHost && this.briefing) this.endBrief();
+        return;
+      case 'cancelRules':
+        if (isHost && this.briefing) this.cancelBrief();
         return;
       case 'again':
         // If someone joined late and has not picked a level, go back to the lobby so they can.
@@ -216,6 +254,7 @@ class Room {
       games: Object.values(GAMES).map((g) => ({ id: g.id, name: g.name })),
       settings: this.settings,
       inGame: !!this.game,
+      briefing: this.briefing && !this.game ? { until: this.briefing.until, total: this.briefing.total, rules: def.rules || null } : null,
       players: [...this.players.values()].map((p) => ({
         id: p.id,
         name: p.name,
@@ -258,6 +297,7 @@ class Rooms {
     for (const [code, room] of this.map) {
       if (room.isEmpty() && room.touched < cutoff) {
         if (room.game) room.game.destroy();
+        clearTimeout(room.briefTimer);
         this.map.delete(code);
       }
     }

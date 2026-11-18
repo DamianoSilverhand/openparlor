@@ -23,10 +23,10 @@ function saveRecord(key, total) {
 // start time, collects each player's score, and awards points for finishing 1st, 2nd, 3rd and so on.
 const MINI = {
   memory: { name: 'Memory Match', howto: 'Flip two cards at a time and find every matching pair. Fewer misses and a faster finish score more.', duration: 60, max: 1400 },
-  scramble: { name: 'Word Builder', howto: 'Tap letter tiles to spell the word from the clue. Longer streaks score bonus points!', duration: 60, max: 3000 },
-  math: { name: 'Number Dash', howto: 'Solve sums calibrated to your grade. Streaks multiply points; wrong taps cost you.', duration: 40, max: 3500 },
-  logic: { name: 'Logic Chain', howto: 'Crack number patterns, odd-one-out puzzles, and quick deductions.', duration: 50, max: 3000 },
-  literacy: { name: 'Word Match', howto: 'Pick the right spelling, word meaning, or missing word.', duration: 50, max: 3000 },
+  scramble: { name: 'Word Builder', howto: 'Tap the letter tiles to spell the word that fits the clue. Example: the clue "Frozen water" is ICE. Tap Hint if you are stuck (it costs points). Words in a row build a streak bonus.', duration: 60, max: 3000 },
+  math: { name: 'Number Dash', howto: 'Tap the right answer to each sum as fast as you can. Example: 6 × 7 is 42. A streak of right answers multiplies your points. A wrong tap costs you.', duration: 40, max: 3500 },
+  logic: { name: 'Logic Chain', howto: 'Work out the answer to each puzzle. Number pattern: 2, 4, 6, ? is 8. Odd one out: 2, 4, 7, 8 is 7. Some are quick riddles, like who is taller.', duration: 50, max: 3000 },
+  literacy: { name: 'Word Match', howto: 'Pick the correct option. It might be the right spelling (because, not becuase), the meaning of a word, or the missing word in a sentence.', duration: 50, max: 3000 },
   reaction: { name: 'Quick Tap', howto: 'Wait for the screen to turn green, then tap as fast as you can. Tap too early and you lose time. Five tries.', duration: 50, max: 2500 },
   pattern: { name: 'Copy Cat', howto: 'Watch the colours light up, then repeat the pattern. It gets one step longer each round.', duration: 90, max: 3500 },
   clash: { name: 'Colour Clash', howto: 'Tap the colour of the INK, not the colour the word says. Wrong taps cost you.', duration: 30, max: 3500 },
@@ -296,6 +296,14 @@ module.exports = {
   id: 'minigames',
   name: 'Family Mini-Games',
   desc: 'Quick rounds of memory, words, reflexes and numbers. Everyone gets a chance to shine.',
+  rules: {
+    steps: [
+      'Everyone plays a short game on their own phone at the same time. Before each game you get a how-to and a countdown.',
+      'Younger players get an easier version, so everyone has a fair shot.',
+      "Race mode ranks you against each other. Play together mode adds everyone's scores into one family total to beat.",
+    ],
+    scoring: 'Race: 1st place 10 points, 2nd 7, 3rd 5, everyone else 3. Play together: the family total is saved as a record.',
+  },
   minPlayers: 2,
   usesLevels: true,
   levelHint: 'Younger players get a gentler challenge (smaller boards, easier words and sums, extra lives, a bigger reaction window), so everyone has a fair shot.',
