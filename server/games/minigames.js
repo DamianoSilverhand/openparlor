@@ -5,7 +5,7 @@ const profiles = require('../profiles');
 
 // Family records for "play together" mode, kept between sessions. The key is the game, the number of players
 // who started the round, the handicap setting (handicaps change scores) and the Zambian-content setting
-// (it changes the Word Scramble word list).
+// (it changes the Word Builder word list).
 const RECORDS_FILE = path.join(__dirname, '../../data/records.json');
 let RECORDS = {};
 try {
@@ -304,7 +304,7 @@ module.exports = {
     { key: 'games', label: 'Games in the set', values: [[3, '3'], [4, '4'], [5, '5'], [6, '6']] },
     { key: 'focus', label: 'Game focus', values: [['mix', 'Mix of all'], ['brain', 'Words, Math & Memory'], ['speed', 'Speed & Reflexes']] },
     { key: 'mode', label: 'How to play', values: [['race', 'Race (ranked)'], ['team', 'Play together']] },
-    { ...LOCAL_OPTION, label: 'Zambian words in Word Scramble' },
+    { ...LOCAL_OPTION, label: 'Zambian words in Word Builder' },
     { key: 'handicap', label: 'Fair-play handicaps', values: [['on', 'On (by age)'], ['off', 'Off']] },
   ],
   create: (room) => new MiniGames(room),

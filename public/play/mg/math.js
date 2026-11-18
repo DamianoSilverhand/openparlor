@@ -61,7 +61,7 @@ function problem(r, level) {
   if (k < 0.45) {
     const pct = pick(r, [10, 15, 20, 25]);
     const base = int(r, 2, 12) * 20;
-    return { text: `${base} + ${pct}%`, answer: base + (base * pct) / 100 };
+    return { text: `Increase ${base} by ${pct}%`, answer: base + (base * pct) / 100 };
   }
   if (k < 0.65) {
     const b = int(r, 2, 6), p = int(r, 3, b === 2 ? 6 : 4), c = int(r, 2, 15);
