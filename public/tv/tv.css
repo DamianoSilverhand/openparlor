@@ -153,7 +153,7 @@ body { overflow: hidden; height: 100vh; }
 .opt-tv.o0 { --c: var(--tomato); }
 .opt-tv.o1 { --c: #3e5c99; }
 .opt-tv.o2 { --c: var(--leaf); }
-.opt-tv.o3 { --c: #c98a00; }
+.opt-tv.o3 { --c: #a87500; }
 .revealed .opt-tv.wrong { opacity: 0.35; box-shadow: none; }
 .revealed .opt-tv.right { background: var(--leaf); color: #fff; }
 .revealed .opt-tv.right .let { background: #fff; color: var(--leaf); }

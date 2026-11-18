@@ -5,8 +5,8 @@ import { rng, int, timeouts } from './util.js';
 const COLORS = [
   { n: 'RED', c: '#e8472b' },
   { n: 'BLUE', c: '#3e5c99' },
-  { n: 'GREEN', c: '#4f9a3a' },
-  { n: 'YELLOW', c: '#c98a00' },
+  { n: 'GREEN', c: '#3f8a2c' },
+  { n: 'YELLOW', c: '#a87500' },
 ];
 const SAME = { kid: 0.45, teen: 0.35, grownup: 0.15 }; // how often the word matches its own colour
 
@@ -21,7 +21,7 @@ export function start(ctx) {
   const info = h('div', { class: 'mg-info' });
   const word = h('div', { class: 'cl-word' });
   const flash = h('div', { class: 'cl-flash' });
-  const btns = COLORS.map((col, i) => h('button', { class: 'cl-btn', 'data-quiet': '', style: { background: col.c }, onpointerdown: (e) => { e.preventDefault(); answer(i); } }, col.n));
+  const btns = COLORS.map((col, i) => h('button', { class: 'cl-btn', 'data-quiet': '', style: { background: col.c, color: '#fff' }, onpointerdown: (e) => { e.preventDefault(); answer(i); } }, col.n));
   ctx.root.replaceChildren(info, h('div', { class: 'cl-card card' }, word, flash), h('div', { class: 'cl-grid' }, btns));
 
   const score = () => Math.max(0, correct * 60 - wrong * 40);

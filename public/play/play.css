@@ -123,7 +123,7 @@
 .qopt.o0 { --c: var(--tomato); }
 .qopt.o1 { --c: #3e5c99; }
 .qopt.o2 { --c: var(--leaf); }
-.qopt.o3 { --c: #c98a00; }
+.qopt.o3 { --c: #a87500; }
 .qopt.on { background: var(--teal); color: #fff; }
 .qopt.on .let { background: #fff; color: var(--ink); }
 
