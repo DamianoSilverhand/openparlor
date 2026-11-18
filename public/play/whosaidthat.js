@@ -23,9 +23,13 @@ export function meBar(s) {
 
 export function hostButton(s, ctx, label, primary) {
   if (s.me !== s.hostId) return null;
-  return primary
-    ? h('button', { class: 'btn block push', onclick: () => ctx.send(game('next')) }, label)
+  const g = s.game || {};
+  const canPause = g.phase && g.phase !== 'final' && !(s.gameId === 'minigames' && g.phase === 'play');
+  const pauseBtn = canPause && h('button', { class: 'link', onclick: () => ctx.send({ t: 'pause' }) }, g.paused ? '▶ Resume' : '⏸ Pause');
+  const nextBtn = primary
+    ? h('button', { class: 'btn block', onclick: () => ctx.send(game('next')) }, label)
     : h('button', { class: 'link', onclick: () => ctx.send(game('next')) }, label);
+  return h('div', { class: primary ? 'host-bar push' : 'host-bar' }, nextBtn, pauseBtn);
 }
 
 // Lets the host remove an answer from the round if it is awkward or unsuitable.

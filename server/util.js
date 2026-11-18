@@ -29,4 +29,31 @@ const LOCAL_OPTION = {
   values: [['off', 'Off'], ['mixed', 'Mixed in'], ['only', 'Only Zambian']],
 };
 
-module.exports = { clean, shuffle, filterLocal, LOCAL_OPTION };
+function schedulePhase(game, ms, fn, keepTotal = false) {
+  clearTimeout(game.timer);
+  game.paused = false;
+  game.pausedLeft = 0;
+  game._timerFn = fn;
+  if (!keepTotal) game.timerTotal = ms;
+  game.deadline = Date.now() + ms;
+  game.timer = setTimeout(fn, ms);
+}
+
+function toggleGamePause(game, canPause = true) {
+  if (!game || !canPause || game.phase === 'final') return;
+  if (game.paused) {
+    const left = game.pausedLeft || 1000;
+    const fn = game._timerFn;
+    game.paused = false;
+    game.pausedLeft = 0;
+    if (fn) schedulePhase(game, left, fn, true);
+  } else if (game.deadline > Date.now()) {
+    game.pausedLeft = Math.max(500, game.deadline - Date.now());
+    clearTimeout(game.timer);
+    game.paused = true;
+    game.deadline = 0;
+  }
+  game.room.update();
+}
+
+module.exports = { clean, shuffle, filterLocal, LOCAL_OPTION, schedulePhase, toggleGamePause };

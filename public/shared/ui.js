@@ -78,11 +78,13 @@ export function timer() {
   const el = h('div', { class: 'timer' }, h('div', { class: 'track' }, fill), num);
   let deadline = 0;
   let total = 1;
+  let paused = false;
+  let pausedLeft = 0;
   const fn = () => {
-    const left = Math.max(0, deadline - serverNow());
+    const left = paused ? pausedLeft : Math.max(0, deadline - serverNow());
     fill.style.transform = `scaleX(${total ? Math.min(1, left / total) : 0})`;
-    num.textContent = Math.ceil(left / 1000);
-    el.classList.toggle('low', left > 0 && left <= 5000);
+    num.textContent = paused ? `${Math.ceil(left / 1000)} ⏸` : Math.ceil(left / 1000);
+    el.classList.toggle('low', !paused && left > 0 && left <= 5000);
   };
   tickers.add({ el, fn, seen: false });
   return {
@@ -90,6 +92,8 @@ export function timer() {
     update(g) {
       deadline = g.deadline;
       total = g.timerTotal || 1;
+      paused = !!g.paused;
+      pausedLeft = g.pausedLeft || 0;
       fn();
     },
   };

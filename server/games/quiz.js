@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { shuffle, filterLocal, LOCAL_OPTION } = require('../util');
+const { shuffle, filterLocal, LOCAL_OPTION, schedulePhase, toggleGamePause } = require('../util');
 
 const read = (f) => {
   try {
@@ -108,10 +108,10 @@ class Quiz {
 
   // ---- helpers -----------------------------------------------------------
   later(ms, fn) {
-    clearTimeout(this.timer);
-    this.timerTotal = ms;
-    this.deadline = Date.now() + ms;
-    this.timer = setTimeout(fn, ms);
+    schedulePhase(this, ms, fn);
+  }
+  togglePause() {
+    toggleGamePause(this);
   }
   destroy() {
     clearTimeout(this.timer);
@@ -206,6 +206,7 @@ class Quiz {
 
   openQuestion(seconds) {
     this.answers = new Map();
+    this.suggestions = new Map(); // teamId -> Map(pid -> idx)
     this.tapped = new Set(); // players who have tapped at least once
     this.visible = new Map();
     this.spot = new Map();
@@ -363,6 +364,14 @@ class Quiz {
         this.checkProgress();
         return;
       }
+      case 'suggest': {
+        if (this.phase !== 'question' || !teamId) return;
+        if (!(this.visible.get(pid) || []).includes(msg.idx)) return;
+        if (!this.suggestions.has(teamId)) this.suggestions.set(teamId, new Map());
+        this.suggestions.get(teamId).set(pid, msg.idx);
+        room.update();
+        return;
+      }
       case 'wager': {
         if (this.phase !== 'wager' || !teamId) return;
         const team = this.team(teamId);
@@ -448,6 +457,9 @@ class Quiz {
         const a = this.answers.get(myTeam);
         g.teamChoice = a ? a.idx : null;
         g.teamBy = a ? a.pid : null;
+        const sug = this.suggestions.get(myTeam);
+        g.suggestions = sug ? [...sug].map(([id, idx]) => ({ id, idx })) : [];
+        g.mySuggestion = sug ? sug.get(pid) ?? null : null;
       }
     }
     if (this.phase === 'wager') {

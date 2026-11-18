@@ -16,6 +16,17 @@
   --body: "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #191714;
+    --card: #24201c;
+    --ink: #f5efe4;
+    --soft: #b3a99c;
+    --shadow: 5px 5px 0 #090807;
+  }
+  .btn, .prompt, .cat-card, .team-bar, .team-hero, .scr-tile, .rank-list .r.me { color: #1d1a17; }
+}
+
 * { box-sizing: border-box; }
 html, body { margin: 0; min-height: 100%; }
 body {

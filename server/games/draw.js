@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { clean, shuffle, filterLocal, LOCAL_OPTION } = require('../util');
+const { clean, shuffle, filterLocal, LOCAL_OPTION, schedulePhase, toggleGamePause } = require('../util');
 
 const WORDS = JSON.parse(fs.readFileSync(path.join(__dirname, '../../content/words.json'), 'utf8')).packs;
 
@@ -60,10 +60,10 @@ class Draw {
     this.gains.set(pid, (this.gains.get(pid) || 0) + pts);
   }
   later(ms, fn) {
-    clearTimeout(this.timer);
-    this.timerTotal = ms;
-    this.deadline = Date.now() + ms;
-    this.timer = setTimeout(fn, ms);
+    schedulePhase(this, ms, fn);
+  }
+  togglePause() {
+    toggleGamePause(this);
   }
   clearHints() {
     this.hintTimers.forEach(clearTimeout);

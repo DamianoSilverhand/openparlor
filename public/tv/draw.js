@@ -126,7 +126,8 @@ function final(s) {
   const shots = (g.gallery || []).map((it) => {
     const c = h('canvas', { class: 'thumb' });
     redraw(prepare(c), it.strokes);
-    return h('div', { class: 'card shot' }, c, h('div', { class: 'cap' }, h('b', null, it.word), ` by ${get(it.drawer) ? get(it.drawer).name : '?'}`));
+    const save = h('a', { class: 'save-png', href: c.toDataURL('image/png'), download: `${it.word.replace(/\s+/g, '-')}.png` }, 'Save');
+    return h('div', { class: 'card shot' }, c, h('div', { class: 'cap', style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } }, h('span', null, h('b', null, it.word), ` by ${get(it.drawer) ? get(it.drawer).name : '?'}`), save));
   });
   const gallery = h('div', { class: 'stage hidden' },
     h('div', { class: 'bar' }, h('span', { class: 'pill' }, 'The gallery'), h('span', { class: 'code' }, 'DRAW & GUESS')),

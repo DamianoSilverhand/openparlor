@@ -81,19 +81,41 @@ function question(s, ctx) {
   const get = byId(s.players);
   const t = timer();
   let chosen = g.teamChoice;
+  let mySug = g.mySuggestion;
   const btns = new Map();
+  const sugs = new Map();
   const info = h('p', { class: 'status' });
   const opts = h('div', { class: 'qopts' },
     g.mine.map((i) => {
-      const b = h('button', { class: `qopt o${i}`, onclick: () => { chosen = i; paint(); ctx.send(game('answer', { idx: i })); } },
-        h('span', { class: 'let' }, LETTERS[i]), h('span', { class: 'txt' }, g.options[i]),
-      );
+      const sugEl = h('span', { class: 'sug' });
+      const b = h('button', {
+        class: `qopt o${i}`,
+        onclick: () => {
+          if (g.canAnswer) {
+            chosen = i;
+            paint();
+            ctx.send(game('answer', { idx: i }));
+          } else {
+            mySug = i;
+            paint();
+            ctx.send(game('suggest', { idx: i }));
+          }
+        },
+      }, h('span', { class: 'let' }, LETTERS[i]), h('span', { class: 'txt' }, g.options[i]), sugEl);
       btns.set(i, b);
+      sugs.set(i, sugEl);
       return b;
     }),
   );
-  const paint = () => btns.forEach((b, i) => b.classList.toggle('on', i === chosen));
-  paint();
+  const paint = (list = []) => {
+    btns.forEach((b, i) => {
+      b.classList.toggle('on', i === chosen);
+      b.classList.toggle('suggested', !g.canAnswer && i === mySug);
+      const names = list.filter((x) => x.idx === i).map((x) => (get(x.id) ? get(x.id).name : '')).filter(Boolean);
+      sugs.get(i).textContent = names.length ? `💡 ${names.join(', ')}` : '';
+    });
+  };
+  paint(g.suggestions);
   const el = h('div', { class: 'screen' },
     teamBar(s),
     t.el,
@@ -104,15 +126,15 @@ function question(s, ctx) {
     hostButton(s, ctx, 'Skip ahead', false),
   );
   function update(s) {
-    const g = s.game;
-    t.update(g);
-    if (g.teamChoice != null) chosen = g.teamChoice;
-    btns.forEach((b) => (b.disabled = !g.canAnswer));
-    paint();
-    const by = g.teamBy && get(g.teamBy);
-    const spot = g.spotPid && get(g.spotPid);
-    if (!g.canAnswer) info.textContent = `Help ${spot ? spot.name : 'your teammate'} with this one. ${spot ? spot.name : 'They'} will tap the answer${chosen != null ? ` (picked ${LETTERS[chosen]})` : ''}.`;
-    else if (g.target && !g.finale && !s.game.solo) info.textContent = chosen == null ? "You're up! Talk it over with your team, then tap the answer." : `You picked ${LETTERS[chosen]}. You can still change it.`;
+    const g2 = s.game;
+    t.update(g2);
+    if (g2.teamChoice != null) chosen = g2.teamChoice;
+    if (g2.mySuggestion != null) mySug = g2.mySuggestion;
+    paint(g2.suggestions);
+    const by = g2.teamBy && get(g2.teamBy);
+    const spot = g2.spotPid && get(g2.spotPid);
+    if (!g2.canAnswer) info.textContent = `Tap an answer to suggest it to ${spot ? spot.name : 'your teammate'}${chosen != null ? ` (locked ${LETTERS[chosen]})` : ''}.`;
+    else if (g2.target && !g2.finale && !s.game.solo) info.textContent = chosen == null ? "You're up! Talk it over with your team, then tap the answer." : `You picked ${LETTERS[chosen]}. You can still change it.`;
     else info.textContent = chosen == null ? 'Talk it over, then tap an answer.' : by && by.id !== s.me ? `${by.name} picked ${LETTERS[chosen]}. Tap another to change it.` : `You picked ${LETTERS[chosen]}. Teammates can still change it.`;
   }
   t.update(g);
@@ -125,6 +147,7 @@ function reveal(s, ctx) {
   const g = s.game;
   const r = g.results.find((x) => x.team === g.myTeam);
   const right = g.options[g.correct];
+  const t = timer();
   let card;
   if (r && r.correct) card = h('div', { class: 'card pad big-result good' }, h('h2', null, 'Correct!'), h('p', null, `+${r.pts} points${g.double ? ' (double!)' : ''}${r.half ? ' (half: this one was for another age group)' : ''}`));
   else if (r && r.choice != null) card = h('div', { class: 'card pad big-result' }, h('h2', null, 'Not quite'), h('p', null, r.pts < 0 ? `${r.pts} points` : 'No points this time'));
@@ -135,9 +158,11 @@ function reveal(s, ctx) {
     h('p', { class: 'lead' }, 'The answer was'),
     h('div', { class: 'card pad prompt' }, h('h2', null, `${LETTERS[g.correct]}: ${right}`)),
     g.fact && h('p', { class: 'lead' }, g.fact),
+    t.el,
     hostButton(s, ctx, 'Next', true),
   );
-  return { el, update() {} };
+  t.update(g);
+  return { el, update: (s) => t.update(s.game) };
 }
 
 // ---- wager ---------------------------------------------------------------------------------------------------
