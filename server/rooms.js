@@ -192,7 +192,8 @@ class Room {
         return;
       }
       case 'g':
-        if (this.game) this.game.onMessage(pid, msg);
+        // While paused, only the host's Next/skip gets through; answers and strokes wait for Resume.
+        if (this.game && (!this.game.paused || (isHost && msg.a === 'next'))) this.game.onMessage(pid, msg);
         return;
     }
   }

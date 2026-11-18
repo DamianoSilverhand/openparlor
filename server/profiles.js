@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const { clean } = require('./util');
 
 const FILE = path.join(__dirname, '../data/profiles.json');
+const GAME_IDS = ['scramble', 'literacy', 'math', 'logic', 'memory', 'pattern', 'clash', 'reaction'];
 const LEVELS = ['kid', 'teen', 'grownup'];
 
 function load() {
@@ -37,7 +38,12 @@ function upsert({ id, name, avatar, level }) {
   if (!n) return null;
   const lvl = LEVELS.includes(level) ? level : 'kid';
   const av = Number.isInteger(avatar) && avatar >= 0 && avatar < 12 ? avatar : 0;
-  let p = id ? get(id) : profiles.find((x) => x.name.toLowerCase() === n.toLowerCase());
+  let p = id ? get(id) : null;
+  if (!p && !id) {
+    // Same name, no id: hand back the existing profile untouched instead of rewriting it.
+    const same = profiles.find((x) => x.name.toLowerCase() === n.toLowerCase());
+    if (same) return same;
+  }
   if (p) {
     p.name = n;
     p.avatar = av;
@@ -58,7 +64,7 @@ function upsert({ id, name, avatar, level }) {
 
 function record(id, gameId, score, runStreak = 0) {
   const p = get(id);
-  if (!p || !gameId) return null;
+  if (!p || !GAME_IDS.includes(gameId)) return null;
   const s = Math.max(0, Math.round(Number(score) || 0));
   p.stats = p.stats || { gamesPlayed: 0, bests: {}, streaks: {} };
   p.stats.bests = p.stats.bests || {};

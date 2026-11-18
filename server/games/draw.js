@@ -141,11 +141,13 @@ class Draw {
     this.reveal = shuffle(letters);
     this.revealed = 0;
     const maxHints = letters.length >= 7 ? 2 : letters.length >= 4 ? 1 : 0;
+    const self = this;
     [0.4, 0.7].slice(0, maxHints).forEach((f) => {
       this.hintTimers.push(
-        setTimeout(() => {
-          this.revealed++;
-          this.room.update();
+        setTimeout(function tick() {
+          if (self.paused) return void self.hintTimers.push(setTimeout(tick, 1000));
+          self.revealed++;
+          self.room.update();
         }, ms * f),
       );
     });

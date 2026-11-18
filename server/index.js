@@ -103,7 +103,7 @@ const server = http.createServer(async (req, res) => {
   }
   if (pathname.startsWith('/api/content/') && req.method === 'GET') {
     const name = pathname.slice('/api/content/'.length);
-    if (!/^[a-z0-9-]+$/.test(name)) return json(res, 404, { error: 'not found' });
+    if (!['scramble', 'literacy'].includes(name)) return json(res, 404, { error: 'not found' });
     const file = path.join(__dirname, '..', 'content', `${name}.json`);
     try {
       const data = JSON.parse(fs.readFileSync(file, 'utf8'));
