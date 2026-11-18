@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-const { shuffle, LOCAL_OPTION } = require('../util');
+const { shuffle, LOCAL_OPTION, schedulePhase, toggleGamePause } = require('../util');
+const profiles = require('../profiles');
 
 // Family records for "play together" mode, kept between sessions. The key is the game, the number of players
 // who started the round, the handicap setting (handicaps change scores) and the Zambian-content setting
@@ -22,11 +23,13 @@ function saveRecord(key, total) {
 // start time, collects each player's score, and awards points for finishing 1st, 2nd, 3rd and so on.
 const MINI = {
   memory: { name: 'Memory Match', howto: 'Flip two cards at a time and find every matching pair. Fewer misses and a faster finish score more.', duration: 60, max: 1400 },
-  scramble: { name: 'Word Scramble', howto: 'Unscramble as many words as you can. Type the word and press Go, or skip a tricky one.', duration: 60, max: 3000 },
+  scramble: { name: 'Word Builder', howto: 'Tap letter tiles to spell the word from the clue. Longer streaks score bonus points!', duration: 60, max: 3000 },
+  math: { name: 'Number Dash', howto: 'Solve sums calibrated to your grade. Streaks multiply points; wrong taps cost you.', duration: 40, max: 3500 },
+  logic: { name: 'Logic Chain', howto: 'Crack number patterns, odd-one-out puzzles, and quick deductions.', duration: 50, max: 3000 },
+  literacy: { name: 'Word Match', howto: 'Pick the right spelling, word meaning, or missing word.', duration: 50, max: 3000 },
   reaction: { name: 'Quick Tap', howto: 'Wait for the screen to turn green, then tap as fast as you can. Tap too early and you lose time. Five tries.', duration: 50, max: 2500 },
   pattern: { name: 'Copy Cat', howto: 'Watch the colours light up, then repeat the pattern. It gets one step longer each round.', duration: 90, max: 3500 },
   clash: { name: 'Colour Clash', howto: 'Tap the colour of the INK, not the colour the word says. Wrong taps cost you.', duration: 30, max: 3500 },
-  math: { name: 'Number Dash', howto: 'Solve sums as fast as you can by tapping the right answer. Wrong answers cost you.', duration: 40, max: 3500 },
 };
 const POINTS = [10, 7, 5];
 const OTHER_POINTS = 3;
@@ -35,11 +38,20 @@ const COUNTDOWN_MS = 3200;
 const GRACE_MS = 3000;
 const RESULTS_MS = 10000;
 
+const FOCUS = {
+  mix: Object.keys(MINI),
+  brain: ['scramble', 'math', 'logic', 'literacy', 'memory'],
+  speed: ['reaction', 'pattern', 'clash'],
+};
+
 class MiniGames {
   constructor(room) {
     this.room = room;
     this.s = { ...room.settings };
-    this.order = shuffle(Object.keys(MINI)).slice(0, this.s.games);
+    const pool = FOCUS[this.s.focus] || FOCUS.mix;
+    const picked = shuffle(pool);
+    while (picked.length < this.s.games) picked.push(...shuffle(Object.keys(MINI)).filter((k) => !picked.includes(k)));
+    this.order = picked.slice(0, this.s.games);
     this.total = this.order.length;
     this.idx = 0;
     this.timer = null;
@@ -55,10 +67,10 @@ class MiniGames {
 
   // ---- helpers -----------------------------------------------------------
   later(ms, fn) {
-    clearTimeout(this.timer);
-    this.timerTotal = ms;
-    this.deadline = Date.now() + ms;
-    this.timer = setTimeout(fn, ms);
+    schedulePhase(this, ms, fn);
+  }
+  togglePause() {
+    toggleGamePause(this, this.phase !== 'play');
   }
   destroy() {
     clearTimeout(this.timer);
@@ -150,6 +162,14 @@ class MiniGames {
         this.stat(r.id).best = Math.max(this.stat(r.id).best, r.score / this.def.max);
       });
     }
+    this.personalBests = [];
+    rows.forEach((r) => {
+      const p = this.room.players.get(r.id);
+      if (p && p.profileId) {
+        const res = profiles.record(p.profileId, this.id, r.score);
+        if (res && res.isNewBest) this.personalBests.push(r.id);
+      }
+    });
     this.rows = rows;
     this.phase = 'results';
     this.later(RESULTS_MS, () => this.afterResults());
@@ -250,6 +270,7 @@ class MiniGames {
     if (this.phase === 'results') {
       g.rows = this.rows;
       g.standings = this.standings();
+      g.personalBests = this.personalBests || [];
       if (g.team) g.teamRound = this.teamRound;
     }
     if (this.phase === 'final') {
@@ -278,9 +299,10 @@ module.exports = {
   minPlayers: 2,
   usesLevels: true,
   levelHint: 'Younger players get a gentler challenge (smaller boards, easier words and sums, extra lives, a bigger reaction window), so everyone has a fair shot.',
-  defaults: { games: 5, handicap: 'on', mode: 'race', local: 'off' },
+  defaults: { games: 5, focus: 'mix', handicap: 'on', mode: 'race', local: 'off' },
   options: [
     { key: 'games', label: 'Games in the set', values: [[3, '3'], [4, '4'], [5, '5'], [6, '6']] },
+    { key: 'focus', label: 'Game focus', values: [['mix', 'Mix of all'], ['brain', 'Words, Math & Memory'], ['speed', 'Speed & Reflexes']] },
     { key: 'mode', label: 'How to play', values: [['race', 'Race (ranked)'], ['team', 'Play together']] },
     { ...LOCAL_OPTION, label: 'Zambian words in Word Scramble' },
     { key: 'handicap', label: 'Fair-play handicaps', values: [['on', 'On (by age)'], ['off', 'Off']] },

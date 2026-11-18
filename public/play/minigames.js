@@ -1,4 +1,4 @@
-import { h, avatar, timer, byId, serverNow, onTick } from '/shared/ui.js';
+import { h, avatar, timer, byId, serverNow, onTick, ordinal } from '/shared/ui.js';
 import { play as sfx } from '/shared/sound.js';
 import { meBar, hostButton, final } from '/play/whosaidthat.js';
 import * as memory from '/play/mg/memory.js';
@@ -7,8 +7,10 @@ import * as reaction from '/play/mg/reaction.js';
 import * as pattern from '/play/mg/pattern.js';
 import * as clash from '/play/mg/clash.js';
 import * as math from '/play/mg/math.js';
+import * as logic from '/play/mg/logic.js';
+import * as literacy from '/play/mg/literacy.js';
 
-const MODS = { memory, scramble, reaction, pattern, clash, math };
+const MODS = { memory, scramble, reaction, pattern, clash, math, logic, literacy };
 const game = (a, extra) => ({ t: 'g', a, ...extra });
 
 export function screen(s, ctx) {
@@ -120,7 +122,8 @@ function results(s, ctx) {
   const mine = g.rows.find((r) => r.id === s.me);
   const el = h('div', { class: 'screen' },
     meBar(s),
-    h('h1', { class: 'title' }, mine ? (mine.rank === 0 ? 'You won this one!' : `You came ${['1st', '2nd', '3rd'][mine.rank] || `${mine.rank + 1}th`}`) : 'Round over'),
+    h('h1', { class: 'title' }, mine ? (mine.rank === 0 ? 'You won this one!' : `You came ${ordinal(mine.rank)}`) : 'Round over'),
+    (g.personalBests || []).includes(s.me) && h('div', { class: 'card pad big-result good' }, h('h2', null, 'New personal best!'), h('p', null, `Score: ${mine ? mine.score : ''}`)),
     h('div', { class: 'rank-list' },
       g.rows.map((r) =>
         h('div', { class: 'r' + (r.id === s.me ? ' me' : '') },
@@ -145,6 +148,7 @@ function resultsTogether(s, ctx) {
   const el = h('div', { class: 'screen' },
     meBar(s),
     h('h1', { class: 'title' }, `Family total: ${tr.total}`),
+    (g.personalBests || []).includes(s.me) && h('div', { class: 'card pad big-result good' }, h('h2', null, 'New personal best!')),
     tr.record
       ? h('div', { class: 'card pad big-result good' }, h('h2', null, 'New family record!'), h('p', null, tr.previous ? `For ${tr.scope}. The old record was ${tr.previous}.` : `For ${tr.scope}. Now you have one to beat.`))
       : tr.previous ? h('p', { class: 'lead' }, `The family record for ${tr.scope} is ${tr.previous}.`) : null,

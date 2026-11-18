@@ -8,7 +8,7 @@ const COLORS = [
   { n: 'GREEN', c: '#4f9a3a' },
   { n: 'YELLOW', c: '#c98a00' },
 ];
-const SAME = { kid: 1, teen: 0.5, grownup: 0.15 }; // how often the word matches its own colour
+const SAME = { kid: 0.45, teen: 0.35, grownup: 0.15 }; // how often the word matches its own colour
 
 export function start(ctx) {
   const r = rng(ctx.seed);

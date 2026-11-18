@@ -1,0 +1,44 @@
+{
+  "kid": [
+    { "q": "Pick the correct spelling:", "a": "because", "w": ["becuase", "becos", "becaus"] },
+    { "q": "Pick the correct spelling:", "a": "friend", "w": ["freind", "frend", "friand"] },
+    { "q": "Pick the correct spelling:", "a": "different", "w": ["diffrent", "diferent", "differant"] },
+    { "q": "Pick the correct spelling:", "a": "enough", "w": ["enuff", "enogh", "enought"] },
+    { "q": "Pick the correct spelling:", "a": "Wednesday", "w": ["Wensday", "Wedensday", "Wednsday"] },
+    { "q": "Which word means the opposite of 'brave'?", "a": "afraid", "w": ["strong", "kind", "noisy"] },
+    { "q": "Which word means 'very big'?", "a": "enormous", "w": ["tiny", "gentle", "narrow"] },
+    { "q": "Fill the blank: ___ going to the park.", "a": "They're", "w": ["Their", "There", "Thier"] },
+    { "q": "Fill the blank: Put the book over ___.", "a": "there", "w": ["their", "they're", "thar"] },
+    { "q": "What does the prefix 'un-' mean in 'unhappy'?", "a": "not", "w": ["very", "again", "before"] },
+    { "q": "Which is the plural of 'child'?", "a": "children", "w": ["childs", "childes", "childrens"] },
+    { "q": "Which word has a silent 'k'?", "a": "knight", "w": ["kitten", "king", "basket"] },
+    { "q": "Read: 'Sam put on his coat and boots.' Why?", "a": "It was cold or rainy", "w": ["He was going to bed", "It was very hot", "He lost his shoes"] },
+    { "q": "Which word rhymes with 'bright'?", "a": "flight", "w": ["bread", "bring", "eight"] }
+  ],
+  "teen": [
+    { "q": "Pick the correct spelling:", "a": "definitely", "w": ["definately", "definitly", "definetely"] },
+    { "q": "Pick the correct spelling:", "a": "separate", "w": ["seperate", "separete", "saparate"] },
+    { "q": "Pick the correct spelling:", "a": "receive", "w": ["recieve", "receve", "recive"] },
+    { "q": "Fill the blank: The weather will ___ our plans.", "a": "affect", "w": ["effect", "afflict", "infect"] },
+    { "q": "Fill the blank: The school ___ gave a speech.", "a": "principal", "w": ["principle", "principel", "princpal"] },
+    { "q": "What does the Greek root 'bio' mean?", "a": "life", "w": ["earth", "water", "time"] },
+    { "q": "What does the Latin root 'bene' mean?", "a": "good", "w": ["bad", "small", "fast"] },
+    { "q": "Which word means 'able to be trusted'?", "a": "reliable", "w": ["reluctant", "reckless", "remote"] },
+    { "q": "What does the idiom 'break the ice' mean?", "a": "Start a friendly conversation", "w": ["Make someone angry", "Drop something cold", "End a friendship"] },
+    { "q": "Read: 'Maya sighed and stared at the empty page.' How does she feel?", "a": "Stuck or frustrated", "w": ["Excited to finish", "Proud of her work", "Ready to run"] },
+    { "q": "Which word is an antonym of 'scarce'?", "a": "abundant", "w": ["rare", "tiny", "hidden"] },
+    { "q": "Pick the correct spelling:", "a": "embarrass", "w": ["embarass", "embarras", "imbarrass"] }
+  ],
+  "grownup": [
+    { "q": "Pick the correct spelling:", "a": "accommodate", "w": ["accomodate", "acommodate", "accommadate"] },
+    { "q": "Pick the correct spelling:", "a": "occurrence", "w": ["occurence", "occurrance", "ocurrence"] },
+    { "q": "Pick the correct spelling:", "a": "conscience", "w": ["concience", "consience", "conscence"] },
+    { "q": "Fill the blank: We bought pens from the ___ shop.", "a": "stationery", "w": ["stationary", "stationry", "stasionary"] },
+    { "q": "Which word means 'lasting only a very short time'?", "a": "ephemeral", "w": ["perpetual", "ubiquitous", "pragmatic"] },
+    { "q": "Which word means 'present everywhere at once'?", "a": "ubiquitous", "w": ["ambiguous", "obscure", "tenuous"] },
+    { "q": "What does 'pragmatic' mean?", "a": "Dealing with things practically", "w": ["Overly emotional", "Stubbornly traditional", "Hard to understand"] },
+    { "q": "Fill the blank: She gave me a kind ___.", "a": "compliment", "w": ["complement", "complimant", "compelment"] },
+    { "q": "Pick the correct spelling:", "a": "supersede", "w": ["supercede", "superseed", "suppersede"] },
+    { "q": "Which word means 'to make a bad situation worse'?", "a": "exacerbate", "w": ["alleviate", "corroborate", "vindicate"] }
+  ]
+}

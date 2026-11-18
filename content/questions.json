@@ -1713,6 +1713,264 @@
      "d": 3
     }
    ]
+  },
+  "words": {
+   "name": "Words & Stories",
+   "questions": [
+    {
+     "q": "Which word is spelled correctly?",
+     "a": "because",
+     "w": [
+      "becuase",
+      "becos",
+      "becaus"
+     ],
+     "d": 1,
+     "f": "Remember: Big Elephants Can Always Understand Small Elephants."
+    },
+    {
+     "q": "What is a word that means the opposite of \"generous\"?",
+     "a": "Selfish",
+     "w": [
+      "Kind",
+      "Helpful",
+      "Polite"
+     ],
+     "d": 1
+    },
+    {
+     "q": "In a story, what do you call the person who draws the pictures?",
+     "a": "Illustrator",
+     "w": [
+      "Author",
+      "Publisher",
+      "Narrator"
+     ],
+     "d": 1
+    },
+    {
+     "q": "Which word has a silent \"b\"?",
+     "a": "Thumb",
+     "w": [
+      "Table",
+      "Ribbon",
+      "Rabbit"
+     ],
+     "d": 1
+    },
+    {
+     "q": "Which sentence uses \"their\" correctly?",
+     "a": "They left their bags in the hall.",
+     "w": [
+      "Their going to the match.",
+      "Put the keys over their.",
+      "Their is a cat outside."
+     ],
+     "d": 2
+    },
+    {
+     "q": "What does the prefix \"tele-\" mean in \"telescope\" and \"telephone\"?",
+     "a": "Far / distant",
+     "w": [
+      "Small",
+      "Fast",
+      "Light"
+     ],
+     "d": 2,
+     "f": "It comes from the Greek word \"tele\", meaning far off."
+    },
+    {
+     "q": "Which figure of speech compares two things using \"like\" or \"as\"?",
+     "a": "Simile",
+     "w": [
+      "Metaphor",
+      "Alliteration",
+      "Onomatopoeia"
+     ],
+     "d": 2
+    },
+    {
+     "q": "Which spelling is right?",
+     "a": "Definitely",
+     "w": [
+      "Definately",
+      "Definitly",
+      "Definetely"
+     ],
+     "d": 2,
+     "f": "It shares its root with \"finite\"!"
+    },
+    {
+     "q": "What does the word \"ephemeral\" mean?",
+     "a": "Lasting a very short time",
+     "w": [
+      "Impossible to forget",
+      "Extremely heavy",
+      "Spoken loudly"
+     ],
+     "d": 3
+    },
+    {
+     "q": "Which word is spelled with two Cs and two Ms?",
+     "a": "Accommodate",
+     "w": [
+      "Recommend",
+      "Occasion",
+      "Accumulate"
+     ],
+     "d": 3
+    },
+    {
+     "q": "What is a \"palindromic\" word?",
+     "a": "A word that reads the same forwards and backwards",
+     "w": [
+      "A word borrowed from Greek",
+      "A word with two opposite meanings",
+      "A word made of two nouns"
+     ],
+     "d": 3,
+     "f": "Examples include \"level\", \"radar\", and \"kayak\"."
+    },
+    {
+     "q": "Which sentence uses \"affect\" correctly?",
+     "a": "Rain may affect our travel plans.",
+     "w": [
+      "The affect of the medicine was quick.",
+      "She spoke with a calm affect.",
+      "What is the main affect?"
+     ],
+     "d": 3
+    }
+   ]
+  },
+  "numbers": {
+   "name": "Numbers & Logic",
+   "questions": [
+    {
+     "q": "What comes next in the pattern: 4, 8, 12, 16, ...?",
+     "a": "20",
+     "w": [
+      "18",
+      "22",
+      "24"
+     ],
+     "d": 1
+    },
+    {
+     "q": "A pizza is cut into 8 equal slices. You eat 2. What fraction is left?",
+     "a": "3/4",
+     "w": [
+      "1/2",
+      "1/4",
+      "2/3"
+     ],
+     "d": 1
+    },
+    {
+     "q": "If 3 pencils cost 15 kwacha, how much does 1 pencil cost?",
+     "a": "5 kwacha",
+     "w": [
+      "3 kwacha",
+      "10 kwacha",
+      "12 kwacha"
+     ],
+     "d": 1
+    },
+    {
+     "q": "Maya is taller than Sam. Leo is taller than Maya. Who is shortest?",
+     "a": "Sam",
+     "w": [
+      "Maya",
+      "Leo",
+      "Cannot tell"
+     ],
+     "d": 1
+    },
+    {
+     "q": "What is 15% of 80?",
+     "a": "12",
+     "w": [
+      "10",
+      "15",
+      "16"
+     ],
+     "d": 2,
+     "f": "10% of 80 is 8, and 5% is 4, so 8 + 4 = 12."
+    },
+    {
+     "q": "Solve for x: 3x + 7 = 22",
+     "a": "5",
+     "w": [
+      "4",
+      "6",
+      "7"
+     ],
+     "d": 2
+    },
+    {
+     "q": "What is the next number in the Fibonacci sequence: 1, 1, 2, 3, 5, 8, ...?",
+     "a": "13",
+     "w": [
+      "11",
+      "12",
+      "15"
+     ],
+     "d": 2
+    },
+    {
+     "q": "A rectangle has a perimeter of 24 cm and a width of 4 cm. What is its length?",
+     "a": "8 cm",
+     "w": [
+      "6 cm",
+      "10 cm",
+      "12 cm"
+     ],
+     "d": 2
+    },
+    {
+     "q": "What is the sum of the interior angles of a pentagon?",
+     "a": "540°",
+     "w": [
+      "360°",
+      "450°",
+      "720°"
+     ],
+     "d": 3,
+     "f": "Formula: (n − 2) × 180° = 3 × 180° = 540°."
+    },
+    {
+     "q": "If two fair dice are rolled, what is the probability of getting a sum of 7?",
+     "a": "1/6",
+     "w": [
+      "1/12",
+      "1/9",
+      "1/36"
+     ],
+     "d": 3,
+     "f": "6 out of 36 outcomes sum to 7: (1,6), (2,5), (3,4), (4,3), (5,2), (6,1)."
+    },
+    {
+     "q": "What comes next: 2, 6, 12, 20, 30, ...?",
+     "a": "42",
+     "w": [
+      "38",
+      "40",
+      "44"
+     ],
+     "d": 3,
+     "f": "The differences increase by 2 each time: +4, +6, +8, +10, +12."
+    },
+    {
+     "q": "If all Bloops are Razzies and no Razzies are Lazzies, which must be true?",
+     "a": "No Bloops are Lazzies",
+     "w": [
+      "Some Bloops are Lazzies",
+      "All Lazzies are Bloops",
+      "Some Razzies are Lazzies"
+     ],
+     "d": 3
+    }
+   ]
   }
  }
 }
