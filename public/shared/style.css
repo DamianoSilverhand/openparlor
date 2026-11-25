@@ -26,10 +26,10 @@
   }
   /* Surfaces that stay light or coloured in dark mode need dark text. html :is() lifts specificity above
      the plain colour rules declared later in play.css and tv.css. */
-  html :is(.prompt, .cat-card, .team-bar, .team-hero, .scr-tile, .rank-list .r.me, .choice.a, .big-result.fool, .word.easy, .word.medium, .word.hard, .sz.on, .ptile.shown, .gl.close, .mem-card, .mem-card.done, .wb-slot.filled, .rx-pad.early, .rx-pad.hit, .qopt.suggested, .steps b, .prompt-card, .pod .blk, .tile.shown, .lu.now, .family-total, .rec-list, .row .fill, .tchip.done),
+  html :is(.prompt, .cat-card, .team-bar, .team-hero, .scr-tile, .rank-list .r.me, .choice.a, .big-result.fool, .word.easy, .word.medium, .word.hard, .sz.on, .ptile.shown, .gl.close, .mem-card, .mem-card.done, .wb-slot.filled, .rx-pad.early, .rx-pad.hit, .qopt.suggested, .steps b, .prompt-card, .pod .blk, .tile.shown, .lu.now, .group-total, .rec-list, .row .fill, .tchip.done),
   html .btn:not(.red):not(.teal):not(.plain) { color: #1d1a17; }
   html .btn:disabled { color: #5d554d; }
-  html :is(.prompt, .cat-card, .team-bar, .team-hero, .scr-tile, .rank-list .r.me, .choice.a, .big-result.fool, .word.easy, .word.medium, .word.hard, .sz.on, .ptile.shown, .gl.close, .mem-card, .mem-card.done, .wb-slot.filled, .rx-pad.early, .rx-pad.hit, .qopt.suggested, .steps b, .prompt-card, .pod .blk, .tile.shown, .lu.now, .family-total, .rec-list, .row .fill, .tchip.done) :is(p, small, span, b, h1, h2, h3) { color: inherit; }
+  html :is(.prompt, .cat-card, .team-bar, .team-hero, .scr-tile, .rank-list .r.me, .choice.a, .big-result.fool, .word.easy, .word.medium, .word.hard, .sz.on, .ptile.shown, .gl.close, .mem-card, .mem-card.done, .wb-slot.filled, .rx-pad.early, .rx-pad.hit, .qopt.suggested, .steps b, .prompt-card, .pod .blk, .tile.shown, .lu.now, .group-total, .rec-list, .row .fill, .tchip.done) :is(p, small, span, b, h1, h2, h3) { color: inherit; }
   html .cl-card { background: #fffbf2; color: #1d1a17; } /* the ink colours in Colour Clash need a light card */
   html :is(.rank-list .r .gain, .tally .pts, .row .gain, .gains b, .res .pts) { color: #5fc9c9; }
   html :is(.nd-prob.bad, .lg-q.bad, .timer.low b, .mg-clock.low, .res.no .pts, h1 span, .lobby h1 span) { color: #ff7d63; }

@@ -8,11 +8,11 @@
         "Invent a new holiday. What do we do on it?",
         "What would a dog say if it could talk for one minute?",
         "What's the strangest thing you could put on a pizza?",
-        "If our family had a theme song, what would it be called?",
+        "If your group had a theme song, what would it be called?",
         "What would you name a pet dragon?",
         "What's the most useless invention ever?",
         "Describe the worst ice cream flavour imaginable.",
-        "What would be written on a sign outside our house?",
+        "What would be written on a sign outside your place?",
         "What's the first thing you'd do if you were invisible for a day?",
         "Which animal would make the worst teacher, and why?",
         "What would aliens find weirdest about humans?",
@@ -20,21 +20,21 @@
         "What is hiding at the bottom of the sea?"
       ]
     },
-    "family": {
-      "name": "Family",
+    "home": {
+      "name": "At home",
       "prompts": [
-        "What's the funniest thing that's ever happened on a family trip?",
-        "What food does our family eat way too much of?",
-        "Finish this sentence: Our family is famous for...",
-        "What's the best thing about living in our house?",
-        "What's one rule you'd change in our house?",
-        "What do you think the grown-ups do when we're not looking?",
-        "What's a family tradition you hope we never stop?",
-        "What would be the title of our family's autobiography?",
+        "What's the funniest thing that's ever happened on a trip?",
+        "What food does your group eat way too much of?",
+        "Finish this sentence: Our group is famous for...",
+        "What's the best thing about where you live?",
+        "What's one house rule you'd change?",
+        "What do you think the neighbours get up to when nobody is looking?",
+        "What's a tradition you hope never stops?",
+        "What would be the title of your group's autobiography?",
         "What's the one thing you always lose?",
         "What's the best meal you've ever had at home?",
-        "What's our family's most annoying habit? (Nicely, please.)",
-        "Where should our next holiday be?"
+        "What's the most annoying habit in your group? (Nicely, please.)",
+        "Where should your next trip be?"
       ]
     },
     "wyr": {
@@ -65,26 +65,6 @@
         "What would you name a robot that cleans your room?",
         "What is the monster under the bed scared of?",
         "What would you do if you woke up as a cat?"
-      ]
-    },
-    "zambia": {
-      "name": "Home & Zambia",
-      "local": true,
-      "prompts": [
-        "What is the best thing to eat with nshima?",
-        "Describe the best family meal you have ever had.",
-        "What is the best market food or snack you have ever tasted?",
-        "If the whole family went on safari, which animal would you most want to see?",
-        "What would you tell a visitor to Zambia to try first?",
-        "What is your favourite thing about the rainy season?",
-        "What is the best thing about your school?",
-        "What do you miss most when you are away from home?",
-        "Which song makes everyone in the family start dancing?",
-        "What would be on the menu at the perfect family barbecue?",
-        "Which animal is most like our family, and why?",
-        "What is the best place you have ever visited with the family?",
-        "What is your favourite thing to do on a weekend at home?",
-        "What is the funniest thing that has happened on a long journey?"
       ]
     }
   }

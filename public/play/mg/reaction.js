@@ -2,7 +2,7 @@ import { h } from '/shared/ui.js';
 import { play } from '/shared/sound.js';
 import { rng, timeouts } from './util.js';
 
-const FACTOR = { kid: 0.7, teen: 0.9, grownup: 1 }; // bigger window for younger players
+const FACTOR = { easy: 0.7, medium: 0.9, hard: 1 }; // bigger window for younger players
 const TRIALS = 5;
 
 export function start(ctx) {

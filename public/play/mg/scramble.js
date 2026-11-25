@@ -3,7 +3,7 @@ import { play } from '/shared/sound.js';
 import { rng, shuffled, timeouts } from './util.js';
 
 const FALLBACK = {
-  kid: [
+  easy: [
     { w: 'because', c: 'Explains the reason why' },
     { w: 'friend', c: 'Someone you like to play with' },
     { w: 'school', c: 'A place where you learn' },
@@ -11,13 +11,13 @@ const FALLBACK = {
     { w: 'listen', c: 'Pay attention with your ears (silent T)' },
     { w: 'island', c: 'Land with water all around it (silent S)' },
   ],
-  teen: [
+  medium: [
     { w: 'believe', c: 'Think something is true' },
     { w: 'fraction', c: 'Part of a whole, like 3/4' },
     { w: 'gravity', c: 'Force that pulls things down' },
     { w: 'receipt', c: 'Paper showing you paid (silent P)' },
   ],
-  grownup: [
+  hard: [
     { w: 'necessary', c: 'Needed; essential (1 C, 2 S)' },
     { w: 'conscience', c: 'Inner sense of right and wrong' },
     { w: 'parallel', c: 'Lines that never meet' },
@@ -26,9 +26,7 @@ const FALLBACK = {
 };
 
 let PACK = FALLBACK;
-let LANGS = [];
-fetch('/api/content/scramble').then((r) => r.json()).then((d) => { if (d && d.kid) PACK = d; }).catch(() => {});
-fetch('/api/langs').then((r) => r.json()).then((d) => { if (d && Array.isArray(d.langs)) LANGS = d.langs; }).catch(() => {});
+fetch('/api/content/scramble').then((r) => r.json()).then((d) => { if (d && d.easy) PACK = d; }).catch(() => {});
 
 const entry = (item) => {
   const w = typeof item === 'string' ? item : item.w;
@@ -39,11 +37,8 @@ const entry = (item) => {
 
 export function start(ctx) {
   const r = rng(ctx.seed);
-  const level = PACK[ctx.level] ? ctx.level : 'grownup';
-  const general = (PACK[level] || FALLBACK.kid).map(entry);
-  const local = LANGS.flatMap((l) => (l.scramble && l.scramble[level] ? l.scramble[level].map(entry) : []));
-  const pool = ctx.local === 'only' && local.length ? local : ctx.local === 'mixed' ? [...general, ...local] : general;
-  const list = shuffled(r, pool);
+  const level = PACK[ctx.level] ? ctx.level : 'hard';
+  const list = shuffled(r, (PACK[level] && PACK[level].length ? PACK[level] : FALLBACK.easy).map(entry));
 
   const t = timeouts();
   let i = 0;

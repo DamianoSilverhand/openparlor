@@ -1,9 +1,13 @@
 import { h, avatar, timer, byId, ordinal } from '/shared/ui.js';
 import { confetti } from '/tv/common.js';
 import { isMuted } from '/shared/sound.js';
+import { tierLabel } from '/shared/config.js';
+import { t } from '/shared/i18n.js';
+
+const upper = (s) => (s.gameName || '').toUpperCase();
+const target = (tier) => t('quiz.target', { label: tierLabel(tier) });
 
 export const LETTERS = ['A', 'B', 'C', 'D'];
-const TARGET = { kid: 'For the kids', teen: 'For the teens', grownup: 'For the grown-ups' };
 const hint = (t) => h('div', { class: 'hint-line' }, t);
 
 export function screen(s) {
@@ -33,7 +37,7 @@ function intro(s) {
   const get = byId(s.players);
   const t = timer();
   const el = h('div', { class: 'stage' },
-    h('div', { class: 'bar' }, h('span', { class: 'pill' }, g.solo ? 'Everyone for themselves' : 'Meet the teams'), h('span', { class: 'code' }, 'FAMILY QUIZ SHOW')),
+    h('div', { class: 'bar' }, h('span', { class: 'pill' }, g.solo ? 'Everyone for themselves' : 'Meet the teams'), h('span', { class: 'code' }, upper(s))),
     h('div', { class: g.solo ? 'teams solo' : 'teams' },
       g.teams.map((tm, i) =>
         h('div', { class: 'card team-card', style: { '--tc': tm.color, animationDelay: `${i * 120}ms` } },
@@ -58,7 +62,7 @@ function category(s) {
   const g = s.game;
   const t = timer();
   const el = h('div', { class: 'stage' },
-    h('div', { class: 'bar' }, h('span', { class: 'pill' }, `Round ${g.round} of ${g.totalRounds}`), h('span', { class: 'code' }, 'FAMILY QUIZ SHOW')),
+    h('div', { class: 'bar' }, h('span', { class: 'pill' }, `Round ${g.round} of ${g.totalRounds}`), h('span', { class: 'code' }, upper(s))),
     h('div', { class: 'center-msg cat-msg' },
       h('p', null, 'The topic is'),
       h('div', { class: 'card cat-card' }, h('h1', null, g.category)),
@@ -103,7 +107,7 @@ function question(s) {
     head.replaceChildren(
       h('span', { class: 'pill' }, g.finale ? 'Final question' : `Round ${g.round} of ${g.totalRounds}  ·  Question ${g.qi} of ${g.qTotal}`),
       h('span', { class: 'badges' },
-        g.target && h('span', { class: 'badge tgt' }, TARGET[g.target]),
+        g.target && h('span', { class: 'badge tgt' }, target(g.target)),
         g.double && h('span', { class: 'badge dbl' }, 'Double points'),
         h('span', { class: 'code' }, g.category),
       ),
@@ -148,7 +152,7 @@ function wager(s) {
   const chips = h('div', { class: 'chips' });
   const board = h('div', { class: 'wager-scores' });
   const el = h('div', { class: 'stage' },
-    h('div', { class: 'bar' }, h('span', { class: 'pill' }, 'Final question'), h('span', { class: 'code' }, 'FAMILY QUIZ SHOW')),
+    h('div', { class: 'bar' }, h('span', { class: 'pill' }, 'Final question'), h('span', { class: 'code' }, upper(s))),
     h('div', { class: 'center-msg cat-msg' },
       h('p', null, 'One last question about'),
       h('div', { class: 'card cat-card' }, h('h1', null, g.category)),

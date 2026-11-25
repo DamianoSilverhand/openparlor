@@ -1,5 +1,6 @@
 import { h, avatar, timer, byId, serverNow, onTick, ordinal } from '/shared/ui.js';
 import { play as sfx } from '/shared/sound.js';
+import { t as tx } from '/shared/i18n.js';
 import { meBar, hostButton, final } from '/play/whosaidthat.js';
 import * as memory from '/play/mg/memory.js';
 import * as scramble from '/play/mg/scramble.js';
@@ -29,7 +30,7 @@ function intro(s, ctx) {
     h('p', { class: 'lead' }, `Game ${g.idx} of ${g.total}`),
     h('div', { class: 'card pad prompt' }, h('h2', null, g.mg.name)),
     h('p', { class: 'lead' }, g.mg.howto),
-    g.team && h('p', { class: 'lead', style: { fontWeight: 800 } }, "Playing together: everyone's scores add up to a family total."),
+    g.team && h('p', { class: 'lead', style: { fontWeight: 800 } }, tx('mini.together')),
     s.settings.handicap === 'on' && h('p', { class: 'lead', style: { fontSize: '0.9rem' } }, 'Handicaps are on, so each age gets a fair challenge.'),
     t.el,
     hostButton(s, ctx, 'Skip ahead', false),
@@ -81,7 +82,7 @@ function play(s, ctx) {
     started = true;
     overlay.style.display = 'none';
     root.replaceChildren();
-    api = MODS[g.mg.id].start({ root, seed: g.seed, level: g.level, local: g.local, durationMs: g.endAt - g.startAt, progress, finish });
+    api = MODS[g.mg.id].start({ root, seed: g.seed, level: g.level, durationMs: g.endAt - g.startAt, progress, finish });
     stopId = setTimeout(() => finish(api.score()), Math.max(0, g.endAt - serverNow()));
   };
 
@@ -147,11 +148,11 @@ function resultsTogether(s, ctx) {
   const tr = g.teamRound;
   const el = h('div', { class: 'screen' },
     meBar(s),
-    h('h1', { class: 'title' }, `Family total: ${tr.total}`),
+    h('h1', { class: 'title' }, tx('mini.groupTotalValue', { total: tr.total })),
     (g.personalBests || []).includes(s.me) && h('div', { class: 'card pad big-result good' }, h('h2', null, 'New personal best!')),
     tr.record
-      ? h('div', { class: 'card pad big-result good' }, h('h2', null, 'New family record!'), h('p', null, tr.previous ? `For ${tr.scope}. The old record was ${tr.previous}.` : `For ${tr.scope}. Now you have one to beat.`))
-      : tr.previous ? h('p', { class: 'lead' }, `The family record for ${tr.scope} is ${tr.previous}.`) : null,
+      ? h('div', { class: 'card pad big-result good' }, h('h2', null, tx('mini.newRecord')), h('p', null, tr.previous ? `For ${tr.scope}. The old record was ${tr.previous}.` : `For ${tr.scope}. Now you have one to beat.`))
+      : tr.previous ? h('p', { class: 'lead' }, tx('mini.recordForPhone', { scope: tr.scope, previous: tr.previous })) : null,
     !tr.complete && h('p', { class: 'lead' }, 'Records need a score from everyone who started.'),
     h('div', { class: 'rank-list' },
       g.rows.map((r) =>
@@ -172,7 +173,7 @@ function finalTogether(s, ctx) {
   const el = h('div', { class: 'screen' },
     meBar(s),
     h('h1', { class: 'title' }, `Together you scored ${g.teamTotal}`),
-    broken.length > 0 && h('div', { class: 'card pad big-result good' }, h('h2', null, 'New family records'), broken.map((r) => h('p', null, `${r.name}: ${r.total} (${r.scope})`))),
+    broken.length > 0 && h('div', { class: 'card pad big-result good' }, h('h2', null, tx('mini.newRecords')), broken.map((r) => h('p', null, `${r.name}: ${r.total} (${r.scope})`))),
     h('div', { class: 'rank-list' },
       g.standings.map((x) => h('div', { class: 'r' + (x.id === s.me ? ' me' : '') }, h('span', { class: 'tag' }, avatar(get(x.id)), get(x.id).name), h('span', null, x.score))),
     ),

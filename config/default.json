@@ -1,0 +1,20 @@
+{
+  "preset": "family",
+  "brand": {
+    "name": "OpenParlor",
+    "tagline": "Party games for the room you are in",
+    "accent": null
+  },
+  "language": "en",
+  "limits": {
+    "maxPlayers": 12,
+    "maxRooms": 500,
+    "maxConnections": 2000
+  },
+  "host": {
+    "allowClaim": true
+  },
+  "profiles": {
+    "enabled": true
+  }
+}

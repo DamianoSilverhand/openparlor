@@ -1,4 +1,4 @@
-const { clean, shuffle, filterLocal, LOCAL_OPTION, schedulePhase, toggleGamePause } = require('../util');
+const { clean, shuffle, schedulePhase, toggleGamePause } = require('../util');
 
 const CONTENT = { packs: require('../content').prompts };
 
@@ -10,17 +10,16 @@ const POINTS_FOOLED = 50;
 const POINTS_LAUGH = 10;
 const MAX_LAUGHS = 3;
 
-function promptPool(pack, local) {
-  // "Only Zambian" takes precedence over a chosen pack.
-  if (local !== 'only' && pack && CONTENT.packs[pack]) return CONTENT.packs[pack].prompts;
-  return Object.values(filterLocal(CONTENT.packs, local)).flatMap((p) => p.prompts);
+function promptPool(pack) {
+  if (pack && CONTENT.packs[pack]) return CONTENT.packs[pack].prompts;
+  return Object.values(CONTENT.packs).filter((p) => p.mixIn !== false).flatMap((p) => p.prompts); // "Mix": every pack that has not opted out
 }
 
 class WhoSaidThat {
   constructor(room) {
     this.room = room;
     this.s = { ...room.settings };
-    const pool = shuffle(promptPool(this.s.pack, this.s.local));
+    const pool = shuffle(promptPool(this.s.pack));
     this.totalRounds = Math.min(this.s.rounds, pool.length);
     this.prompts = pool.slice(0, this.totalRounds);
     this.round = 0;
@@ -341,11 +340,10 @@ module.exports = {
     scoring: 'Guess the right writer: 100 points. Fool someone with your answer: 50 points each. Every laugh you get: 10 points.',
   },
   minPlayers: 3,
-  defaults: { rounds: 5, answerTime: 45, local: 'off', pack: 'mix' },
+  defaults: { rounds: 5, answerTime: 45, pack: 'mix' },
   options: [
     { key: 'rounds', label: 'Rounds', values: [[3, '3'], [5, '5'], [8, '8']] },
     { key: 'answerTime', label: 'Time to answer', values: [[30, '30s'], [45, '45s'], [60, '60s'], [90, '90s'], [120, '2 min']] },
-    LOCAL_OPTION,
     { key: 'pack', label: 'Prompts', values: [['mix', 'Mix'], ...Object.entries(PACKS)] },
   ],
   create: (room) => new WhoSaidThat(room),

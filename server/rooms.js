@@ -1,5 +1,6 @@
 const crypto = require('crypto');
 const { clean } = require('./util');
+const { config, bands } = require('./config');
 
 // A null-prototype map, so ids such as "__proto__" or "constructor" are not games.
 const GAMES = Object.assign(Object.create(null), {
@@ -11,10 +12,18 @@ const GAMES = Object.assign(Object.create(null), {
 // A game whose content packs are missing or invalid is hidden instead of crashing.
 const usable = (id) => typeof id === 'string' && !!GAMES[id] && (typeof GAMES[id].available !== 'function' || GAMES[id].available());
 const firstUsable = () => Object.keys(GAMES).find(usable) || 'minigames';
-const MAX_ROOMS = Number(process.env.MAX_ROOMS) || 500;
+const MAX_ROOMS = config.limits.maxRooms;
+// Preset or local config may change a game's default settings, but only to values the game really offers.
+function configuredDefaults(def) {
+  const wanted = (config.gameDefaults || {})[def.id];
+  const out = {};
+  if (wanted && typeof wanted === 'object') {
+    for (const opt of def.options || []) if (opt.key in wanted && opt.values.some(([v]) => v === wanted[opt.key])) out[opt.key] = wanted[opt.key];
+  }
+  return out;
+}
 
 const CODE_LETTERS = 'ABCDEFGHJKMNPQRSTUVWXYZ';
-const MAX_PLAYERS = 12;
 const BRIEF_MS = 30000;
 const AVATAR_COUNT = 12;
 
@@ -29,7 +38,7 @@ class Room {
     this.briefTimer = null;
     this.gameId = usable('whosaidthat') ? 'whosaidthat' : firstUsable();
     this.settingsAll = {};
-    for (const [id, def] of Object.entries(GAMES)) this.settingsAll[id] = { ...def.defaults };
+    for (const [id, def] of Object.entries(GAMES)) this.settingsAll[id] = { ...def.defaults, ...configuredDefaults(def) };
     this.touched = Date.now();
   }
 
@@ -67,7 +76,8 @@ class Room {
       n = `${n} ${i}`;
     }
     const a = Number.isInteger(avatar) && avatar >= 0 && avatar < AVATAR_COUNT ? avatar : this.players.size % AVATAR_COUNT;
-    const lvl = ['kid', 'teen', 'grownup'].includes(level) ? level : null;
+    // A band id from the config (older saved data may still use kid, teen or grownup). With a single band, nobody has to choose.
+    const lvl = bands.fromLegacy(level) || (bands.ids.length === 1 ? bands.ids[0] : null);
     const p = {
       id: crypto.randomBytes(4).toString('hex'),
       token: crypto.randomBytes(12).toString('hex'),
@@ -75,7 +85,7 @@ class Room {
       name: n,
       avatar: a,
       score: 0,
-      level: lvl, // chosen in the lobby for games that use age levels
+      level: lvl, // a band id, chosen in the lobby for games that use bands
       connected: true,
       ws,
     };
@@ -111,7 +121,7 @@ class Room {
     this.update();
   }
 
-  // Players who still need to choose Kid, Teen or Grown-up (only matters for games that use levels).
+  // Players who still need to choose a band (only matters for games that use bands).
   unchosen() {
     const def = GAMES[this.gameId];
     if (!def || !def.usesLevels) return [];
@@ -183,9 +193,9 @@ class Room {
     const isHost = pid === this.hostId;
     switch (msg.t) {
       case 'level':
-        if (!this.game && ['kid', 'teen', 'grownup'].includes(msg.level)) {
+        if (!this.game && bands.fromLegacy(msg.level)) {
           const me = this.players.get(pid);
-          if (me) me.level = msg.level;
+          if (me) me.level = bands.fromLegacy(msg.level);
           this.update();
         }
         return;
@@ -196,7 +206,7 @@ class Room {
         }
         return;
       case 'claimHost':
-        if (!this.game && this.players.has(pid)) {
+        if (config.host.allowClaim && !this.game && this.players.has(pid)) {
           this.hostId = pid;
           this.update();
         }
@@ -329,4 +339,4 @@ class Rooms {
   }
 }
 
-module.exports = { Rooms, MAX_PLAYERS };
+module.exports = { Rooms };

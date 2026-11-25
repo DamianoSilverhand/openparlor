@@ -2,10 +2,10 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { clean } = require('./util');
+const { bands, config } = require('./config');
 
-const FILE = path.join(__dirname, '../data/profiles.json');
+const FILE = path.join(config.dataDir, 'profiles.json');
 const GAME_IDS = ['scramble', 'literacy', 'math', 'logic', 'memory', 'pattern', 'clash', 'reaction'];
-const LEVELS = ['kid', 'teen', 'grownup'];
 
 function load() {
   try {
@@ -17,6 +17,8 @@ function load() {
 }
 
 let profiles = load();
+// Profiles saved before bands were configurable use kid, teen or grownup: map them onto the current bands.
+for (const p of profiles) p.level = bands.fromLegacy(p.level) || bands.ids[0];
 
 function save() {
   try {
@@ -36,7 +38,7 @@ function get(id) {
 function upsert({ id, name, avatar, level }) {
   const n = clean(name, 14);
   if (!n) return null;
-  const lvl = LEVELS.includes(level) ? level : 'kid';
+  const lvl = bands.fromLegacy(level) || bands.ids[0];
   const av = Number.isInteger(avatar) && avatar >= 0 && avatar < 12 ? avatar : 0;
   let p = id ? get(id) : null;
   if (!p && !id) {

@@ -3,7 +3,7 @@ import { play } from '/shared/sound.js';
 import { rng, int, pick, shuffled, timeouts } from './util.js';
 
 const ODD = {
-  kid: [
+  easy: [
     { items: ['Apple', 'Banana', 'Carrot', 'Mango'], ans: 'Carrot' },
     { items: ['Dog', 'Cat', 'Eagle', 'Rabbit'], ans: 'Eagle' },
     { items: ['2', '4', '7', '8'], ans: '7' },
@@ -13,7 +13,7 @@ const ODD = {
     { items: ['Monday', 'Tuesday', 'January', 'Friday'], ans: 'January' },
     { items: ['Spoon', 'Fork', 'Plate', 'Knife'], ans: 'Plate' },
   ],
-  teen: [
+  medium: [
     { items: ['Triangle', 'Square', 'Pentagon', 'Sphere'], ans: 'Sphere' },
     { items: ['2', '3', '5', '9'], ans: '9' },
     { items: ['Mercury', 'Venus', 'Moon', 'Mars'], ans: 'Moon' },
@@ -22,7 +22,7 @@ const ODD = {
     { items: ['16', '25', '36', '45'], ans: '45' },
     { items: ['Copper', 'Iron', 'Gold', 'Plastic'], ans: 'Plastic' },
   ],
-  grownup: [
+  hard: [
     { items: ['Oxygen', 'Nitrogen', 'Water', 'Helium'], ans: 'Water' },
     { items: ['2', '11', '23', '27'], ans: '27' },
     { items: ['Metaphor', 'Simile', 'Sonnet', 'Alliteration'], ans: 'Sonnet' },
@@ -33,20 +33,20 @@ const ODD = {
 };
 
 const ANALOGY = {
-  kid: [
+  easy: [
     { q: 'Bird : Nest :: Bee : ?', a: 'Hive', w: ['Tree', 'Flower', 'Wing'] },
     { q: 'Hot : Cold :: Day : ?', a: 'Night', w: ['Sun', 'Warm', 'Light'] },
     { q: 'Puppy : Dog :: Kitten : ?', a: 'Cat', w: ['Mouse', 'Lion', 'Rabbit'] },
     { q: 'Eye : See :: Ear : ?', a: 'Hear', w: ['Touch', 'Smell', 'Speak'] },
     { q: 'Shoe : Foot :: Glove : ?', a: 'Hand', w: ['Head', 'Arm', 'Leg'] },
   ],
-  teen: [
+  medium: [
     { q: 'Author : Book :: Composer : ?', a: 'Symphony', w: ['Library', 'Poem', 'Canvas'] },
     { q: 'Thermometer : Temperature :: Barometer : ?', a: 'Pressure', w: ['Speed', 'Weight', 'Sound'] },
     { q: 'Triangle : 3 :: Hexagon : ?', a: '6', w: ['5', '7', '8'] },
     { q: 'Herbivore : Plants :: Carnivore : ?', a: 'Meat', w: ['Fruit', 'Water', 'Insects'] },
   ],
-  grownup: [
+  hard: [
     { q: 'Verbose : Concise :: Ephemeral : ?', a: 'Permanent', w: ['Brief', 'Fragile', 'Loud'] },
     { q: 'Hypothesis : Experiment :: Blueprint : ?', a: 'Building', w: ['Theory', 'Guess', 'Map'] },
     { q: 'Mitosis : Cells :: Erosion : ?', a: 'Rock', w: ['Water', 'Gravity', 'Light'] },
@@ -61,12 +61,12 @@ function makeProblem(r, level) {
   // 1. Number sequence
   if (kind < 0.42) {
     let seq, ans;
-    if (level === 'kid') {
+    if (level === 'easy') {
       const start = int(r, 2, 15);
       const step = pick(r, [2, 3, 4, 5, 10]);
       seq = [0, 1, 2, 3].map((i) => start + i * step);
       ans = start + 4 * step;
-    } else if (level === 'teen') {
+    } else if (level === 'medium') {
       if (r() < 0.5) {
         const a = int(r, 2, 5), m = pick(r, [2, 3]);
         seq = [a, a * m, a * m * m, a * m * m * m];
@@ -97,7 +97,7 @@ function makeProblem(r, level) {
 
   // 2. Odd one out
   if (kind < 0.7) {
-    const item = pick(r, ODD[level] || ODD.kid);
+    const item = pick(r, ODD[level] || ODD.easy);
     return {
       q: 'Which one is the odd one out?',
       options: shuffled(r, item.items),
@@ -117,7 +117,7 @@ function makeProblem(r, level) {
   }
 
   // 4. Analogy
-  const an = pick(r, ANALOGY[level] || ANALOGY.kid);
+  const an = pick(r, ANALOGY[level] || ANALOGY.easy);
   return {
     q: an.q,
     options: shuffled(r, [an.a, ...an.w]),
@@ -127,7 +127,7 @@ function makeProblem(r, level) {
 
 export function start(ctx) {
   const r = rng(ctx.seed);
-  const level = ['kid', 'teen', 'grownup'].includes(ctx.level) ? ctx.level : 'grownup';
+  const level = ['easy', 'medium', 'hard'].includes(ctx.level) ? ctx.level : 'hard';
   const t = timeouts();
   let correct = 0;
   let wrong = 0;

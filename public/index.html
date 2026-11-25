@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Family Game Night</title>
+  <title>OpenParlor</title>
   <link rel="stylesheet" href="/shared/style.css">
   <style>
     main { max-width: 760px; margin: 0 auto; padding: 8vh 20px 40px; }
@@ -23,24 +23,24 @@
 </head>
 <body>
   <main>
-    <h1>Family<span>Game Night</span></h1>
-    <p class="lead">Put the game on the big screen, then everyone joins from their own phone. No sign-ups, no internet needed.</p>
+    <h1 id="brand"><span>OpenParlor</span></h1>
+    <p class="lead" data-i18n="home.lead">Put the game on the big screen, then everyone joins from their own phone. No sign-ups, no internet needed.</p>
     <div class="choices">
       <button class="card choice a tilt" id="host">
-        <h2>Put it on the big screen</h2>
-        <p>Open this page on the TV or laptop and start a new room.</p>
+        <h2 data-i18n="home.host.title">Put it on the big screen</h2>
+        <p data-i18n="home.host.text">Open this page on the TV or laptop and start a new room.</p>
       </button>
       <a class="card choice" href="/play">
-        <h2>Join from this phone</h2>
-        <p>Type the four-letter code you can see on the TV.</p>
+        <h2 data-i18n="home.join.title">Join from this phone</h2>
+        <p data-i18n="home.join.text">Type the four-letter code you can see on the TV.</p>
       </a>
       <a class="card choice" href="/solo">
-        <h2>Practice on your own</h2>
-        <p>Solo spelling, math, logic, and memory practice with saved streaks.</p>
+        <h2 data-i18n="home.solo.title">Practice on your own</h2>
+        <p data-i18n="home.solo.text">Solo spelling, math, logic, and memory practice with saved streaks.</p>
       </a>
     </div>
     <p class="foot" id="addr"></p>
   </main>
-  <script src="/home.js"></script>
+  <script type="module" src="/home.js"></script>
 </body>
 </html>

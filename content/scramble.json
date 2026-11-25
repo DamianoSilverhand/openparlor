@@ -1,5 +1,5 @@
 {
-  "kid": [
+  "easy": [
     { "w": "because", "c": "Explains the reason why" },
     { "w": "friend", "c": "Someone you like to play with" },
     { "w": "school", "c": "A place where you learn" },
@@ -41,7 +41,7 @@
     { "w": "dragon", "c": "Mythical creature that breathes fire" },
     { "w": "puzzle", "c": "A game that makes you think" }
   ],
-  "teen": [
+  "medium": [
     { "w": "achieve", "c": "Reach a goal through effort" },
     { "w": "ancient", "c": "Very old, from long ago" },
     { "w": "balance", "c": "Equal weight or steadiness" },
@@ -83,7 +83,7 @@
     { "w": "symptom", "c": "Sign that you might be unwell" },
     { "w": "vehicle", "c": "A car, bus, or truck" }
   ],
-  "grownup": [
+  "hard": [
     { "w": "accommodate", "c": "Provide space or adapt for (double C, double M)" },
     { "w": "ambiguity", "c": "Having more than one possible meaning" },
     { "w": "anonymous", "c": "With no name given" },

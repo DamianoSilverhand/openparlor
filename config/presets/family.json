@@ -1,0 +1,9 @@
+{
+  "name": "Family",
+  "description": "Mixed ages around one TV: younger kids, teenagers and adults.",
+  "bands": [
+    { "id": "kid", "label": "Kid", "hint": "roughly ages 6 to 10", "tier": 1 },
+    { "id": "teen", "label": "Teen", "hint": "roughly ages 11 to 16", "tier": 2 },
+    { "id": "adult", "label": "Adult", "hint": "17 and over", "tier": 3 }
+  ]
+}

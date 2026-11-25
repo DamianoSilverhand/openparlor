@@ -1,24 +1,23 @@
-const { shuffle, filterLocal, LOCAL_OPTION, schedulePhase, toggleGamePause } = require('../util');
+const { shuffle, schedulePhase, toggleGamePause } = require('../util');
+const { bands } = require('../config');
 
 const content = require('../content');
-const BANK = content.questions;
-const FAMILY = content.family.filter((q) => q.w.length >= 1);
-const CATS = { ...BANK };
-if (FAMILY.length >= 4) CATS.family = { name: 'Our Family', questions: FAMILY, always: true };
+const CATS = content.questions;
 
 const INTRO_MS = 12000;
 const CATEGORY_MS = 4500;
 const REVEAL_MS = 8000;
 const SCORES_MS = 10000;
 const WAGER_MS = 20000;
-// Every question is aimed at one age group, so it is the right difficulty for the person who answers.
-// Each question is worth the same, so no age group gets the "cheap" ones.
+// Every question is aimed at one difficulty tier (easy, medium or hard), so it suits the person who answers. The tiers
+// come from each player's band in the config. Each question is worth the same, so no tier gets the "cheap" ones.
 const BASE_POINTS = 200;
 const SLOTS = 4; // questions per round
-const LEVEL_ORDER = ['kid', 'teen', 'grownup'];
-const PREF = { kid: [1, 2], teen: [2, 1, 3], grownup: [3, 2] }; // question tiers each age group is asked, best first
-const SHOWN = { kid: 3, teen: 4, grownup: 4 }; // answer choices the person answering sees
-const RANK = { grownup: 2, teen: 1, kid: 0 };
+const LEVEL_ORDER = ['easy', 'medium', 'hard'];
+const PREF = { easy: [1, 2], medium: [2, 1, 3], hard: [3, 2] }; // question difficulties each tier is asked, best first
+const SHOWN = { easy: 3, medium: 4, hard: 4 }; // answer choices the person answering sees
+const RANK = { hard: 2, medium: 1, easy: 0 };
+const tierOf = (p) => bands.tierName(p && p.level);
 const TEAM_DEFS = [
   { name: 'Red Foxes', color: '#e8472b' },
   { name: 'Blue Whales', color: '#6fb3e0' },
@@ -42,17 +41,16 @@ class Quiz {
     this.stats = new Map();
     this.assignTeams();
     this.turns = new Map(); // how often each player has been the one answering
-    this.presentLevels = LEVEL_ORDER.filter((l) => this.teams.some((t) => t.members.some((id) => ((this.room.players.get(id) || {}).level || 'grownup') === l)));
+    this.presentLevels = LEVEL_ORDER.filter((l) => this.teams.some((t) => t.members.some((id) => tierOf(this.room.players.get(id)) === l)));
     this.target = null;
     this.spot = new Map();
-    this.catMap = filterLocal(CATS, this.s.local);
-    // "Only Zambian" takes precedence: a chosen topic is ignored so no general topic sneaks back in.
-    const onlyLocal = this.s.local === 'only';
-    if (CATS[this.s.cats] && !onlyLocal) this.catMap[this.s.cats] = CATS[this.s.cats];
+    // "Mix" uses every topic except packs that opt out with "mixIn": false; a chosen topic is always allowed.
+    this.catMap = Object.fromEntries(Object.entries(CATS).filter(([, c]) => c.mixIn !== false));
+    if (CATS[this.s.cats]) this.catMap[this.s.cats] = CATS[this.s.cats];
     const ids = Object.keys(this.catMap);
     this.totalRounds = this.s.rounds;
     const order = shuffle(ids);
-    this.cats = onlyLocal || this.s.cats === 'mix' || !CATS[this.s.cats] ? Array.from({ length: this.totalRounds }, (_, i) => order[i % order.length]) : Array(this.totalRounds).fill(this.s.cats);
+    this.cats = this.s.cats === 'mix' || !CATS[this.s.cats] ? Array.from({ length: this.totalRounds }, (_, i) => order[i % order.length]) : Array(this.totalRounds).fill(this.s.cats);
     this.phase = 'intro';
     this.later(INTRO_MS, () => this.startRound());
     this.syncScores();
@@ -61,7 +59,7 @@ class Quiz {
 
   // ---- teams -------------------------------------------------------------
   assignTeams() {
-    const players = shuffle([...this.room.players.values()].filter((p) => p.connected)).sort((a, b) => RANK[b.level] - RANK[a.level]);
+    const players = shuffle([...this.room.players.values()].filter((p) => p.connected)).sort((a, b) => RANK[tierOf(b)] - RANK[tierOf(a)]);
     const n = players.length;
     const k = this.s.teams === 'solo' ? n : Math.min(this.s.teams, n);
     this.teams = [];
@@ -73,7 +71,7 @@ class Quiz {
       });
     } else {
       for (let i = 0; i < k; i++) this.teams.push({ id: `t${i}`, name: TEAM_DEFS[i].name, color: TEAM_DEFS[i].color, members: [], score: 0 });
-      // Snake draft, strongest age group first, so every team gets a mix.
+      // Snake draft, strongest group first, so every team gets a mix.
       players.forEach((p, i) => {
         const lap = Math.floor(i / k);
         const pos = i % k;
@@ -109,9 +107,9 @@ class Quiz {
     clearTimeout(this.timer);
   }
 
-  // Pick an unused question whose difficulty suits the age group (level) it is aimed at.
+  // Pick an unused question whose difficulty suits the tier it is aimed at.
   pickQuestion(catId, level) {
-    const prefs = PREF[level] || PREF.grownup;
+    const prefs = PREF[level] || PREF.hard;
     const free = (list) => shuffle(list).find((q) => !this.used.has(q));
     const tryCat = (cat, t) => free((this.catMap[cat].questions || []).filter((q) => q.d === t));
     let q = null;
@@ -163,24 +161,24 @@ class Quiz {
     this.openQuestion(this.s.time + this.readExtra());
   }
 
-  // Which age group each question in a round is aimed at. Every group in play gets a turn, and the
+  // Which group each question in a round is aimed at. Every group in play gets a turn, and the
   // starting group rotates from round to round.
   slotTargets() {
-    const L = this.presentLevels.length ? this.presentLevels : ['grownup'];
+    const L = this.presentLevels.length ? this.presentLevels : ['hard'];
     // With three groups in play one of them gets a second question. Give that extra turn to a
-    // different group each round, so no age group is favoured over a whole game.
+    // different group each round, so no group is favoured over a whole game.
     const base = L.length === 1 ? Array(SLOTS).fill(L[0]) : L.length === 2 ? [...L, ...L] : [...L, L[(this.round - 1) % L.length]];
     const r = (this.round - 1) % base.length;
     return base.slice(r).concat(base.slice(0, r));
   }
 
-  // The player on a team who answers this question: the member closest to the target age group,
+  // The player on a team who answers this question: the member closest to the target group,
   // taking turns when several fit.
   pickSpotlight(team) {
     const members = team.members.map((id) => this.room.players.get(id)).filter((p) => p && p.connected);
     if (!members.length) return null;
     const want = RANK[this.target];
-    const rank = (p) => RANK[p.level || 'grownup'];
+    const rank = (p) => RANK[tierOf(p)];
     members.sort((a, b) => Math.abs(rank(a) - want) - Math.abs(rank(b) - want) || (this.turns.get(a.id) || 0) - (this.turns.get(b.id) || 0));
     this.turns.set(members[0].id, (this.turns.get(members[0].id) || 0) + 1);
     return members[0].id;
@@ -207,11 +205,11 @@ class Quiz {
         // The whole team sees the same choices as the player answering.
         const sp = this.pickSpotlight(t);
         if (sp) this.spot.set(t.id, sp);
-        const subset = this.subsetFor(((this.room.players.get(sp) || {}).level) || 'grownup');
+        const subset = this.subsetFor(tierOf(this.room.players.get(sp)));
         for (const id of t.members) this.visible.set(id, subset);
       } else {
-        // The final question: anyone on the team can answer, each seeing choices for their own age group.
-        for (const id of t.members) this.visible.set(id, this.subsetFor(((this.room.players.get(id) || {}).level) || 'grownup'));
+        // The final question: anyone on the team can answer, each seeing choices for their own group.
+        for (const id of t.members) this.visible.set(id, this.subsetFor(tierOf(this.room.players.get(id))));
       }
     }
     this.phase = 'question';
@@ -261,11 +259,11 @@ class Quiz {
         const left = Math.max(0, Math.min(1, (this.deadline - ans.at) / this.timerTotal));
         const bonus = Math.round((BASE_POINTS * 0.5 * left) / 5) * 5;
         this.stat(t.id).speed += bonus;
-        // Half points if a question aimed at one age group is answered by another.
-        const lvl = ((this.room.players.get(this.spot.get(t.id)) || {}).level) || 'grownup';
+        // Half points if a question aimed at one group is answered by another.
+        const lvl = tierOf(this.room.players.get(this.spot.get(t.id)));
         // In solo play there is only one person, so a mismatch is half points. A team that has nobody at
-        // that age group is not penalised; a team whose matching player left is.
-        const lvlOf = (id) => ((this.room.players.get(id) || {}).level) || 'grownup';
+        // that group is not penalised; a team whose matching player left is.
+        const lvlOf = (id) => tierOf(this.room.players.get(id));
         const hasMatch = t.members.some((id) => (this.room.players.get(id) || {}).connected && lvlOf(id) === this.target);
         half = lvl !== this.target && (this.solo || hasMatch);
         pts = Math.round(((BASE_POINTS + bonus) * (this.cur.double ? 2 : 1) * (half ? 0.5 : 1)) / 5) * 5;
@@ -313,9 +311,9 @@ class Quiz {
     this.wagers = new Map();
     this.tappedWager = new Set();
     const cats = shuffle(Object.keys(this.catMap));
-    // Kids in the room make the final question medium; otherwise it is the hard one.
+    // An easy tier in the room makes the final question medium (or easy if everyone is easy); otherwise it is the hard one.
     const L = this.presentLevels;
-    const finalLevel = L.includes('kid') ? (L.length === 1 ? 'kid' : 'teen') : 'grownup';
+    const finalLevel = L.includes('easy') ? (L.length === 1 ? 'easy' : 'medium') : 'hard';
     this.cur = this.pickQuestion(cats[0], finalLevel);
     this.cur.double = false;
     this.gains = new Map();
@@ -344,7 +342,7 @@ class Quiz {
       case 'answer': {
         if (this.phase !== 'question' || !teamId) return;
         if (!(this.visible.get(pid) || []).includes(msg.idx)) return;
-        // Only the player whose age group the question is aimed at answers for the team.
+        // Only the player whose group the question is aimed at answers for the team.
         if (!this.finale) {
           const sp = this.spot.get(teamId);
           const spPlayer = this.room.players.get(sp);
@@ -418,7 +416,7 @@ class Quiz {
       readAloud: this.s.read === 'on',
       deadline: this.deadline,
       timerTotal: this.timerTotal,
-      title: 'Family Quiz Show',
+      title: 'Quiz Show',
       solo: this.solo,
       teams: this.teams.map((t) => ({ id: t.id, name: t.name, color: t.color, members: t.members, score: t.score })),
     };
@@ -484,29 +482,28 @@ class Quiz {
 
 module.exports = {
   id: 'quiz',
-  name: 'Family Quiz Show',
+  name: 'Quiz Show',
   available: () => Object.keys(CATS).length > 0,
   desc: 'Teams of mixed ages answer questions, with a big final wager.',
   rules: {
     steps: [
       'You play in teams. Each round has a topic and a few multiple-choice questions.',
-      'Every question is aimed at one age group: Kid, Teen or Grown-up. The player on your team at that age locks in the answer. Everyone else taps a suggestion to help them.',
+      'Every question is aimed at one group, based on the level each player chose in the lobby. The player on your team from that group locks in the answer. Everyone else taps a suggestion to help them.',
       'One question each round is worth double points.',
       'The last question is a final wager: bet some of your points before you see it. Get it right and you win the bet. Get it wrong and you lose it.',
     ],
-    scoring: 'Right answer: 200 points, plus a bonus for answering quickly. A wrong answer scores nothing. If a different age group answers, it is worth half points.',
+    scoring: 'Right answer: 200 points, plus a bonus for answering quickly. A wrong answer scores nothing. If a different group answers, it is worth half points.',
   },
   minPlayers: 2,
   usesLevels: true,
-  levelHint: 'Each question is aimed at one age group: easy for kids, harder for grown-ups. The player in your team at that level answers, and the rest help. Teams get a mix of ages.',
-  defaults: { teams: 2, rounds: 3, time: 30, finale: 'on', read: 'off', local: 'off', cats: 'mix' },
+  levelHint: 'Each question is aimed at one group, easier for some and harder for others. The player on your team from that group answers, and the rest help. Teams get a mix of groups.',
+  defaults: { teams: 2, rounds: 3, time: 30, finale: 'on', read: 'off', cats: 'mix' },
   options: [
     { key: 'teams', label: 'Teams', values: [[2, '2 teams'], [3, '3 teams'], [4, '4 teams'], ['solo', 'Everyone solo']] },
     { key: 'rounds', label: 'Rounds', values: [[2, '2'], [3, '3'], [4, '4']] },
     { key: 'time', label: 'Time per question', values: [[15, '15s'], [20, '20s'], [30, '30s'], [45, '45s']] },
     { key: 'finale', label: 'Final wager', values: [['on', 'On'], ['off', 'Off']] },
     { key: 'read', label: 'Read questions aloud on the TV', values: [['off', 'Off'], ['on', 'On']] },
-    LOCAL_OPTION,
     { key: 'cats', label: 'Topics', values: [['mix', 'Mix'], ...Object.entries(CATS).map(([k, v]) => [k, v.name])] },
   ],
   create: (room) => new Quiz(room),

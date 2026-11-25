@@ -3,8 +3,8 @@ import { play } from '/shared/sound.js';
 import { rng, timeouts } from './util.js';
 
 const PADS = ['#e8472b', '#6fb3e0', '#6baa4f', '#f2b632'];
-const SPEED = { kid: 750, teen: 600, grownup: 450 };
-const LIVES = { kid: 3, teen: 2, grownup: 1 };
+const SPEED = { easy: 750, medium: 600, hard: 450 };
+const LIVES = { easy: 3, medium: 2, hard: 1 };
 
 export function start(ctx) {
   const r = rng(ctx.seed);

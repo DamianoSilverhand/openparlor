@@ -106,7 +106,7 @@
 .gl.close { background: #fbe3a1; }
 .gl b { color: var(--tomato); }
 
-/* family quiz show */
+/* quiz show */
 .swatch { display: inline-block; width: 1rem; height: 1rem; border-radius: 50%; background: var(--tc); border: 2px solid var(--ink); flex: none; }
 .team-bar { display: flex; align-items: center; gap: 8px; background: var(--tc); border: var(--border); border-radius: 14px; padding: 8px 12px; font-family: var(--display); font-weight: 800; }
 .team-bar .swatch { background: var(--card); }

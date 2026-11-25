@@ -1,5 +1,8 @@
 import { h, avatar, tag, timer, byId, serverNow, onTick } from '/shared/ui.js';
 import { finalScreen, confetti } from '/tv/common.js';
+import { t as tx } from '/shared/i18n.js';
+
+const bar = (s) => (s && s.gameName ? s.gameName.toUpperCase() : tx('mini.bar').toUpperCase());
 
 export function screen(s) {
   const g = s.game;
@@ -14,12 +17,12 @@ function intro(s) {
   const g = s.game;
   const t = timer();
   const el = h('div', { class: 'stage' },
-    head(g, h('span', { class: 'code' }, 'FAMILY MINI-GAMES')),
+    head(g, h('span', { class: 'code' }, bar(s))),
     h('div', { class: 'center-msg cat-msg' },
       h('p', null, 'Up next'),
       h('div', { class: 'card cat-card' }, h('h1', null, g.mg.name)),
       h('p', { style: { marginTop: '1.6rem', color: 'var(--ink)' } }, g.mg.howto),
-      g.team && h('p', { style: { marginTop: '0.6rem' } }, 'Playing together: everyone\'s scores add up to a family total.'),
+      g.team && h('p', { style: { marginTop: '0.6rem' } }, tx('mini.together')),
     ),
     h('div', { class: 'lineup' }, g.lineup.map((n, i) => h('span', { class: 'lu' + (i + 1 === g.idx ? ' now' : i + 1 < g.idx ? ' past' : '') }, n))),
     h('div', { class: 'big-timer' }, t.el),
@@ -86,13 +89,13 @@ function results(s) {
   const missing = s.players.filter((p) => !g.rows.some((r) => r.id === p.id) && p.connected);
   const tr = g.teamRound;
   const banner = g.team
-    ? h('div', { class: 'card family-total' },
-        h('span', { class: 'ft-label' }, 'Family total'),
+    ? h('div', { class: 'card group-total' },
+        h('span', { class: 'ft-label' }, tx('mini.groupTotal')),
         h('span', { class: 'ft-num' }, tr.total),
         tr.record
-          ? h('span', { class: 'ft-note rec' }, tr.previous ? `New family record for ${tr.scope}! The old one was ${tr.previous}.` : `A first family record for ${tr.scope}!`)
+          ? h('span', { class: 'ft-note rec' }, tr.previous ? tx('mini.newRecordFor', { scope: tr.scope, previous: tr.previous }) : tx('mini.firstRecordFor', { scope: tr.scope }))
           : tr.previous
-            ? h('span', { class: 'ft-note' }, `Family record for ${tr.scope}: ${tr.previous}`)
+            ? h('span', { class: 'ft-note' }, tx('mini.recordFor', { scope: tr.scope, previous: tr.previous }))
             : null,
         !tr.complete && h('span', { class: 'ft-note' }, 'Records need a score from everyone who started.'),
       )
@@ -130,14 +133,14 @@ function teamFinal(s) {
   const max = Math.max(1, ...g.standings.map((x) => x.score));
   const broken = g.setRecords.filter((r) => r.record);
   return h('div', { class: 'stage' },
-    h('div', { class: 'bar' }, h('span', { class: 'pill' }, 'You did it together'), h('span', { class: 'code' }, 'FAMILY MINI-GAMES')),
+    h('div', { class: 'bar' }, h('span', { class: 'pill' }, 'You did it together'), h('span', { class: 'code' }, bar(s))),
     h('div', { class: 'final' },
       h('div', null,
-        h('h1', null, 'Family total'),
+        h('h1', null, tx('mini.groupTotal')),
         h('div', { class: 'big-total' }, g.teamTotal),
         broken.length > 0
-          ? h('div', { class: 'card pad rec-list' }, h('b', null, 'New family records'), broken.map((r) => h('div', null, `${r.name}: ${r.total} (${r.scope})`)))
-          : h('p', { class: 'hint' }, 'Play again to try to beat your family records.'),
+          ? h('div', { class: 'card pad rec-list' }, h('b', null, tx('mini.newRecords')), broken.map((r) => h('div', null, `${r.name}: ${r.total} (${r.scope})`)))
+          : h('p', { class: 'hint' }, tx('mini.beat')),
       ),
       h('div', { class: 'board' },
         g.standings.map((x, i) =>

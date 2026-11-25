@@ -3,7 +3,7 @@ import { play } from '/shared/sound.js';
 import { rng, int, pick, shuffled, timeouts } from './util.js';
 
 function problem(r, level) {
-  if (level === 'kid') {
+  if (level === 'easy') {
     const k = r();
     if (k < 0.28) {
       const a = int(r, 14, 68), b = int(r, 12, 49);
@@ -29,7 +29,7 @@ function problem(r, level) {
     return { text: `Half of ${hVal}`, answer: hVal / 2 };
   }
 
-  if (level === 'teen') {
+  if (level === 'medium') {
     const k = r();
     if (k < 0.25) {
       const a = int(r, 2, 12), b = int(r, 2, 9), c = int(r, 2, 9);
@@ -52,7 +52,7 @@ function problem(r, level) {
     return r() < 0.5 ? { text: `${n}²`, answer: n * n } : { text: `√${n * n}`, answer: n };
   }
 
-  // grownup: A-Levels & Adults
+  // hard
   const k = r();
   if (k < 0.25) {
     const a = int(r, 6, 15), b = int(r, 3, 12), c = int(r, 4, 25);

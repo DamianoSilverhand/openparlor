@@ -1,6 +1,8 @@
 import { h, avatar, byId, setServerNow, serverNow, soundToggle, timer } from '/shared/ui.js';
 import { play, isRunning, isMuted, onChange } from '/shared/sound.js';
 import { connect } from '/shared/net.js';
+import { config } from '/shared/config.js';
+import { t } from '/shared/i18n.js';
 import * as whosaidthat from '/tv/whosaidthat.js';
 import * as draw from '/tv/draw.js';
 import * as quiz from '/tv/quiz.js';
@@ -73,6 +75,13 @@ function briefing(s) {
   return { el, update: up };
 }
 
+// The brand name as a title: the last word goes on its own line in the accent colour.
+function brandTitle() {
+  const words = config.brand.name.split(' ');
+  const last = words.pop();
+  return h('h1', null, ...(words.length ? [words.join(' ')] : []), h('span', null, last));
+}
+
 // ---- lobby ------------------------------------------------------------------
 function lobby(s) {
   const base = info ? info.base : location.origin;
@@ -86,7 +95,7 @@ function lobby(s) {
   const el = h('div', { class: 'stage' },
     h('div', { class: 'lobby' },
       h('div', null,
-        h('h1', null, 'Family', h('span', null, 'Game Night')),
+        brandTitle(),
         gameName,
         gameDesc,
         h('ol', { class: 'steps' },
@@ -125,7 +134,7 @@ function lobby(s) {
       s.lobbyNote
         ? h('span', { style: { color: 'var(--tomato)', fontWeight: 800 } }, s.lobbyNote)
         : s.waitingOn && s.waitingOn.length > 0
-        ? h('span', null, `Waiting for ${s.waitingOn.join(', ')} to pick Kid, Teen or Grown-up on their phone.`)
+        ? h('span', null, t('level.waitingPhone', { names: s.waitingOn.join(', ') }))
         : need > 0
         ? h('span', null, `Waiting for ${need} more ${need === 1 ? 'player' : 'players'}. `)
         : h('span', null, h('b', null, host ? host.name : 'The host'), ' can start the game from their phone.'),

@@ -1,8 +1,11 @@
 import { h, avatar, timer, byId, ordinal } from '/shared/ui.js';
 import { hostButton } from '/play/whosaidthat.js';
+import { tierLabel } from '/shared/config.js';
+import { t as tr } from '/shared/i18n.js';
+
+const target = (tier) => tr('quiz.target', { label: tierLabel(tier) });
 
 const LETTERS = ['A', 'B', 'C', 'D'];
-const TARGET = { kid: 'For the kids', teen: 'For the teens', grownup: 'For the grown-ups' };
 const game = (a, extra) => ({ t: 'g', a, ...extra });
 
 export function screen(s, ctx) {
@@ -119,7 +122,7 @@ function question(s, ctx) {
   const el = h('div', { class: 'screen' },
     teamBar(s),
     t.el,
-    h('div', { class: 'qhead' }, h('span', { class: 'badges' }, g.target && h('span', { class: 'badge tgt' }, TARGET[g.target]), g.double && h('span', { class: 'badge dbl' }, 'Double points')), h('span', { class: 'cat' }, g.finale ? 'Final question' : g.category)),
+    h('div', { class: 'qhead' }, h('span', { class: 'badges' }, g.target && h('span', { class: 'badge tgt' }, target(g.target)), g.double && h('span', { class: 'badge dbl' }, 'Double points')), h('span', { class: 'cat' }, g.finale ? 'Final question' : g.category)),
     h('div', { class: 'card quote' }, h('h2', null, g.q)),
     opts,
     info,

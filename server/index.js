@@ -4,7 +4,8 @@ const path = require('path');
 const os = require('os');
 const { WebSocketServer } = require('ws');
 const QRCode = require('qrcode');
-const { Rooms, MAX_PLAYERS } = require('./rooms');
+const { Rooms } = require('./rooms');
+const { config, publicConfig } = require('./config');
 const profiles = require('./profiles');
 const content = require('./content');
 
@@ -119,6 +120,7 @@ async function handleRequest(req, res) {
   }
   const { pathname } = url;
 
+  if (pathname === '/api/config') return json(res, 200, publicConfig());
   if (pathname === '/api/info') {
     const ips = lanAddresses();
     return json(res, 200, { ips, port: PORT, base: `http://${ips[0] || 'localhost'}:${PORT}` });
@@ -133,45 +135,26 @@ async function handleRequest(req, res) {
     return json(res, 200, { exists: !!room });
   }
   if (pathname === '/api/profiles' && req.method === 'GET') {
+    if (!config.profiles.enabled) return json(res, 404, { error: 'profiles are turned off' });
     return json(res, 200, { profiles: profiles.list() });
   }
   if (pathname === '/api/profiles' && req.method === 'POST') {
+    if (!config.profiles.enabled) return json(res, 404, { error: 'profiles are turned off' });
     const body = await readBody(req);
     if (body === null) return;
     const p = profiles.upsert(body);
     return p ? json(res, 200, { profile: p }) : json(res, 400, { error: 'bad profile' });
   }
   if (pathname === '/api/profiles/record' && req.method === 'POST') {
+    if (!config.profiles.enabled) return json(res, 404, { error: 'profiles are turned off' });
     const body = await readBody(req);
     if (body === null) return;
     const resObj = profiles.record(body.id, body.gameId, body.score, body.streak);
     return resObj ? json(res, 200, resObj) : json(res, 404, { error: 'profile not found' });
   }
-  if (pathname.startsWith('/api/content/') && req.method === 'GET') {
-    const name = pathname.slice('/api/content/'.length);
-    if (!['scramble', 'literacy'].includes(name)) return json(res, 404, { error: 'not found' });
-    const file = path.join(content.DIR, `${name}.json`);
-    try {
-      const data = JSON.parse(fs.readFileSync(file, 'utf8'));
-      return json(res, 200, data);
-    } catch {
-      return json(res, 404, { error: 'not found' });
-    }
-  }
-  if (pathname === '/api/langs' && req.method === 'GET') {
-    const dir = path.join(content.DIR, 'lang');
-    const langs = [];
-    try {
-      for (const f of fs.readdirSync(dir)) {
-        if (!f.endsWith('.json')) continue;
-        try {
-          const d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
-          langs.push({ id: d.id || f.replace(/\.json$/, ''), name: d.name || f, ...d });
-        } catch {}
-      }
-    } catch {}
-    return json(res, 200, { langs });
-  }
+  // Word Builder and Word Match read their word lists here: the core files plus anything in content/packs/.
+  if (pathname === '/api/content/scramble' && req.method === 'GET') return json(res, 200, content.scramble);
+  if (pathname === '/api/content/literacy' && req.method === 'GET') return json(res, 200, content.literacy);
   if (pathname === '/qr') {
     const text = (url.searchParams.get('text') || '').slice(0, 300);
     try {
@@ -196,7 +179,7 @@ const server = http.createServer((req, res) => {
 // ---- WebSockets ------------------------------------------------------------
 // Messages are small (a stroke segment is the biggest), so 64 KB is generous. Larger ones close the connection.
 const MAX_MESSAGE = 64 * 1024;
-const MAX_CONNECTIONS = Number(process.env.MAX_CONNECTIONS) || 2000;
+const MAX_CONNECTIONS = config.limits.maxConnections;
 const wss = new WebSocketServer({ server, path: '/ws', maxPayload: MAX_MESSAGE });
 
 wss.on('connection', (ws) => {
@@ -257,7 +240,7 @@ wss.on('connection', (ws) => {
         p.ws = ws;
         p.connected = true;
       } else {
-        if (room.players.size >= MAX_PLAYERS) return fail('full', 'This room is full.');
+        if (config.limits.maxPlayers > 0 && room.players.size >= config.limits.maxPlayers) return fail('full', 'This room is full.');
         p = room.addPlayer(msg.name, msg.avatar, ws, msg.profileId, msg.level);
       }
       ctx.room = room;
@@ -312,7 +295,7 @@ process.on('SIGTERM', () => shutdown('SIGTERM'));
 
 server.listen(PORT, '0.0.0.0', () => {
   const ips = lanAddresses();
-  console.log('\nFamily Game Night is running.\n');
+  console.log(`\n${config.brand.name} is running.\n`);
   console.log(`  On this computer:  http://localhost:${PORT}`);
   for (const ip of ips) console.log(`  On your network:   http://${ip}:${PORT}`);
   console.log('\nOpen the network address on the TV, then scan the QR code with phones.\n');

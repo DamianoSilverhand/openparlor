@@ -1,4 +1,4 @@
-const { clean, shuffle, filterLocal, LOCAL_OPTION, schedulePhase, toggleGamePause } = require('../util');
+const { clean, shuffle, schedulePhase, toggleGamePause } = require('../util');
 
 const WORDS = require('../content').words;
 
@@ -21,9 +21,9 @@ function distance(a, b) {
   return d[m][n];
 }
 
-function wordPool(pack, tier, local) {
-  // "Only Zambian" takes precedence over a chosen topic.
-  const packs = pack === 'mix' || !WORDS[pack] || local === 'only' ? Object.values(filterLocal(WORDS, local)) : [WORDS[pack]];
+function wordPool(pack, tier) {
+  // "Mix": every pack that has not opted out with "mixIn": false.
+  const packs = pack === 'mix' || !WORDS[pack] ? Object.values(WORDS).filter((p) => p.mixIn !== false) : [WORDS[pack]];
   return packs.flatMap((p) => p[tier] || []);
 }
 
@@ -80,11 +80,11 @@ class Draw {
   }
   pickWords() {
     const diff = this.s.difficulty;
-    const tiers = diff === 'little' ? ['easy', 'easy', 'easy'] : diff === 'kids' ? ['easy', 'easy', 'medium'] : ['easy', 'medium', 'hard'];
+    const tiers = diff === 'easy' ? ['easy', 'easy', 'easy'] : diff === 'mostly-easy' ? ['easy', 'easy', 'medium'] : ['easy', 'medium', 'hard'];
     const out = [];
     for (const tier of tiers) {
-      let pool = shuffle(wordPool(this.s.pack, tier, this.s.local)).filter((w) => !this.used.has(w) && !out.some((o) => o.word === w));
-      if (!pool.length) pool = shuffle(wordPool(this.s.pack, tier, this.s.local)).filter((w) => !out.some((o) => o.word === w));
+      let pool = shuffle(wordPool(this.s.pack, tier)).filter((w) => !this.used.has(w) && !out.some((o) => o.word === w));
+      if (!pool.length) pool = shuffle(wordPool(this.s.pack, tier)).filter((w) => !out.some((o) => o.word === w));
       if (pool.length) out.push({ word: pool[0], tier });
     }
     return out;
@@ -365,12 +365,11 @@ module.exports = {
     scoring: 'Guess sooner for more points. Harder words are worth more. The artist earns points for every person who guesses it, plus a bonus if everyone does.',
   },
   minPlayers: 3,
-  defaults: { turns: 1, drawTime: 60, difficulty: 'kids', local: 'off', pack: 'mix' },
+  defaults: { turns: 1, drawTime: 60, difficulty: 'mostly-easy', pack: 'mix' },
   options: [
     { key: 'turns', label: 'Drawings each', values: [[1, '1'], [2, '2'], [3, '3']] },
     { key: 'drawTime', label: 'Time to draw', values: [[30, '30s'], [60, '60s'], [90, '90s'], [120, '2 min']] },
-    { key: 'difficulty', label: 'Words', values: [['little', 'Little kids'], ['kids', 'Kids'], ['everyone', 'Everyone']] },
-    LOCAL_OPTION,
+    { key: 'difficulty', label: 'Words', values: [['easy', 'Easy words'], ['mostly-easy', 'Mostly easy'], ['all', 'Easy to hard']] },
     { key: 'pack', label: 'Topic', values: [['mix', 'Mix'], ...Object.entries(WORDS).map(([k, v]) => [k, v.name])] },
   ],
   create: (room) => new Draw(room),

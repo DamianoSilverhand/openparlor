@@ -3,28 +3,28 @@ import { play } from '/shared/sound.js';
 import { rng, shuffled, timeouts } from './util.js';
 
 const FALLBACK = {
-  kid: [
+  easy: [
     { q: 'Pick the correct spelling:', a: 'because', w: ['becuase', 'becos', 'becaus'] },
     { q: 'Pick the correct spelling:', a: 'friend', w: ['freind', 'frend', 'friand'] },
     { q: "Fill the blank: ___ going to the park.", a: "They're", w: ['Their', 'There', 'Thier'] },
   ],
-  teen: [
+  medium: [
     { q: 'Pick the correct spelling:', a: 'definitely', w: ['definately', 'definitly', 'definetely'] },
     { q: 'Fill the blank: The weather will ___ our plans.', a: 'affect', w: ['effect', 'afflict', 'infect'] },
   ],
-  grownup: [
+  hard: [
     { q: 'Pick the correct spelling:', a: 'accommodate', w: ['accomodate', 'acommodate', 'accommadate'] },
     { q: "Which word means 'present everywhere at once'?", a: 'ubiquitous', w: ['ambiguous', 'obscure', 'tenuous'] },
   ],
 };
 
 let PACK = FALLBACK;
-fetch('/api/content/literacy').then((r) => r.json()).then((d) => { if (d && d.kid) PACK = d; }).catch(() => {});
+fetch('/api/content/literacy').then((r) => r.json()).then((d) => { if (d && d.easy) PACK = d; }).catch(() => {});
 
 export function start(ctx) {
   const r = rng(ctx.seed);
-  const level = PACK[ctx.level] ? ctx.level : 'grownup';
-  const list = shuffled(r, PACK[level] || FALLBACK.kid);
+  const level = PACK[ctx.level] ? ctx.level : 'hard';
+  const list = shuffled(r, PACK[level] || FALLBACK.easy);
   const t = timeouts();
   let i = 0;
   let correct = 0;

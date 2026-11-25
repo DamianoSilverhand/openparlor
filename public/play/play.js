@@ -1,5 +1,7 @@
 import { h, avatar, AVATARS, byId, setServerNow, soundToggle, timer } from '/shared/ui.js';
 import { play } from '/shared/sound.js';
+import { config, bands, bandId, bandLabel } from '/shared/config.js';
+import { t } from '/shared/i18n.js';
 import { connect } from '/shared/net.js';
 import * as whosaidthat from '/play/whosaidthat.js';
 import * as draw from '/play/draw.js';
@@ -54,14 +56,14 @@ function entryScreen(message) {
 function joinScreen(message) {
   let pick = store.get('fgn:avatar');
   if (!Number.isInteger(pick)) pick = Math.floor(Math.random() * AVATARS.length);
-  let lvl = store.get('fgn:level') || 'kid';
+  let lvl = bandId(store.get('fgn:level')) || bands[0].id;
   const name = h('input', { class: 'input', maxlength: 14, placeholder: 'Your name', autocomplete: 'nickname', value: store.get('fgn:name') || '' });
   const grid = h('div', { class: 'avatars' });
   const savedBox = h('div', { class: 'prof-list' });
   const lvlSeg = h('div', { class: 'seg' });
   const drawLvl = () =>
     lvlSeg.replaceChildren(
-      ...[['kid', 'Kid (Gr 3)'], ['teen', 'Teen (Gr 8)'], ['grownup', 'Grown-up']].map(([v, label]) =>
+      ...bands.map((b) => [b.id, b.label]).map(([v, label]) =>
         h('button', { class: v === lvl ? 'on' : '', onclick: () => { lvl = v; drawLvl(); } }, label),
       ),
     );
@@ -79,16 +81,16 @@ function joinScreen(message) {
     send({ t: 'join', room, name: n, avatar: av, level, profileId });
   };
 
-  fetch('/api/profiles').then((r) => r.json()).then((d) => {
+  if (config.profiles.enabled) fetch('/api/profiles').then((r) => r.json()).then((d) => {
     const list = d.profiles || [];
     if (!list.length) return;
     savedBox.replaceChildren(
-      h('label', { style: { display: 'block', fontFamily: 'var(--display)', fontWeight: 800, marginBottom: '6px' } }, 'Tap your profile'),
+      h('label', { style: { display: 'block', fontFamily: 'var(--display)', fontWeight: 800, marginBottom: '6px' } }, t('profile.tap')),
       h('div', { class: 'prof-grid' },
         list.map((p) =>
           h('button', { class: 'prof-btn', onclick: () => joinWith(p.name, p.avatar, p.level, p.id) },
             avatar(p),
-            h('span', { class: 'prof-meta' }, h('b', null, p.name), h('small', null, p.level === 'kid' ? 'Kid (Gr 3)' : p.level === 'teen' ? 'Teen (Gr 8)' : 'Grown-up')),
+            h('span', { class: 'prof-meta' }, h('b', null, p.name), h('small', null, bands.length > 1 ? bandLabel(p.level) : '')),
           ),
         ),
       ),
@@ -102,7 +104,7 @@ function joinScreen(message) {
     let useName = n;
     let useAvatar = pick;
     let useLevel = lvl;
-    try {
+    if (config.profiles.enabled) try {
       const r = await fetch('/api/profiles', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: n, avatar: pick, level: lvl }) });
       const data = await r.json();
       if (data.profile) {
@@ -120,8 +122,8 @@ function joinScreen(message) {
       h('h1', { class: 'title' }, `Room ${room}`),
       message && h('div', { class: 'err' }, message),
       savedBox,
-      h('div', { class: 'field' }, h('label', null, 'Or enter a new name'), name),
-      h('div', { class: 'field' }, h('label', null, 'Level'), lvlSeg),
+      h('div', { class: 'field' }, h('label', null, t('profile.orNew')), name),
+      bands.length > 1 && h('div', { class: 'field' }, h('label', null, t('level.label')), lvlSeg),
       h('div', { class: 'field' }, h('label', null, 'Pick an animal'), grid),
       h('button', { class: 'btn block push', onclick: submit }, "I'm ready"),
     ),
@@ -156,8 +158,8 @@ if (!room) {
       if (m.t === 'welcome') {
         joined = true;
         store.set(saveKey, { token: m.token, name: m.name, avatar: m.avatar });
-        const savedLvl = store.get('fgn:level');
-        if (savedLvl) send({ t: 'level', level: savedLvl });
+        const savedLvl = bandId(store.get('fgn:level'));
+        if (savedLvl && bands.length > 1) send({ t: 'level', level: savedLvl });
       } else if (m.t === 'error') {
         store.del(saveKey);
         if (m.code === 'noroom') entryScreen(m.message);
@@ -240,11 +242,11 @@ function lobby(s) {
           isHost && p.id !== s.me && p.connected && h('button', { class: 'pass-host', title: `Make ${p.name} host`, onclick: () => send({ t: 'makeHost', id: p.id }) }, '→ host'),
         ),
       )),
-      !isHost && h('button', { class: 'link', style: { alignSelf: 'flex-start', padding: '2px 0' }, onclick: () => send({ t: 'claimHost' }) }, 'Take over as host'),
-      s.usesLevels && h('div', { class: 'card pad' },
-        h('div', { class: 'seg-label', style: { marginTop: 0 } }, "Who's holding this phone?"),
-        me && !me.level && h('p', { class: 'lead', style: { fontSize: '0.9rem', color: 'var(--tomato)', fontWeight: 800, marginBottom: '6px' } }, 'Please pick one before the game starts.'),
-        seg([['kid', 'Kid (Gr 3)'], ['teen', 'Teen (Gr 8)'], ['grownup', 'Grown-up']], me ? me.level : null, (v) => { store.set('fgn:level', v); send({ t: 'level', level: v }); }),
+      !isHost && config.host.allowClaim && h('button', { class: 'link', style: { alignSelf: 'flex-start', padding: '2px 0' }, onclick: () => send({ t: 'claimHost' }) }, 'Take over as host'),
+      s.usesLevels && bands.length > 1 && h('div', { class: 'card pad' },
+        h('div', { class: 'seg-label', style: { marginTop: 0 } }, t('level.whoHolding')),
+        me && !me.level && h('p', { class: 'lead', style: { fontSize: '0.9rem', color: 'var(--tomato)', fontWeight: 800, marginBottom: '6px' } }, t('level.pickOne')),
+        seg(bands.map((b) => [b.id, b.hint ? `${b.label} (${b.hint})` : b.label]), me ? me.level : null, (v) => { store.set('fgn:level', v); send({ t: 'level', level: v }); }),
         h('p', { class: 'lead', style: { fontSize: '0.9rem', marginTop: '8px' } }, s.levelHint),
       ),
       isHost && h('div', { class: 'card pad' },
@@ -255,7 +257,7 @@ function lobby(s) {
           s.options.map((o) => [h('div', { class: 'seg-label' }, o.label), seg(o.values, s.settings[o.key], (v) => set({ [o.key]: v }))]),
         ),
       ),
-      isHost && s.waitingOn.length > 0 && h('p', { class: 'status' }, `Waiting for ${s.waitingOn.join(', ')} to pick Kid, Teen or Grown-up.`),
+      isHost && s.waitingOn.length > 0 && h('p', { class: 'status' }, t('level.waitingHost', { names: s.waitingOn.join(', ') })),
       isHost && h('button', { class: 'btn block push', disabled: need > 0 || s.waitingOn.length > 0, onclick: () => send({ t: 'start' }) }, 'Start the game'),
     ].filter(Boolean));
   }

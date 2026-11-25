@@ -1,0 +1,9 @@
+{
+  "name": "Classroom",
+  "description": "Students at two levels plus teachers and guests.",
+  "bands": [
+    { "id": "younger", "label": "Younger students", "tier": 1 },
+    { "id": "older", "label": "Older students", "tier": 2 },
+    { "id": "staff", "label": "Teachers and guests", "tier": 3 }
+  ]
+}

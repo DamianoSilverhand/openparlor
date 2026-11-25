@@ -1,0 +1,10 @@
+{
+  "name": "Party",
+  "description": "One group with no age bands: everyone plays at the same level and handicaps are off.",
+  "bands": [
+    { "id": "everyone", "label": "Everyone", "tier": 2 }
+  ],
+  "gameDefaults": {
+    "minigames": { "handicap": "off" }
+  }
+}

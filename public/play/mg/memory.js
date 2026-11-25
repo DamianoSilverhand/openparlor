@@ -3,11 +3,11 @@ import { play } from '/shared/sound.js';
 import { rng, shuffled, timeouts } from './util.js';
 
 const FACES = ['🐶', '🐱', '🐸', '🦊', '🐼', '🐵', '🦁', '🐷', '🐮', '🐔', '🐢', '🐙', '🦄', '🐝'];
-const GRID = { kid: [3, 4], teen: [4, 4], grownup: [4, 5] }; // columns x rows
+const GRID = { easy: [3, 4], medium: [4, 4], hard: [4, 5] }; // columns x rows
 
 export function start(ctx) {
   const r = rng(ctx.seed);
-  const [cols, rows] = GRID[ctx.level] || GRID.grownup;
+  const [cols, rows] = GRID[ctx.level] || GRID.hard;
   const pairs = (cols * rows) / 2;
   const faces = shuffled(r, FACES).slice(0, pairs);
   const deck = shuffled(r, [...faces, ...faces]);

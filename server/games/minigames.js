@@ -1,15 +1,22 @@
 const fs = require('fs');
 const path = require('path');
-const { shuffle, LOCAL_OPTION, schedulePhase, toggleGamePause } = require('../util');
+const { shuffle, schedulePhase, toggleGamePause } = require('../util');
+const { bands } = require('../config');
 const profiles = require('../profiles');
 
-// Family records for "play together" mode, kept between sessions. The key is the game, the number of players
-// who started the round, the handicap setting (handicaps change scores) and the Zambian-content setting
-// (it changes the Word Builder word list).
-const RECORDS_FILE = path.join(__dirname, '../../data/records.json');
+// Group records for "play together" mode, kept between sessions. The key is the game, the number of players
+// who started the round and the handicap setting (handicaps change scores).
+const RECORDS_FILE = path.join(require('../config').config.dataDir, 'records.json');
 let RECORDS = {};
 try {
   RECORDS = JSON.parse(fs.readFileSync(RECORDS_FILE, 'utf8'));
+  // Older records had a trailing content setting ("...:off"). Keep the ones that had it off.
+  for (const [k, v] of Object.entries({ ...RECORDS })) {
+    if (/:(on|off):(off|mixed|only)$/.test(k)) {
+      delete RECORDS[k];
+      if (k.endsWith(':off')) RECORDS[k.replace(/:off$/, '')] = v;
+    }
+  }
 } catch {}
 function saveRecord(key, total) {
   RECORDS[key] = { total, date: new Date().toISOString().slice(0, 10) };
@@ -82,7 +89,7 @@ class MiniGames {
   }
   levelOf(id) {
     const p = this.room.players.get(id);
-    return this.s.handicap === 'on' && p && p.level ? p.level : 'grownup';
+    return this.s.handicap === 'on' && p && p.level ? bands.tierName(p.level) : 'hard';
   }
   connectedRoster() {
     return this.roster.filter((id) => (this.room.players.get(id) || {}).connected);
@@ -128,7 +135,7 @@ class MiniGames {
     const rows = this.roster.filter((id) => this.results.has(id)).map((id) => ({ id, score: this.results.get(id) }));
     rows.sort((a, b) => b.score - a.score);
     if (this.s.mode === 'team') {
-      // Playing together: everyone's score goes into one family total. There are no winners.
+      // Playing together: everyone's score goes into one group total. There are no winners.
       rows.forEach((r, i) => {
         r.rank = i;
         r.pts = null;
@@ -141,12 +148,12 @@ class MiniGames {
       const count = this.roster.length;
       // A record needs a score from everyone who started the round, so a dropped phone can't set a low one.
       const complete = rows.length === count;
-      const key = `${this.id}:${count}:${this.s.handicap}:${this.s.local}`;
+      const key = `${this.id}:${count}:${this.s.handicap}`;
       const previous = RECORDS[key] ? RECORDS[key].total : 0;
       const record = complete && count >= 2 && total > previous;
       if (record) saveRecord(key, total);
       // A plain-English description of what this record is for, so every message can say what it compares against.
-      const scope = `${count} players, handicaps ${this.s.handicap}${this.s.local === 'only' ? ', Zambian content' : this.s.local === 'mixed' ? ', mixed content' : ''}`;
+      const scope = `${count} players, handicaps ${this.s.handicap}`;
       this.teamRound = { total, previous, record, count, complete, scope };
       this.setRecords.push({ name: this.def.name, total, previous, record, scope });
     } else {
@@ -165,7 +172,7 @@ class MiniGames {
     this.personalBests = [];
     rows.forEach((r) => {
       const p = this.room.players.get(r.id);
-      if (p && p.profileId) {
+      if (p && p.profileId && require('../config').config.profiles.enabled) {
         const res = profiles.record(p.profileId, this.id, r.score);
         if (res && res.isNewBest) this.personalBests.push(r.id);
       }
@@ -248,11 +255,10 @@ class MiniGames {
       total: this.total,
       deadline: this.deadline,
       timerTotal: this.timerTotal,
-      title: 'Family Mini-Games',
+      title: 'Mini-Games',
       mg: { id: this.id, name: this.def.name, howto: this.def.howto, duration: this.def.duration, max: this.def.max },
       lineup: this.order.map((id) => MINI[id].name),
       team: this.s.mode === 'team',
-      local: this.s.local,
     };
     if (this.phase === 'play') {
       g.seed = this.seed;
@@ -294,25 +300,24 @@ class MiniGames {
 
 module.exports = {
   id: 'minigames',
-  name: 'Family Mini-Games',
+  name: 'Mini-Games',
   desc: 'Quick rounds of memory, words, reflexes and numbers. Everyone gets a chance to shine.',
   rules: {
     steps: [
       'Everyone plays a short game on their own phone at the same time. Before each game you get a how-to and a countdown.',
-      'Younger players get an easier version, so everyone has a fair shot.',
-      "Race mode ranks you against each other. Play together mode adds everyone's scores into one family total to beat.",
+      'Players in an easier group get an easier version, so everyone has a fair shot.',
+      "Race mode ranks you against each other. Play together mode adds everyone's scores into one group total to beat.",
     ],
-    scoring: 'Race: 1st place 10 points, 2nd 7, 3rd 5, everyone else 3. Play together: the family total is saved as a record.',
+    scoring: 'Race: 1st place 10 points, 2nd 7, 3rd 5, everyone else 3. Play together: the group total is saved as a record.',
   },
   minPlayers: 2,
   usesLevels: true,
-  levelHint: 'Younger players get a gentler challenge (smaller boards, easier words and sums, extra lives, a bigger reaction window), so everyone has a fair shot.',
-  defaults: { games: 5, focus: 'mix', handicap: 'on', mode: 'race', local: 'off' },
+  levelHint: 'Players in easier groups get a gentler challenge (smaller boards, easier words and sums, extra lives, a bigger reaction window), so everyone has a fair shot.',
+  defaults: { games: 5, focus: 'mix', handicap: 'on', mode: 'race' },
   options: [
     { key: 'games', label: 'Games in the set', values: [[3, '3'], [4, '4'], [5, '5'], [6, '6']] },
     { key: 'focus', label: 'Game focus', values: [['mix', 'Mix of all'], ['brain', 'Words, Math & Memory'], ['speed', 'Speed & Reflexes']] },
     { key: 'mode', label: 'How to play', values: [['race', 'Race (ranked)'], ['team', 'Play together']] },
-    { ...LOCAL_OPTION, label: 'Zambian words in Word Builder' },
     { key: 'handicap', label: 'Fair-play handicaps', values: [['on', 'On (by age)'], ['off', 'Off']] },
   ],
   create: (room) => new MiniGames(room),

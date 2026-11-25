@@ -1,5 +1,5 @@
 {
-  "kid": [
+  "easy": [
     { "q": "Pick the correct spelling:", "a": "because", "w": ["becuase", "becos", "becaus"] },
     { "q": "Pick the correct spelling:", "a": "friend", "w": ["freind", "frend", "friand"] },
     { "q": "Pick the correct spelling:", "a": "different", "w": ["diffrent", "diferent", "differant"] },
@@ -15,7 +15,7 @@
     { "q": "Read: 'Sam put on his coat and boots.' Why?", "a": "It was cold or rainy", "w": ["He was going to bed", "It was very hot", "He lost his shoes"] },
     { "q": "Which word rhymes with 'bright'?", "a": "flight", "w": ["bread", "bring", "eight"] }
   ],
-  "teen": [
+  "medium": [
     { "q": "Pick the correct spelling:", "a": "definitely", "w": ["definately", "definitly", "definetely"] },
     { "q": "Pick the correct spelling:", "a": "separate", "w": ["seperate", "separete", "saparate"] },
     { "q": "Pick the correct spelling:", "a": "receive", "w": ["recieve", "receve", "recive"] },
@@ -29,7 +29,7 @@
     { "q": "Which word is an antonym of 'scarce'?", "a": "abundant", "w": ["rare", "tiny", "hidden"] },
     { "q": "Pick the correct spelling:", "a": "embarrass", "w": ["embarass", "embarras", "imbarrass"] }
   ],
-  "grownup": [
+  "hard": [
     { "q": "Pick the correct spelling:", "a": "accommodate", "w": ["accomodate", "acommodate", "accommadate"] },
     { "q": "Pick the correct spelling:", "a": "occurrence", "w": ["occurence", "occurrance", "ocurrence"] },
     { "q": "Pick the correct spelling:", "a": "conscience", "w": ["concience", "consience", "conscence"] },

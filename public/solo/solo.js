@@ -1,4 +1,6 @@
 import { h, avatar, AVATARS, soundToggle } from '/shared/ui.js';
+import { config, bands, bandLabel, tierOfBand } from '/shared/config.js';
+import { t } from '/shared/i18n.js';
 import { play as sfx } from '/shared/sound.js';
 import * as memory from '/play/mg/memory.js';
 import * as scramble from '/play/mg/scramble.js';
@@ -26,7 +28,7 @@ let profile = null;
 let activeTimer = null;
 let activeApi = null;
 
-const levelLabel = (l) => (l === 'kid' ? 'Kid (Gr 3)' : l === 'teen' ? 'Teen (Gr 8)' : 'Grown-up (A-Level+)');
+const levelLabel = (l) => (bands.length > 1 ? bandLabel(l) : '');
 
 function cleanup() {
   clearInterval(activeTimer);
@@ -50,13 +52,13 @@ async function loadProfiles() {
 function profileScreen() {
   cleanup();
   let pick = Math.floor(Math.random() * AVATARS.length);
-  let lvl = 'kid';
+  let lvl = bands[0].id;
   const name = h('input', { class: 'input', maxlength: 14, placeholder: 'Your name' });
   const grid = h('div', { class: 'avatars' });
   const lvlSeg = h('div', { class: 'seg' });
   const drawLvl = () =>
     lvlSeg.replaceChildren(
-      ...[['kid', 'Kid (Gr 3)'], ['teen', 'Teen (Gr 8)'], ['grownup', 'Grown-up']].map(([v, label]) =>
+      ...bands.map((b) => [b.id, b.label]).map(([v, label]) =>
         h('button', { class: v === lvl ? 'on' : '', onclick: () => { lvl = v; drawLvl(); } }, label),
       ),
     );
@@ -97,9 +99,9 @@ function profileScreen() {
         ),
       ),
       h('details', { class: 'card pad', open: profiles.length === 0 },
-        h('summary', { style: { fontFamily: 'var(--display)', fontWeight: 800, cursor: 'pointer' } }, '+ Add family member'),
+        h('summary', { style: { fontFamily: 'var(--display)', fontWeight: 800, cursor: 'pointer' } }, t('solo.addPerson')),
         h('div', { class: 'field', style: { marginTop: '12px' } }, h('label', null, 'Name'), name),
-        h('div', { class: 'field' }, h('label', null, 'Level'), lvlSeg),
+        bands.length > 1 && h('div', { class: 'field' }, h('label', null, t('level.label')), lvlSeg),
         h('div', { class: 'field' }, h('label', null, 'Animal'), grid),
         h('button', { class: 'btn block', style: { marginTop: '10px' }, onclick: create }, 'Save & Start'),
       ),
@@ -180,8 +182,7 @@ function playGame(g) {
   activeApi = g.mod.start({
     root,
     seed,
-    level: profile.level,
-    local: 'off',
+    level: tierOfBand(profile.level),
     durationMs,
     progress: () => {},
     finish,
@@ -195,4 +196,5 @@ function playGame(g) {
   }, 200);
 }
 
-loadProfiles().then(profileScreen);
+if (config.profiles.enabled) loadProfiles().then(profileScreen);
+else app.replaceChildren(h('div', { class: 'screen' }, h('h1', { class: 'title' }, 'Solo Practice'), h('p', { class: 'lead' }, 'Solo practice saves scores to a profile, and profiles are turned off on this server.'), h('a', { class: 'link', href: '/' }, '← Home')));
