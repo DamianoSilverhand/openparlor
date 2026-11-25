@@ -15,6 +15,7 @@ A file that cannot be read or is not valid JSON is reported in the server log an
 |---|---|---|
 | `preset` | `"family"` | Which file in `config/presets/` to use. `PRESET=party` overrides it. |
 | `brand.name` | `"OpenParlor"` | Shown on the home page, the TV, page titles and game headers. |
+| `brand.logo` | the OpenParlor logo when the name is `OpenParlor`, otherwise none | A picture on the home page instead of the name, as a path on this server, for example `"/icons/mylogo.svg"` (put the file in `public/`). `null` shows the name as text. |
 | `brand.tagline` | | Short line of text about your group or event. |
 | `brand.accent` | `null` | A CSS colour, for example `"#2e7d32"`, used for the main accent. |
 | `language` | `"en"` | Which file in `public/locales/` supplies the interface text. Missing keys fall back to English. |

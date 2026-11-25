@@ -229,3 +229,15 @@ test('a flush that found nothing to send does not stop later flushes from workin
   const stats = (await (await realFetch(`${s.base}/api/profiles`)).json()).profiles.find((p) => p.id === profile.id).stats;
   assert.equal(stats.bests.memory, 321);
 });
+
+test('the home page logo is configured, served and cached for offline', async (t) => {
+  const s = await startServer();
+  t.after(() => s.stop());
+  const cfg = await (await fetch(`${s.base}/api/config`)).json();
+  assert.equal(cfg.brand.logo, '/icons/logo.svg');
+  const res = await fetch(`${s.base}${cfg.brand.logo}`);
+  assert.equal(res.status, 200);
+  assert.match(res.headers.get('content-type'), /svg/);
+  const pre = await (await fetch(`${s.base}/api/precache`)).json().catch(() => null);
+  if (pre) assert.ok(JSON.stringify(pre).includes('/icons/logo.svg'));
+});

@@ -80,7 +80,10 @@ function load() {
   if (!isObj(cfg.gameDefaults)) cfg.gameDefaults = {};
   cfg.https = merge({ cert: null, key: null }, cfg.https);
   cfg.plugins = merge({ enabled: true }, cfg.plugins);
-  cfg.brand = merge({ name: 'OpenParlor', tagline: '', accent: null }, cfg.brand);
+  cfg.brand = merge({ name: 'OpenParlor', tagline: '', accent: null, logo: undefined }, cfg.brand);
+  // A logo is a picture on this server (a path such as "/icons/logo.svg"). Only the default name gets the OpenParlor logo.
+  if (cfg.brand.logo === undefined) cfg.brand.logo = cfg.brand.name === 'OpenParlor' ? '/icons/logo.svg' : null;
+  if (typeof cfg.brand.logo !== 'string' || !/^\/[\w./-]+$/.test(cfg.brand.logo) || cfg.brand.logo.includes('..')) cfg.brand.logo = null;
   return cfg;
 }
 

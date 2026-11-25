@@ -74,6 +74,7 @@ function lockup() {
 fs.mkdirSync(OUT, { recursive: true });
 const standalone = (inner, viewBox) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" role="img" aria-label="OpenParlor">\n  ${inner}\n</svg>\n`;
 fs.writeFileSync(path.join(OUT, 'logo.svg'), lockup());
+fs.copyFileSync(path.join(OUT, 'logo.svg'), path.join(__dirname, '..', 'public', 'icons', 'logo.svg')); // the home page shows it
 fs.writeFileSync(path.join(OUT, 'mark.svg'), standalone(markBody(), '16 10 72 86'));
 fs.writeFileSync(path.join(OUT, 'icon.svg'), standalone(`<rect width="100" height="100" fill="${C.mustard}"/>\n  ${markBody()}`, '0 0 100 100'));
 console.log('Logo files written to', OUT);

@@ -6,7 +6,11 @@ import { t } from '/shared/i18n.js';
 const brand = document.getElementById('brand');
 const words = config.brand.name.split(' ');
 const last = words.pop();
-brand.replaceChildren(...(words.length ? [words.join(' '), Object.assign(document.createElement('span'), { textContent: last })] : [Object.assign(document.createElement('span'), { textContent: last })]));
+if (config.brand.logo) {
+  const img = Object.assign(document.createElement('img'), { src: config.brand.logo, alt: config.brand.name });
+  brand.classList.add('has-logo');
+  brand.replaceChildren(img);
+} else brand.replaceChildren(...(words.length ? [words.join(' '), Object.assign(document.createElement('span'), { textContent: last })] : [Object.assign(document.createElement('span'), { textContent: last })]));
 document.querySelectorAll('[data-i18n]').forEach((el) => (el.textContent = t(el.dataset.i18n)));
 if (!config.profiles.enabled) document.querySelectorAll('a[href="/solo"], a[href="/stats"]').forEach((a) => (a.hidden = true));
 

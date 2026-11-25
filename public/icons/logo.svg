@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-12 -80 571.5 120" role="img" aria-label="OpenParlor">
+  <style>
+    :root { --ink: #1d1a17; --edge: #1d1a17; --teal: #238080; }
+    @media (prefers-color-scheme: dark) { :root { --ink: #fffbf2; --edge: #fffbf2; --teal: #5bbcbc; } }
+  </style>
+  <g transform="translate(-25.76 -80.26) scale(1.15)">
+  <rect x="20.5" y="82.5" width="66" height="8" rx="4" fill="var(--edge)"/>
+  <path d="M25.9,85.1 V43.5 A27.6,27.6 0 0 1 81.1,43.5 V85.1 Z" fill="var(--edge)"/>
+  <rect x="17" y="79" width="66" height="8" rx="4" fill="var(--edge)"/>
+  <path d="M22.4,81.6 V40 A27.6,27.6 0 0 1 77.6,40 V81.6 Z" fill="var(--edge)"/>
+  <path d="M24,80 V40 A26,26 0 0 1 76,40 V80 Z" fill="#238080"/>
+  <path d="M39.5,29 V65" stroke="#fffbf2" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <circle cx="52" cy="41" r="12" stroke="#fffbf2" stroke-width="7" fill="none"/>
+  <circle cx="52" cy="41" r="4" fill="#f2b632"/>
+  </g>
+  <g fill="none" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M94,-18 a18,18 0 1 0 36,0 a18,18 0 1 0 -36,0 M147,-36 V18 M165,-36 a18,18 0 1 0 0.01,0 M200,-18 H236 M236,-18 A18,18 0 1 0 230.73,-5.27 M253,0 V-36 M253,-18 A18,18 0 0 1 289,-18 V0" stroke="var(--ink)"/>
+    <path d="M306,-36 V18 M324,-36 a18,18 0 1 0 0.01,0 M377,-36 a18,18 0 1 0 0.01,0 M395,-36 V0 M412,0 V-36 M412,-18 A18,18 0 0 1 430,-36 H434 M451,-62 V0 M468,-18 a18,18 0 1 0 36,0 a18,18 0 1 0 -36,0 M521,0 V-36 M521,-18 A18,18 0 0 1 539,-36 H543" stroke="var(--teal)"/>
+  </g>
+</svg>

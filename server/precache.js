@@ -10,7 +10,7 @@ const PUBLIC = path.join(__dirname, '..', 'public');
 
 const PAGES = ['/', '/home.js', '/solo', '/solo/solo.js', '/stats', '/stats/stats.js'];
 const SHARED = ['ui.js', 'sound.js', 'config.js', 'i18n.js', 'net.js', 'wake.js', 'pwa.js', 'offline.js', 'store.js', 'style.css'];
-const OTHER = ['/play/play.css', '/sdk/minigame.js', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/icon.svg', '/icons/favicon-32.png', '/icons/apple-touch-icon.png'];
+const OTHER = ['/play/play.css', '/sdk/minigame.js', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/icon.svg', '/icons/logo.svg', '/icons/favicon-32.png', '/icons/apple-touch-icon.png'];
 const API = ['/api/config', '/api/minigames', '/api/content/scramble', '/api/content/literacy'];
 
 const fileFor = (url) => path.join(PUBLIC, url === '/' ? 'index.html' : url.endsWith('/') ? `${url}index.html` : /\.\w+$/.test(url) ? url : `${url}/index.html`);
