@@ -17,7 +17,27 @@
         "Which animal would make the worst teacher, and why?",
         "What would aliens find weirdest about humans?",
         "Name a brand new Olympic sport.",
-        "What is hiding at the bottom of the sea?"
+        "What is hiding at the bottom of the sea?",
+        "What would be the worst name for a restaurant?",
+        "If animals could vote, who would win the election and why?",
+        "Invent a new sport that can be played in a living room.",
+        "What would a robot say when it burns the toast?",
+        "What's the most useless gadget you can imagine?",
+        "If you could add one rule to school or work, what would it be?",
+        "What would your pet say about you if it could talk?",
+        "Describe the worst ice cream flavour ever made.",
+        "What's the funniest thing to name a boat?",
+        "If the Moon had a hobby, what would it be?",
+        "What would be a terrible theme for a birthday party?",
+        "What would the weather forecast say on planet Jupiter?",
+        "What's a job that only exists in fairy tales, and what does it pay?",
+        "Come up with a slogan for a sock that has lost its partner.",
+        "What would a dinosaur do on its day off?",
+        "Name a superhero whose only power is something really boring.",
+        "What's the strangest thing to find in a school bag?",
+        "What would you invent to make mornings less grumpy?",
+        "If your shadow could talk, what would it complain about?",
+        "What's the best excuse for being late that nobody would believe?"
       ]
     },
     "home": {
@@ -34,7 +54,17 @@
         "What's the one thing you always lose?",
         "What's the best meal you've ever had at home?",
         "What's the most annoying habit in your group? (Nicely, please.)",
-        "Where should your next trip be?"
+        "Where should your next trip be?",
+        "What's the best smell in your kitchen?",
+        "What is a chore you secretly don't mind?",
+        "Which room in your place has the best hiding spot?",
+        "What's the best thing to do indoors on a rainy day?",
+        "What song always gets everyone dancing in your group?",
+        "What would be on the menu at your perfect picnic?",
+        "What is something that always goes missing at home?",
+        "What's the funniest thing that has happened at a mealtime?",
+        "What do you always do first when you get home?",
+        "What is the cosiest thing about your place?"
       ]
     },
     "wyr": {
@@ -49,7 +79,22 @@
         "Would you rather have hands for feet or feet for hands? Why?",
         "Would you rather eat breakfast for every meal or never have breakfast again? Why?",
         "Would you rather be tiny or giant for a day? Why?",
-        "Would you rather have a rewind button or a pause button for life? Why?"
+        "Would you rather have a rewind button or a pause button for life? Why?",
+        "Would you rather be able to fly or be invisible? Why?",
+        "Would you rather have a pet dragon or a pet unicorn?",
+        "Would you rather always be ten minutes late or twenty minutes early?",
+        "Would you rather live on a boat or in a treehouse?",
+        "Would you rather only eat sweet food or only salty food for a year?",
+        "Would you rather have hands for feet or feet for hands?",
+        "Would you rather talk to animals or speak every human language?",
+        "Would you rather never need sleep or never need to eat?",
+        "Would you rather have a rewind button or a pause button for your life?",
+        "Would you rather be a giant or be tiny for a day?",
+        "Would you rather explore the deep sea or outer space?",
+        "Would you rather live in a house made of chocolate or ride in a car made of candy?",
+        "Would you rather always sing instead of talking or always dance instead of walking?",
+        "Would you rather have super speed or super strength?",
+        "Would you rather have a snowy day every day or a sunny beach day every day?"
       ]
     },
     "kids": {
@@ -64,7 +109,41 @@
         "Describe the silliest dance move you can think of.",
         "What would you name a robot that cleans your room?",
         "What is the monster under the bed scared of?",
-        "What would you do if you woke up as a cat?"
+        "What would you do if you woke up as a cat?",
+        "What is your favourite colour, and what would you paint with it?",
+        "If you could have any animal as a friend, which would it be?",
+        "What would you build if you had a giant box?",
+        "What is the funniest face you can make? Describe it.",
+        "What would you do if you found a magic pencil?",
+        "What is your favourite thing to do outside?",
+        "If you were a sandwich, what would be inside you?",
+        "What would you name a baby robot?",
+        "What is the nicest thing someone did for you this week?",
+        "What would you take on a trip to the moon?"
+      ]
+    },
+    "grownups": {
+      "name": "Grown-ups (opt-in)",
+      "mixIn": false,
+      "prompts": [
+        "What's the worst piece of advice you ever followed?",
+        "What would you do with a free year and no obligations?",
+        "What's an unpopular opinion you hold about food?",
+        "What did you believe about adults as a kid that turned out to be wrong?",
+        "What's the most overrated thing everyone seems to love?",
+        "Which decade had the best music, and why are you right?",
+        "What's a skill you wish you had learned earlier?",
+        "What's the most embarrassing thing you've done in a meeting or a class?",
+        "If you could swap jobs with anyone for a week, who would it be?",
+        "What's something you pretended to like in order to fit in?",
+        "What is the most useful thing you own that cost almost nothing?",
+        "What would your younger self think of your life now?",
+        "Which fictional character would be the worst flatmate?",
+        "What's a rule you break without feeling guilty?",
+        "What's the strangest thing you've ever eaten and enjoyed?",
+        "What would you put on a billboard if you had it for one day?",
+        "What's a tradition you'd happily retire?",
+        "What's the best compliment you've ever received?"
       ]
     }
   }
