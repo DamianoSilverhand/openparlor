@@ -1,1276 +1,3076 @@
 {
- "categories": {
-  "animals": {
-   "name": "Animals",
-   "questions": [
-    {
-     "q": "What do you call a baby cat?",
-     "a": "Kitten",
-     "w": [
-      "Puppy",
-      "Cub",
-      "Calf"
-     ],
-     "d": 1
+  "categories": {
+    "animals": {
+      "name": "Animals",
+      "questions": [
+        {
+          "q": "What do you call a baby cat?",
+          "a": "Kitten",
+          "w": [
+            "Puppy",
+            "Cub",
+            "Calf"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which animal has a long trunk?",
+          "a": "Elephant",
+          "w": [
+            "Giraffe",
+            "Hippo",
+            "Rhino"
+          ],
+          "d": 1
+        },
+        {
+          "q": "How many legs does a spider have?",
+          "a": "8",
+          "w": [
+            "6",
+            "10",
+            "4"
+          ],
+          "d": 1,
+          "f": "Insects have six legs, but spiders are arachnids."
+        },
+        {
+          "q": "Which bird cannot fly and lives in cold places like Antarctica?",
+          "a": "Penguin",
+          "w": [
+            "Eagle",
+            "Parrot",
+            "Owl"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What is a group of lions called?",
+          "a": "A pride",
+          "w": [
+            "A herd",
+            "A pack",
+            "A flock"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which is the fastest land animal?",
+          "a": "Cheetah",
+          "w": [
+            "Lion",
+            "Leopard",
+            "Gazelle"
+          ],
+          "d": 2,
+          "f": "A cheetah can reach about 100 km/h in short bursts."
+        },
+        {
+          "q": "What do giant pandas mostly eat?",
+          "a": "Bamboo",
+          "w": [
+            "Fish",
+            "Berries",
+            "Grass"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which sea creature has eight arms and no bones?",
+          "a": "Octopus",
+          "w": [
+            "Starfish",
+            "Jellyfish",
+            "Crab"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What is a baby kangaroo called?",
+          "a": "Joey",
+          "w": [
+            "Cub",
+            "Pup",
+            "Kid"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What is the largest animal on Earth?",
+          "a": "Blue whale",
+          "w": [
+            "African elephant",
+            "Giraffe",
+            "Whale shark"
+          ],
+          "d": 2
+        },
+        {
+          "q": "How many hearts does an octopus have?",
+          "a": "Three",
+          "w": [
+            "One",
+            "Two",
+            "Eight"
+          ],
+          "d": 3,
+          "f": "Two pump blood through the gills and one pumps it around the body."
+        },
+        {
+          "q": "What is a group of crows called?",
+          "a": "A murder",
+          "w": [
+            "A parliament",
+            "A gaggle",
+            "A colony"
+          ],
+          "d": 3,
+          "f": "A group of owls is called a parliament."
+        },
+        {
+          "q": "Which animal says \"moo\"?",
+          "a": "Cow",
+          "w": [
+            "Sheep",
+            "Pig",
+            "Duck"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What is a baby dog called?",
+          "a": "Puppy",
+          "w": [
+            "Calf",
+            "Cub",
+            "Foal"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which animal is known for its black and white stripes?",
+          "a": "Zebra",
+          "w": [
+            "Tiger",
+            "Giraffe",
+            "Leopard"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which insect makes honey?",
+          "a": "Bee",
+          "w": [
+            "Wasp",
+            "Ant",
+            "Butterfly"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which animal has a very long neck and eats leaves from tall trees?",
+          "a": "Giraffe",
+          "w": [
+            "Elephant",
+            "Horse",
+            "Rhino"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which sea animal has a hard shell, two big claws and walks sideways?",
+          "a": "Crab",
+          "w": [
+            "Starfish",
+            "Jellyfish",
+            "Seahorse"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What is a baby sheep called?",
+          "a": "Lamb",
+          "w": [
+            "Calf",
+            "Kid",
+            "Piglet"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which of these mammals can fly?",
+          "a": "Bat",
+          "w": [
+            "Owl",
+            "Eagle",
+            "Flying fish"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What does a caterpillar turn into?",
+          "a": "A butterfly",
+          "w": [
+            "A beetle",
+            "A dragonfly",
+            "A wasp"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which big cat lives in groups, unlike most other big cats?",
+          "a": "Lion",
+          "w": [
+            "Tiger",
+            "Leopard",
+            "Jaguar"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What do we call animals that eat only plants?",
+          "a": "Herbivores",
+          "w": [
+            "Carnivores",
+            "Omnivores",
+            "Insectivores"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What is a baby goat called?",
+          "a": "Kid",
+          "w": [
+            "Lamb",
+            "Calf",
+            "Cub"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which mammal is thought to live the longest, for over 200 years?",
+          "a": "Bowhead whale",
+          "w": [
+            "Blue whale",
+            "African elephant",
+            "Orca"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Which of these mammals lays eggs?",
+          "a": "Platypus",
+          "w": [
+            "Beaver",
+            "Otter",
+            "Armadillo"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Which bird is able to fly backwards?",
+          "a": "Hummingbird",
+          "w": [
+            "Swift",
+            "Kingfisher",
+            "Sparrow"
+          ],
+          "d": 3
+        },
+        {
+          "q": "What is a group of flamingos called?",
+          "a": "A flamboyance",
+          "w": [
+            "A murder",
+            "A pride",
+            "A herd"
+          ],
+          "d": 3
+        },
+        {
+          "q": "A cow's stomach has how many compartments?",
+          "a": "Four",
+          "w": [
+            "Two",
+            "Three",
+            "Five"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Which is the largest species of penguin?",
+          "a": "Emperor penguin",
+          "w": [
+            "King penguin",
+            "Adelie penguin",
+            "Gentoo penguin"
+          ],
+          "d": 3
+        }
+      ]
     },
-    {
-     "q": "Which animal has a long trunk?",
-     "a": "Elephant",
-     "w": [
-      "Giraffe",
-      "Hippo",
-      "Rhino"
-     ],
-     "d": 1
+    "sports": {
+      "name": "Sports",
+      "questions": [
+        {
+          "q": "Which sport is played at Wimbledon?",
+          "a": "Tennis",
+          "w": [
+            "Golf",
+            "Cricket",
+            "Rugby"
+          ],
+          "d": 1
+        },
+        {
+          "q": "How many players from one team are on the field at a time in football (soccer)?",
+          "a": "11",
+          "w": [
+            "9",
+            "10",
+            "12"
+          ],
+          "d": 1
+        },
+        {
+          "q": "In which sport might you score a slam dunk?",
+          "a": "Basketball",
+          "w": [
+            "Volleyball",
+            "Tennis",
+            "Football"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which sport uses a bat, a ball and bases?",
+          "a": "Baseball",
+          "w": [
+            "Basketball",
+            "Golf",
+            "Hockey"
+          ],
+          "d": 1
+        },
+        {
+          "q": "How many rings are on the Olympic flag?",
+          "a": "5",
+          "w": [
+            "4",
+            "6",
+            "7"
+          ],
+          "d": 2,
+          "f": "They stand for the five regions of the world joined in the Games."
+        },
+        {
+          "q": "Which country hosted the 2016 Summer Olympics?",
+          "a": "Brazil",
+          "w": [
+            "China",
+            "The UK",
+            "Japan"
+          ],
+          "d": 2,
+          "f": "The Games were held in Rio de Janeiro."
+        },
+        {
+          "q": "How long is an Olympic swimming pool?",
+          "a": "50 metres",
+          "w": [
+            "25 metres",
+            "100 metres",
+            "75 metres"
+          ],
+          "d": 2
+        },
+        {
+          "q": "In tennis, what is a score of zero called?",
+          "a": "Love",
+          "w": [
+            "Nil",
+            "Zero",
+            "Duck"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which sport uses a shuttlecock?",
+          "a": "Badminton",
+          "w": [
+            "Squash",
+            "Tennis",
+            "Volleyball"
+          ],
+          "d": 2
+        },
+        {
+          "q": "How many holes are played in a standard round of golf?",
+          "a": "18",
+          "w": [
+            "9",
+            "12",
+            "24"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which country has won the most men's football World Cups?",
+          "a": "Brazil",
+          "w": [
+            "Germany",
+            "Italy",
+            "Argentina"
+          ],
+          "d": 3,
+          "f": "Brazil has won it five times."
+        },
+        {
+          "q": "How many minutes does a standard rugby union match last?",
+          "a": "80",
+          "w": [
+            "60",
+            "70",
+            "90"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Which sport is played on ice with sticks and a puck?",
+          "a": "Ice hockey",
+          "w": [
+            "Curling",
+            "Skiing",
+            "Bowling"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What do you wear on your feet to glide around an ice rink?",
+          "a": "Ice skates",
+          "w": [
+            "Skis",
+            "Snowshoes",
+            "Sandals"
+          ],
+          "d": 1
+        },
+        {
+          "q": "In which sport do players take the roles of striker, midfielder and defender?",
+          "a": "Football",
+          "w": [
+            "Basketball",
+            "Baseball",
+            "Volleyball"
+          ],
+          "d": 1
+        },
+        {
+          "q": "In which sport do teams hit a ball over a high net with their hands, with six players a side?",
+          "a": "Volleyball",
+          "w": [
+            "Basketball",
+            "Handball",
+            "Tennis"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What colour is the centre of an archery target?",
+          "a": "Gold",
+          "w": [
+            "Blue",
+            "Black",
+            "White"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which sport is the Tour de France?",
+          "a": "Cycling",
+          "w": [
+            "Running",
+            "Swimming",
+            "Motor racing"
+          ],
+          "d": 1
+        },
+        {
+          "q": "How many players from one basketball team are on the court at a time?",
+          "a": "5",
+          "w": [
+            "6",
+            "7",
+            "11"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which country invented the sport of cricket?",
+          "a": "England",
+          "w": [
+            "India",
+            "Australia",
+            "South Africa"
+          ],
+          "d": 2
+        },
+        {
+          "q": "The Ryder Cup is a competition in which sport?",
+          "a": "Golf",
+          "w": [
+            "Tennis",
+            "Rugby",
+            "Cricket"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which city hosted the 2012 Summer Olympics?",
+          "a": "London",
+          "w": [
+            "Beijing",
+            "Rio de Janeiro",
+            "Athens"
+          ],
+          "d": 2
+        },
+        {
+          "q": "How many points is a try worth in rugby union?",
+          "a": "5",
+          "w": [
+            "3",
+            "4",
+            "6"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What colour card does a football referee show to send a player off?",
+          "a": "Red",
+          "w": [
+            "Yellow",
+            "Blue",
+            "Green"
+          ],
+          "d": 2
+        },
+        {
+          "q": "In which sport would you bowl a \"googly\"?",
+          "a": "Cricket",
+          "w": [
+            "Baseball",
+            "Tennis",
+            "Golf"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Which country won the first men's football World Cup, in 1930?",
+          "a": "Uruguay",
+          "w": [
+            "Brazil",
+            "Argentina",
+            "Italy"
+          ],
+          "d": 3
+        },
+        {
+          "q": "What is the highest possible score in a game of ten-pin bowling?",
+          "a": "300",
+          "w": [
+            "200",
+            "250",
+            "400"
+          ],
+          "d": 3
+        },
+        {
+          "q": "In which year were the first modern Olympic Games held?",
+          "a": "1896",
+          "w": [
+            "1900",
+            "1888",
+            "1912"
+          ],
+          "d": 3
+        },
+        {
+          "q": "About how long is a marathon?",
+          "a": "42 kilometres",
+          "w": [
+            "36 kilometres",
+            "40 kilometres",
+            "50 kilometres"
+          ],
+          "d": 3
+        },
+        {
+          "q": "In golf, what is one stroke under par on a hole called?",
+          "a": "A birdie",
+          "w": [
+            "An eagle",
+            "A bogey",
+            "An albatross"
+          ],
+          "d": 3
+        }
+      ]
     },
-    {
-     "q": "How many legs does a spider have?",
-     "a": "8",
-     "w": [
-      "6",
-      "10",
-      "4"
-     ],
-     "d": 1,
-     "f": "Insects have six legs, but spiders are arachnids."
+    "music": {
+      "name": "Music",
+      "questions": [
+        {
+          "q": "How many strings does a standard guitar have?",
+          "a": "6",
+          "w": [
+            "4",
+            "5",
+            "8"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which instrument has black and white keys?",
+          "a": "Piano",
+          "w": [
+            "Drum",
+            "Flute",
+            "Violin"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which of these do you blow into to make music?",
+          "a": "Trumpet",
+          "w": [
+            "Violin",
+            "Drum",
+            "Harp"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which of these is a percussion instrument?",
+          "a": "Drums",
+          "w": [
+            "Flute",
+            "Violin",
+            "Trumpet"
+          ],
+          "d": 1
+        },
+        {
+          "q": "In 'do, re, mi', what comes after 'mi'?",
+          "a": "Fa",
+          "w": [
+            "So",
+            "La",
+            "Ti"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which band sang 'Yellow Submarine'?",
+          "a": "The Beatles",
+          "w": [
+            "Queen",
+            "ABBA",
+            "The Rolling Stones"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which Disney film features the song 'Let It Go'?",
+          "a": "Frozen",
+          "w": [
+            "Tangled",
+            "Moana",
+            "Brave"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What is the largest string instrument in an orchestra?",
+          "a": "Double bass",
+          "w": [
+            "Cello",
+            "Violin",
+            "Viola"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which country does the band ABBA come from?",
+          "a": "Sweden",
+          "w": [
+            "Norway",
+            "Denmark",
+            "Finland"
+          ],
+          "d": 2
+        },
+        {
+          "q": "How many keys does a standard piano have?",
+          "a": "88",
+          "w": [
+            "76",
+            "92",
+            "100"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Who composed 'The Four Seasons'?",
+          "a": "Vivaldi",
+          "w": [
+            "Mozart",
+            "Beethoven",
+            "Bach"
+          ],
+          "d": 3
+        },
+        {
+          "q": "A concert harp has about how many strings?",
+          "a": "47",
+          "w": [
+            "12",
+            "24",
+            "88"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Which instrument has a bow and four strings and is played tucked under the chin?",
+          "a": "Violin",
+          "w": [
+            "Drum",
+            "Flute",
+            "Piano"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which instrument is a long thin tube that you blow across the side of?",
+          "a": "Flute",
+          "w": [
+            "Drum",
+            "Violin",
+            "Banjo"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which instrument do you shake to make a rattling sound?",
+          "a": "Maracas",
+          "w": [
+            "Trumpet",
+            "Harp",
+            "Piano"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What do we call a group of people who sing together?",
+          "a": "A choir",
+          "w": [
+            "An orchestra",
+            "A duet",
+            "A solo"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which of these is a wind instrument?",
+          "a": "Clarinet",
+          "w": [
+            "Violin",
+            "Drum",
+            "Harp"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What is a person who plays the drums called?",
+          "a": "A drummer",
+          "w": [
+            "A pianist",
+            "A violinist",
+            "A guitarist"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What do we call the speed of a piece of music?",
+          "a": "Tempo",
+          "w": [
+            "Pitch",
+            "Rhythm",
+            "Volume"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which instrument family does the trumpet belong to?",
+          "a": "Brass",
+          "w": [
+            "Woodwind",
+            "Strings",
+            "Percussion"
+          ],
+          "d": 2
+        },
+        {
+          "q": "How many musicians play in a quartet?",
+          "a": "4",
+          "w": [
+            "2",
+            "3",
+            "5"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What is a song for one singer in an opera called?",
+          "a": "An aria",
+          "w": [
+            "A hymn",
+            "A sonata",
+            "A chorus"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Who composed the \"Moonlight Sonata\"?",
+          "a": "Beethoven",
+          "w": [
+            "Mozart",
+            "Bach",
+            "Chopin"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which brass instrument has a slide that changes its pitch?",
+          "a": "Trombone",
+          "w": [
+            "Trumpet",
+            "Flute",
+            "Oboe"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Who composed the opera \"The Magic Flute\"?",
+          "a": "Mozart",
+          "w": [
+            "Verdi",
+            "Wagner",
+            "Puccini"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Which country is the tango dance associated with?",
+          "a": "Argentina",
+          "w": [
+            "Spain",
+            "Mexico",
+            "Cuba"
+          ],
+          "d": 3
+        },
+        {
+          "q": "What does \"forte\" mean in music?",
+          "a": "Loud",
+          "w": [
+            "Soft",
+            "Fast",
+            "Slow"
+          ],
+          "d": 3
+        },
+        {
+          "q": "How many strings does a standard cello have?",
+          "a": "4",
+          "w": [
+            "5",
+            "6",
+            "3"
+          ],
+          "d": 3
+        },
+        {
+          "q": "What is the musical term for gradually getting louder?",
+          "a": "Crescendo",
+          "w": [
+            "Diminuendo",
+            "Staccato",
+            "Legato"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Who composed the ballet \"Swan Lake\"?",
+          "a": "Tchaikovsky",
+          "w": [
+            "Stravinsky",
+            "Prokofiev",
+            "Rachmaninoff"
+          ],
+          "d": 3
+        }
+      ]
     },
-    {
-     "q": "Which bird cannot fly and lives in cold places like Antarctica?",
-     "a": "Penguin",
-     "w": [
-      "Eagle",
-      "Parrot",
-      "Owl"
-     ],
-     "d": 1
+    "puzzles": {
+      "name": "Puzzles & Riddles",
+      "questions": [
+        {
+          "q": "What gets wetter the more it dries?",
+          "a": "A towel",
+          "w": [
+            "A sponge",
+            "A cloud",
+            "Soap"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What can you catch but not throw?",
+          "a": "A cold",
+          "w": [
+            "A ball",
+            "A rope",
+            "A wave"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which number comes next: 2, 4, 6, 8, ...?",
+          "a": "10",
+          "w": [
+            "9",
+            "12",
+            "14"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What is 6 x 7?",
+          "a": "42",
+          "w": [
+            "36",
+            "48",
+            "49"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What has keys but cannot open locks?",
+          "a": "A piano",
+          "w": [
+            "A map",
+            "A door",
+            "A clock"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which number comes next: 1, 1, 2, 3, 5, 8, ...?",
+          "a": "13",
+          "w": [
+            "11",
+            "12",
+            "15"
+          ],
+          "d": 2,
+          "f": "Each number is the sum of the two before it. This is the Fibonacci sequence."
+        },
+        {
+          "q": "What has a neck but no head?",
+          "a": "A bottle",
+          "w": [
+            "A spoon",
+            "A pencil",
+            "A chair"
+          ],
+          "d": 2
+        },
+        {
+          "q": "You have 3 apples and you take away 2. How many do you have?",
+          "a": "2",
+          "w": [
+            "1",
+            "3",
+            "0"
+          ],
+          "d": 2,
+          "f": "You took 2, so you have the 2 you took."
+        },
+        {
+          "q": "How many months have 28 days?",
+          "a": "All of them",
+          "w": [
+            "Just February",
+            "Two",
+            "None"
+          ],
+          "d": 2,
+          "f": "Every month has at least 28 days."
+        },
+        {
+          "q": "Which number comes next: 3, 6, 12, 24, ...?",
+          "a": "48",
+          "w": [
+            "36",
+            "30",
+            "42"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What comes once in a minute, twice in a moment, but never in a thousand years?",
+          "a": "The letter M",
+          "w": [
+            "The letter T",
+            "A second",
+            "A heartbeat"
+          ],
+          "d": 3
+        },
+        {
+          "q": "A farmer has 17 sheep and all but 9 run away. How many are left?",
+          "a": "9",
+          "w": [
+            "8",
+            "17",
+            "0"
+          ],
+          "d": 3,
+          "f": "'All but 9' means 9 stayed."
+        },
+        {
+          "q": "What has hands but cannot clap?",
+          "a": "A clock",
+          "w": [
+            "A chair",
+            "A tree",
+            "A river"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What has four legs but cannot walk?",
+          "a": "A table",
+          "w": [
+            "A dog",
+            "A bird",
+            "A cat"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What goes up when the rain comes down?",
+          "a": "An umbrella",
+          "w": [
+            "A bird",
+            "A cloud",
+            "A puddle"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which is heavier: a kilogram of feathers or a kilogram of stones?",
+          "a": "They weigh the same",
+          "w": [
+            "The feathers",
+            "The stones",
+            "It depends on the stones"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which shape has no corners?",
+          "a": "A circle",
+          "w": [
+            "A square",
+            "A triangle",
+            "A rectangle"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What is double 15?",
+          "a": "30",
+          "w": [
+            "25",
+            "35",
+            "45"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What can travel around the world while staying in one corner?",
+          "a": "A stamp",
+          "w": [
+            "A map",
+            "A clock",
+            "A coin"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which number comes next: 1, 4, 9, 16, ...?",
+          "a": "25",
+          "w": [
+            "20",
+            "24",
+            "36"
+          ],
+          "d": 2
+        },
+        {
+          "q": "I am an odd number. Take away one letter and I become even. What number am I?",
+          "a": "Seven",
+          "w": [
+            "Nine",
+            "Five",
+            "Three"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What building has the most stories?",
+          "a": "A library",
+          "w": [
+            "A skyscraper",
+            "A castle",
+            "A school"
+          ],
+          "d": 2
+        },
+        {
+          "q": "How many times can you subtract 5 from 25?",
+          "a": "Once",
+          "w": [
+            "Five times",
+            "Four times",
+            "Never"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What begins with T, ends with T and has T inside it?",
+          "a": "A teapot",
+          "w": [
+            "A tent",
+            "A ticket",
+            "A turtle"
+          ],
+          "d": 2
+        },
+        {
+          "q": "A bat and a ball cost 110 coins together. The bat costs 100 coins more than the ball. How much is the ball?",
+          "a": "5 coins",
+          "w": [
+            "10 coins",
+            "1 coin",
+            "15 coins"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Mary's mother has four daughters: Nana, Nene, Nini and Nono. What is the fifth daughter called?",
+          "a": "Mary",
+          "w": [
+            "Nunu",
+            "Nina",
+            "Nona"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Which letter comes next: O, T, T, F, F, S, S, E, ...?",
+          "a": "N",
+          "w": [
+            "T",
+            "M",
+            "I"
+          ],
+          "d": 3
+        },
+        {
+          "q": "A doctor gives you three pills and says to take one every half hour. How long until you have taken all three?",
+          "a": "One hour",
+          "w": [
+            "One and a half hours",
+            "Three hours",
+            "Half an hour"
+          ],
+          "d": 3
+        },
+        {
+          "q": "How many months of the year have 31 days?",
+          "a": "7",
+          "w": [
+            "6",
+            "8",
+            "5"
+          ],
+          "d": 3
+        },
+        {
+          "q": "A rooster lays an egg on the very top of a pointed roof. Which way does it roll?",
+          "a": "Neither: roosters do not lay eggs",
+          "w": [
+            "Left",
+            "Right",
+            "Down the steeper side"
+          ],
+          "d": 3
+        }
+      ]
     },
-    {
-     "q": "What is a group of lions called?",
-     "a": "A pride",
-     "w": [
-      "A herd",
-      "A pack",
-      "A flock"
-     ],
-     "d": 2
+    "geography": {
+      "name": "Geography",
+      "questions": [
+        {
+          "q": "Which is the largest ocean?",
+          "a": "Pacific",
+          "w": [
+            "Atlantic",
+            "Indian",
+            "Arctic"
+          ],
+          "d": 1
+        },
+        {
+          "q": "How many continents are there?",
+          "a": "7",
+          "w": [
+            "5",
+            "6",
+            "8"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which country is famous for the Eiffel Tower?",
+          "a": "France",
+          "w": [
+            "Italy",
+            "Spain",
+            "Germany"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What is the capital of England?",
+          "a": "London",
+          "w": [
+            "Paris",
+            "Dublin",
+            "Manchester"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which is the longest river in Africa?",
+          "a": "The Nile",
+          "w": [
+            "The Congo",
+            "The Niger",
+            "The Zambezi"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What is the capital of Australia?",
+          "a": "Canberra",
+          "w": [
+            "Sydney",
+            "Melbourne",
+            "Perth"
+          ],
+          "d": 2,
+          "f": "Many people guess Sydney, but Canberra is the capital."
+        },
+        {
+          "q": "Which is the largest hot desert in the world?",
+          "a": "The Sahara",
+          "w": [
+            "The Gobi",
+            "The Kalahari",
+            "The Arabian Desert"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Mount Everest is part of which mountain range?",
+          "a": "The Himalayas",
+          "w": [
+            "The Alps",
+            "The Andes",
+            "The Rockies"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which country has a maple leaf on its flag?",
+          "a": "Canada",
+          "w": [
+            "Australia",
+            "New Zealand",
+            "Ireland"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which is the largest country in the world by area?",
+          "a": "Russia",
+          "w": [
+            "Canada",
+            "China",
+            "The USA"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What is the smallest country in the world?",
+          "a": "Vatican City",
+          "w": [
+            "Monaco",
+            "Malta",
+            "San Marino"
+          ],
+          "d": 3
+        },
+        {
+          "q": "What is the capital of Canada?",
+          "a": "Ottawa",
+          "w": [
+            "Toronto",
+            "Vancouver",
+            "Montreal"
+          ],
+          "d": 3
+        },
+        {
+          "q": "What is the capital of France?",
+          "a": "Paris",
+          "w": [
+            "Lyon",
+            "Marseille",
+            "Brussels"
+          ],
+          "d": 1
+        },
+        {
+          "q": "On which continent is Egypt?",
+          "a": "Africa",
+          "w": [
+            "Asia",
+            "Europe",
+            "South America"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which is the biggest continent by area?",
+          "a": "Asia",
+          "w": [
+            "Africa",
+            "North America",
+            "Europe"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What is the imaginary line around the middle of the Earth called?",
+          "a": "The equator",
+          "w": [
+            "The prime meridian",
+            "The tropic",
+            "The date line"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which country is shaped like a boot?",
+          "a": "Italy",
+          "w": [
+            "Spain",
+            "Greece",
+            "Portugal"
+          ],
+          "d": 1
+        },
+        {
+          "q": "On which continent is Brazil?",
+          "a": "South America",
+          "w": [
+            "Africa",
+            "Asia",
+            "North America"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What is the capital of Japan?",
+          "a": "Tokyo",
+          "w": [
+            "Kyoto",
+            "Osaka",
+            "Seoul"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which river flows through London?",
+          "a": "The Thames",
+          "w": [
+            "The Seine",
+            "The Danube",
+            "The Rhine"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which is the longest river in South America?",
+          "a": "The Amazon",
+          "w": [
+            "The Orinoco",
+            "The Parana",
+            "The Magdalena"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What is the capital of Brazil?",
+          "a": "Brasilia",
+          "w": [
+            "Rio de Janeiro",
+            "Sao Paulo",
+            "Salvador"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which ocean lies between Africa and Australia?",
+          "a": "The Indian Ocean",
+          "w": [
+            "The Atlantic Ocean",
+            "The Pacific Ocean",
+            "The Arctic Ocean"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which is the largest island in the world that is not a continent?",
+          "a": "Greenland",
+          "w": [
+            "Madagascar",
+            "Borneo",
+            "New Guinea"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which African country has the most people?",
+          "a": "Nigeria",
+          "w": [
+            "Ethiopia",
+            "Egypt",
+            "Kenya"
+          ],
+          "d": 3
+        },
+        {
+          "q": "What is the capital of Turkey?",
+          "a": "Ankara",
+          "w": [
+            "Istanbul",
+            "Izmir",
+            "Bursa"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Which is the deepest lake in the world?",
+          "a": "Lake Baikal",
+          "w": [
+            "Lake Superior",
+            "Lake Victoria",
+            "Lake Tanganyika"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Which two countries share the longest land border in the world?",
+          "a": "Canada and the United States",
+          "w": [
+            "Russia and China",
+            "Argentina and Chile",
+            "India and Pakistan"
+          ],
+          "d": 3
+        },
+        {
+          "q": "What is the capital of New Zealand?",
+          "a": "Wellington",
+          "w": [
+            "Auckland",
+            "Christchurch",
+            "Hamilton"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Which desert covers much of Mongolia and northern China?",
+          "a": "The Gobi Desert",
+          "w": [
+            "The Kalahari",
+            "The Atacama",
+            "The Arabian Desert"
+          ],
+          "d": 3
+        }
+      ]
     },
-    {
-     "q": "Which is the fastest land animal?",
-     "a": "Cheetah",
-     "w": [
-      "Lion",
-      "Leopard",
-      "Gazelle"
-     ],
-     "d": 2,
-     "f": "A cheetah can reach about 100 km/h in short bursts."
+    "science": {
+      "name": "Science",
+      "questions": [
+        {
+          "q": "What do we call frozen water?",
+          "a": "Ice",
+          "w": [
+            "Steam",
+            "Mist",
+            "Fog"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which part of your body pumps blood?",
+          "a": "Heart",
+          "w": [
+            "Lungs",
+            "Brain",
+            "Stomach"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which gas do we need to breathe to stay alive?",
+          "a": "Oxygen",
+          "w": [
+            "Helium",
+            "Carbon dioxide",
+            "Hydrogen"
+          ],
+          "d": 1
+        },
+        {
+          "q": "How many planets are in our solar system?",
+          "a": "8",
+          "w": [
+            "7",
+            "9",
+            "10"
+          ],
+          "d": 1,
+          "f": "Pluto is now called a dwarf planet."
+        },
+        {
+          "q": "Which planet is known as the Red Planet?",
+          "a": "Mars",
+          "w": [
+            "Venus",
+            "Jupiter",
+            "Mercury"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What is the hardest natural material?",
+          "a": "Diamond",
+          "w": [
+            "Gold",
+            "Iron",
+            "Quartz"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What force pulls things towards the Earth?",
+          "a": "Gravity",
+          "w": [
+            "Magnetism",
+            "Friction",
+            "Wind"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which is the biggest planet in our solar system?",
+          "a": "Jupiter",
+          "w": [
+            "Saturn",
+            "Neptune",
+            "Earth"
+          ],
+          "d": 2
+        },
+        {
+          "q": "How many bones does an adult human have?",
+          "a": "206",
+          "w": [
+            "106",
+            "306",
+            "150"
+          ],
+          "d": 2,
+          "f": "Babies are born with about 300, and some fuse together as they grow."
+        },
+        {
+          "q": "What is the chemical symbol for gold?",
+          "a": "Au",
+          "w": [
+            "Ag",
+            "Go",
+            "Gd"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Which blood cells carry oxygen around the body?",
+          "a": "Red blood cells",
+          "w": [
+            "White blood cells",
+            "Platelets",
+            "Nerve cells"
+          ],
+          "d": 3
+        },
+        {
+          "q": "About how long does sunlight take to reach Earth?",
+          "a": "8 minutes",
+          "w": [
+            "8 seconds",
+            "8 hours",
+            "1 minute"
+          ],
+          "d": 3
+        },
+        {
+          "q": "What do plants need from the sun to grow?",
+          "a": "Light",
+          "w": [
+            "Sand",
+            "Salt",
+            "Wind"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What is the name of the star at the centre of our solar system?",
+          "a": "The Sun",
+          "w": [
+            "The Moon",
+            "Mars",
+            "Venus"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which sense do you use your ears for?",
+          "a": "Hearing",
+          "w": [
+            "Sight",
+            "Smell",
+            "Taste"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which of these is a liquid at room temperature?",
+          "a": "Water",
+          "w": [
+            "Ice",
+            "Steam",
+            "Stone"
+          ],
+          "d": 1
+        },
+        {
+          "q": "How many legs does an insect have?",
+          "a": "6",
+          "w": [
+            "4",
+            "8",
+            "10"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What do we call water that falls from clouds?",
+          "a": "Rain",
+          "w": [
+            "Fog",
+            "Wind",
+            "Dew"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which planet is closest to the Sun?",
+          "a": "Mercury",
+          "w": [
+            "Venus",
+            "Earth",
+            "Mars"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which gas do plants take in from the air?",
+          "a": "Carbon dioxide",
+          "w": [
+            "Oxygen",
+            "Nitrogen",
+            "Helium"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What is the centre of an atom called?",
+          "a": "The nucleus",
+          "w": [
+            "The shell",
+            "The cell",
+            "The core"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which organs do we use to breathe?",
+          "a": "Lungs",
+          "w": [
+            "Liver",
+            "Kidneys",
+            "Stomach"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What force slows down things that slide against each other?",
+          "a": "Friction",
+          "w": [
+            "Gravity",
+            "Magnetism",
+            "Inertia"
+          ],
+          "d": 2
+        },
+        {
+          "q": "At what temperature does water boil at sea level, in degrees Celsius?",
+          "a": "100",
+          "w": [
+            "90",
+            "110",
+            "212"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What is the chemical formula for water?",
+          "a": "H2O",
+          "w": [
+            "CO2",
+            "O2",
+            "H2O2"
+          ],
+          "d": 3
+        },
+        {
+          "q": "What is the largest organ of the human body?",
+          "a": "The skin",
+          "w": [
+            "The liver",
+            "The lungs",
+            "The heart"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Which scientist developed the theory of general relativity?",
+          "a": "Albert Einstein",
+          "w": [
+            "Isaac Newton",
+            "Galileo Galilei",
+            "Charles Darwin"
+          ],
+          "d": 3
+        },
+        {
+          "q": "About how fast does light travel?",
+          "a": "300,000 km per second",
+          "w": [
+            "30,000 km per second",
+            "3,000,000 km per second",
+            "300 km per second"
+          ],
+          "d": 3
+        },
+        {
+          "q": "What is the pH of pure water?",
+          "a": "7",
+          "w": [
+            "0",
+            "5",
+            "14"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Which gas makes up most of the Earth's atmosphere?",
+          "a": "Nitrogen",
+          "w": [
+            "Oxygen",
+            "Carbon dioxide",
+            "Argon"
+          ],
+          "d": 3
+        }
+      ]
     },
-    {
-     "q": "What do giant pandas mostly eat?",
-     "a": "Bamboo",
-     "w": [
-      "Fish",
-      "Berries",
-      "Grass"
-     ],
-     "d": 2
+    "food": {
+      "name": "Food & Drink",
+      "questions": [
+        {
+          "q": "Which fruit is yellow and curved?",
+          "a": "Banana",
+          "w": [
+            "Apple",
+            "Orange",
+            "Grape"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Pizza was first made in which country?",
+          "a": "Italy",
+          "w": [
+            "France",
+            "The USA",
+            "Greece"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What is the main ingredient in bread?",
+          "a": "Flour",
+          "w": [
+            "Sugar",
+            "Rice",
+            "Butter"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which vegetable can make you cry when you chop it?",
+          "a": "Onion",
+          "w": [
+            "Carrot",
+            "Potato",
+            "Pepper"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which country is sushi from?",
+          "a": "Japan",
+          "w": [
+            "China",
+            "Korea",
+            "Thailand"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What do you call a dried grape?",
+          "a": "A raisin",
+          "w": [
+            "A prune",
+            "A date",
+            "A fig"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which nut is used to make marzipan?",
+          "a": "Almond",
+          "w": [
+            "Peanut",
+            "Cashew",
+            "Walnut"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Guacamole is mainly made from which fruit?",
+          "a": "Avocado",
+          "w": [
+            "Lime",
+            "Tomato",
+            "Mango"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Tofu is made from which bean?",
+          "a": "Soybean",
+          "w": [
+            "Kidney bean",
+            "Black bean",
+            "Green bean"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What is the main ingredient of hummus?",
+          "a": "Chickpeas",
+          "w": [
+            "Lentils",
+            "Black beans",
+            "Peas"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which is the most expensive spice in the world by weight?",
+          "a": "Saffron",
+          "w": [
+            "Cinnamon",
+            "Paprika",
+            "Ginger"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Which cheese is traditionally in a Greek salad?",
+          "a": "Feta",
+          "w": [
+            "Cheddar",
+            "Mozzarella",
+            "Brie"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Which food do bees make?",
+          "a": "Honey",
+          "w": [
+            "Jam",
+            "Syrup",
+            "Butter"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which of these is a vegetable?",
+          "a": "Carrot",
+          "w": [
+            "Apple",
+            "Banana",
+            "Mango"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What do we call the first meal of the day?",
+          "a": "Breakfast",
+          "w": [
+            "Dinner",
+            "Lunch",
+            "Supper"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which spread, made from cream, is put on toast?",
+          "a": "Butter",
+          "w": [
+            "Flour",
+            "Sugar",
+            "Salt"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which fruit has its seeds on the outside?",
+          "a": "Strawberry",
+          "w": [
+            "Apple",
+            "Banana",
+            "Grape"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which cold dessert is often served in a cone?",
+          "a": "Ice cream",
+          "w": [
+            "Pudding",
+            "Cake",
+            "Jelly"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which spice gives curry its yellow colour?",
+          "a": "Turmeric",
+          "w": [
+            "Cinnamon",
+            "Pepper",
+            "Ginger"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Chocolate is made from the beans of which plant?",
+          "a": "Cacao",
+          "w": [
+            "Coffee",
+            "Vanilla",
+            "Tea"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Kimchi is a food from which country?",
+          "a": "Korea",
+          "w": [
+            "Japan",
+            "China",
+            "Thailand"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What is the Japanese rice ball called?",
+          "a": "Onigiri",
+          "w": [
+            "Ramen",
+            "Tempura",
+            "Miso"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What is yoghurt made from?",
+          "a": "Milk",
+          "w": [
+            "Eggs",
+            "Rice",
+            "Potatoes"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which fruit is dried to make prunes?",
+          "a": "Plums",
+          "w": [
+            "Grapes",
+            "Figs",
+            "Dates"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which country does the rice dish paella come from?",
+          "a": "Spain",
+          "w": [
+            "Portugal",
+            "Mexico",
+            "Italy"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Which country does the stew goulash come from?",
+          "a": "Hungary",
+          "w": [
+            "Poland",
+            "Germany",
+            "Austria"
+          ],
+          "d": 3
+        },
+        {
+          "q": "What does \"al dente\" describe when cooking pasta?",
+          "a": "Firm to the bite",
+          "w": [
+            "Very soft",
+            "Very salty",
+            "Burnt"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Which nuts are used in a traditional pesto?",
+          "a": "Pine nuts",
+          "w": [
+            "Walnuts",
+            "Almonds",
+            "Cashews"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Which cheese is traditionally used on a classic margherita pizza?",
+          "a": "Mozzarella",
+          "w": [
+            "Cheddar",
+            "Brie",
+            "Gouda"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Saffron comes from the flower of which plant?",
+          "a": "Crocus",
+          "w": [
+            "Rose",
+            "Tulip",
+            "Lily"
+          ],
+          "d": 3
+        }
+      ]
     },
-    {
-     "q": "Which sea creature has eight arms and no bones?",
-     "a": "Octopus",
-     "w": [
-      "Starfish",
-      "Jellyfish",
-      "Crab"
-     ],
-     "d": 2
+    "general": {
+      "name": "General Knowledge",
+      "questions": [
+        {
+          "q": "How many days are in a week?",
+          "a": "7",
+          "w": [
+            "5",
+            "6",
+            "8"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What colour do you get when you mix blue and yellow?",
+          "a": "Green",
+          "w": [
+            "Purple",
+            "Orange",
+            "Brown"
+          ],
+          "d": 1
+        },
+        {
+          "q": "How many sides does a triangle have?",
+          "a": "3",
+          "w": [
+            "4",
+            "5",
+            "6"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which season comes after winter?",
+          "a": "Spring",
+          "w": [
+            "Summer",
+            "Autumn",
+            "Monsoon"
+          ],
+          "d": 1
+        },
+        {
+          "q": "How many minutes are there in a day?",
+          "a": "1,440",
+          "w": [
+            "1,240",
+            "1,000",
+            "2,400"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Who painted the Mona Lisa?",
+          "a": "Leonardo da Vinci",
+          "w": [
+            "Picasso",
+            "Van Gogh",
+            "Michelangelo"
+          ],
+          "d": 2
+        },
+        {
+          "q": "How many sides does a hexagon have?",
+          "a": "6",
+          "w": [
+            "5",
+            "7",
+            "8"
+          ],
+          "d": 2
+        },
+        {
+          "q": "In which month do people celebrate Halloween?",
+          "a": "October",
+          "w": [
+            "November",
+            "September",
+            "December"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which famous ship sank in 1912 after hitting an iceberg?",
+          "a": "The Titanic",
+          "w": [
+            "The Lusitania",
+            "The Mayflower",
+            "The Bismarck"
+          ],
+          "d": 2
+        },
+        {
+          "q": "How many strings does a violin have?",
+          "a": "4",
+          "w": [
+            "3",
+            "5",
+            "6"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which language has the most native speakers in the world?",
+          "a": "Mandarin Chinese",
+          "w": [
+            "English",
+            "Spanish",
+            "Hindi"
+          ],
+          "d": 3
+        },
+        {
+          "q": "What is 50 in Roman numerals?",
+          "a": "L",
+          "w": [
+            "D",
+            "C",
+            "X"
+          ],
+          "d": 3
+        },
+        {
+          "q": "How many months are in a year?",
+          "a": "12",
+          "w": [
+            "10",
+            "11",
+            "13"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What do you call a place where you can borrow books?",
+          "a": "A library",
+          "w": [
+            "A bakery",
+            "A museum",
+            "A garage"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What shape is a stop sign?",
+          "a": "An octagon",
+          "w": [
+            "A circle",
+            "A square",
+            "A triangle"
+          ],
+          "d": 1
+        },
+        {
+          "q": "How many days are in a leap year?",
+          "a": "366",
+          "w": [
+            "365",
+            "364",
+            "367"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What is the opposite of \"hot\"?",
+          "a": "Cold",
+          "w": [
+            "Wet",
+            "Dry",
+            "Soft"
+          ],
+          "d": 1
+        },
+        {
+          "q": "How many wheels does a bicycle have?",
+          "a": "2",
+          "w": [
+            "1",
+            "3",
+            "4"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Who wrote the play \"Romeo and Juliet\"?",
+          "a": "William Shakespeare",
+          "w": [
+            "Charles Dickens",
+            "Jane Austen",
+            "Homer"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which language is spoken in Brazil?",
+          "a": "Portuguese",
+          "w": [
+            "Spanish",
+            "French",
+            "Italian"
+          ],
+          "d": 2
+        },
+        {
+          "q": "In which direction does the Sun rise?",
+          "a": "East",
+          "w": [
+            "West",
+            "North",
+            "South"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which Danish toy is made of small plastic bricks that click together?",
+          "a": "LEGO",
+          "w": [
+            "Meccano",
+            "Playmobil",
+            "K'Nex"
+          ],
+          "d": 2
+        },
+        {
+          "q": "How many squares are on a chessboard?",
+          "a": "64",
+          "w": [
+            "56",
+            "72",
+            "81"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which tool helps you see tiny things that are too small for your eyes?",
+          "a": "A microscope",
+          "w": [
+            "A telescope",
+            "A periscope",
+            "A stethoscope"
+          ],
+          "d": 2
+        },
+        {
+          "q": "In which year did humans first land on the Moon?",
+          "a": "1969",
+          "w": [
+            "1959",
+            "1972",
+            "1965"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Who is usually credited with inventing the telephone?",
+          "a": "Alexander Graham Bell",
+          "w": [
+            "Thomas Edison",
+            "Nikola Tesla",
+            "Guglielmo Marconi"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Which of the ancient Wonders of the World still stands today?",
+          "a": "The Great Pyramid of Giza",
+          "w": [
+            "The Colossus of Rhodes",
+            "The Hanging Gardens of Babylon",
+            "The Lighthouse of Alexandria"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Who created the detective Sherlock Holmes?",
+          "a": "Arthur Conan Doyle",
+          "w": [
+            "Agatha Christie",
+            "Edgar Allan Poe",
+            "Charles Dickens"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Which instrument measures earthquakes?",
+          "a": "A seismograph",
+          "w": [
+            "A barometer",
+            "A thermometer",
+            "An anemometer"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Who painted \"The Starry Night\"?",
+          "a": "Vincent van Gogh",
+          "w": [
+            "Claude Monet",
+            "Pablo Picasso",
+            "Salvador Dali"
+          ],
+          "d": 3
+        }
+      ]
     },
-    {
-     "q": "What is a baby kangaroo called?",
-     "a": "Joey",
-     "w": [
-      "Cub",
-      "Pup",
-      "Kid"
-     ],
-     "d": 2
+    "words": {
+      "name": "Words & Stories",
+      "questions": [
+        {
+          "q": "Which word is spelled correctly?",
+          "a": "because",
+          "w": [
+            "becuase",
+            "becos",
+            "becaus"
+          ],
+          "d": 1,
+          "f": "Remember: Big Elephants Can Always Understand Small Elephants."
+        },
+        {
+          "q": "What is a word that means the opposite of \"generous\"?",
+          "a": "Selfish",
+          "w": [
+            "Kind",
+            "Helpful",
+            "Polite"
+          ],
+          "d": 1
+        },
+        {
+          "q": "In a story, what do you call the person who draws the pictures?",
+          "a": "Illustrator",
+          "w": [
+            "Author",
+            "Publisher",
+            "Narrator"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which word has a silent \"b\"?",
+          "a": "Thumb",
+          "w": [
+            "Table",
+            "Ribbon",
+            "Rabbit"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which sentence uses \"their\" correctly?",
+          "a": "They left their bags in the hall.",
+          "w": [
+            "Their going to the match.",
+            "Put the keys over their.",
+            "Their is a cat outside."
+          ],
+          "d": 2
+        },
+        {
+          "q": "What does the prefix \"tele-\" mean in \"telescope\" and \"telephone\"?",
+          "a": "Far / distant",
+          "w": [
+            "Small",
+            "Fast",
+            "Light"
+          ],
+          "d": 2,
+          "f": "It comes from the Greek word \"tele\", meaning far off."
+        },
+        {
+          "q": "Which figure of speech compares two things using \"like\" or \"as\"?",
+          "a": "Simile",
+          "w": [
+            "Metaphor",
+            "Alliteration",
+            "Onomatopoeia"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which spelling is right?",
+          "a": "Definitely",
+          "w": [
+            "Definately",
+            "Definitly",
+            "Definetely"
+          ],
+          "d": 2,
+          "f": "It shares its root with \"finite\"!"
+        },
+        {
+          "q": "What does the word \"ephemeral\" mean?",
+          "a": "Lasting a very short time",
+          "w": [
+            "Impossible to forget",
+            "Extremely heavy",
+            "Spoken loudly"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Which word is spelled with two Cs and two Ms?",
+          "a": "Accommodate",
+          "w": [
+            "Recommend",
+            "Occasion",
+            "Accumulate"
+          ],
+          "d": 3
+        },
+        {
+          "q": "What is a \"palindromic\" word?",
+          "a": "A word that reads the same forwards and backwards",
+          "w": [
+            "A word borrowed from Greek",
+            "A word with two opposite meanings",
+            "A word made of two nouns"
+          ],
+          "d": 3,
+          "f": "Examples include \"level\", \"radar\", and \"kayak\"."
+        },
+        {
+          "q": "Which sentence uses \"affect\" correctly?",
+          "a": "Rain may affect our travel plans.",
+          "w": [
+            "The affect of the medicine was quick.",
+            "She spoke with a calm affect.",
+            "What is the main affect?"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Which word rhymes with \"cat\"?",
+          "a": "Hat",
+          "w": [
+            "Dog",
+            "Cup",
+            "Pen"
+          ],
+          "d": 1
+        },
+        {
+          "q": "How many letters are in the English alphabet?",
+          "a": "26",
+          "w": [
+            "24",
+            "25",
+            "28"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which word means the same as \"happy\"?",
+          "a": "Joyful",
+          "w": [
+            "Sad",
+            "Angry",
+            "Tired"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which of these letters is a vowel?",
+          "a": "E",
+          "w": [
+            "B",
+            "K",
+            "T"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which punctuation mark ends a question?",
+          "a": "A question mark",
+          "w": [
+            "A full stop",
+            "A comma",
+            "An apostrophe"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Which of these words is a noun?",
+          "a": "Table",
+          "w": [
+            "Quickly",
+            "Jump",
+            "Beautiful"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What is the plural of \"mouse\" (the animal)?",
+          "a": "Mice",
+          "w": [
+            "Mouses",
+            "Mices",
+            "Meese"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What do we call words that sound the same but have different spellings and meanings, like \"here\" and \"hear\"?",
+          "a": "Homophones",
+          "w": [
+            "Synonyms",
+            "Antonyms",
+            "Acronyms"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What is a story about made-up events called?",
+          "a": "Fiction",
+          "w": [
+            "Biography",
+            "A news report",
+            "A manual"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which word is a synonym for \"quick\"?",
+          "a": "Fast",
+          "w": [
+            "Slow",
+            "Late",
+            "Heavy"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What do we call the person who writes a book?",
+          "a": "The author",
+          "w": [
+            "The editor",
+            "The printer",
+            "The librarian"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which punctuation mark shows possession, as in \"the dog's bone\"?",
+          "a": "An apostrophe",
+          "w": [
+            "A comma",
+            "A colon",
+            "A hyphen"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What do we call a word that imitates a sound, like \"buzz\" or \"splash\"?",
+          "a": "Onomatopoeia",
+          "w": [
+            "Alliteration",
+            "Metaphor",
+            "Hyperbole"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Which of these sentences is a metaphor?",
+          "a": "Time is a thief.",
+          "w": [
+            "As brave as a lion.",
+            "She ran like the wind.",
+            "The bee buzzed."
+          ],
+          "d": 3
+        },
+        {
+          "q": "Who wrote \"Pride and Prejudice\"?",
+          "a": "Jane Austen",
+          "w": [
+            "Emily Bronte",
+            "Mary Shelley",
+            "Charlotte Bronte"
+          ],
+          "d": 3
+        },
+        {
+          "q": "What is it called when nearby words start with the same sound, as in \"Peter Piper picked\"?",
+          "a": "Alliteration",
+          "w": [
+            "Metaphor",
+            "Irony",
+            "Rhyme"
+          ],
+          "d": 3
+        },
+        {
+          "q": "What does \"benevolent\" mean?",
+          "a": "Kind and well-meaning",
+          "w": [
+            "Angry and bitter",
+            "Very wealthy",
+            "Extremely shy"
+          ],
+          "d": 3
+        },
+        {
+          "q": "Which word is the opposite of \"scarce\"?",
+          "a": "Plentiful",
+          "w": [
+            "Rare",
+            "Limited",
+            "Meagre"
+          ],
+          "d": 3
+        }
+      ]
     },
-    {
-     "q": "What is the largest animal on Earth?",
-     "a": "Blue whale",
-     "w": [
-      "African elephant",
-      "Giraffe",
-      "Whale shark"
-     ],
-     "d": 2
-    },
-    {
-     "q": "How many hearts does an octopus have?",
-     "a": "Three",
-     "w": [
-      "One",
-      "Two",
-      "Eight"
-     ],
-     "d": 3,
-     "f": "Two pump blood through the gills and one pumps it around the body."
-    },
-    {
-     "q": "What is a group of crows called?",
-     "a": "A murder",
-     "w": [
-      "A parliament",
-      "A gaggle",
-      "A colony"
-     ],
-     "d": 3,
-     "f": "A group of owls is called a parliament."
+    "numbers": {
+      "name": "Numbers & Logic",
+      "questions": [
+        {
+          "q": "What comes next in the pattern: 4, 8, 12, 16, ...?",
+          "a": "20",
+          "w": [
+            "18",
+            "22",
+            "24"
+          ],
+          "d": 1
+        },
+        {
+          "q": "A pizza is cut into 8 equal slices. You eat 2. What fraction is left?",
+          "a": "3/4",
+          "w": [
+            "1/2",
+            "1/4",
+            "2/3"
+          ],
+          "d": 1
+        },
+        {
+          "q": "If 3 pencils cost 15 coins, how much does 1 pencil cost?",
+          "a": "5 coins",
+          "w": [
+            "3 coins",
+            "10 coins",
+            "12 coins"
+          ],
+          "d": 1
+        },
+        {
+          "q": "Maya is taller than Sam. Leo is taller than Maya. Who is shortest?",
+          "a": "Sam",
+          "w": [
+            "Maya",
+            "Leo",
+            "Cannot tell"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What is 15% of 80?",
+          "a": "12",
+          "w": [
+            "10",
+            "15",
+            "16"
+          ],
+          "d": 2,
+          "f": "10% of 80 is 8, and 5% is 4, so 8 + 4 = 12."
+        },
+        {
+          "q": "Solve for x: 3x + 7 = 22",
+          "a": "5",
+          "w": [
+            "4",
+            "6",
+            "7"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What is the next number in the Fibonacci sequence: 1, 1, 2, 3, 5, 8, ...?",
+          "a": "13",
+          "w": [
+            "11",
+            "12",
+            "15"
+          ],
+          "d": 2
+        },
+        {
+          "q": "A rectangle has a perimeter of 24 cm and a width of 4 cm. What is its length?",
+          "a": "8 cm",
+          "w": [
+            "6 cm",
+            "10 cm",
+            "12 cm"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What is the sum of the interior angles of a pentagon?",
+          "a": "540°",
+          "w": [
+            "360°",
+            "450°",
+            "720°"
+          ],
+          "d": 3,
+          "f": "Formula: (n − 2) × 180° = 3 × 180° = 540°."
+        },
+        {
+          "q": "If two fair dice are rolled, what is the probability of getting a sum of 7?",
+          "a": "1/6",
+          "w": [
+            "1/12",
+            "1/9",
+            "1/36"
+          ],
+          "d": 3,
+          "f": "6 out of 36 outcomes sum to 7: (1,6), (2,5), (3,4), (4,3), (5,2), (6,1)."
+        },
+        {
+          "q": "What comes next: 2, 6, 12, 20, 30, ...?",
+          "a": "42",
+          "w": [
+            "38",
+            "40",
+            "44"
+          ],
+          "d": 3,
+          "f": "The differences increase by 2 each time: +4, +6, +8, +10, +12."
+        },
+        {
+          "q": "If all Bloops are Razzies and no Razzies are Lazzies, which must be true?",
+          "a": "No Bloops are Lazzies",
+          "w": [
+            "Some Bloops are Lazzies",
+            "All Lazzies are Bloops",
+            "Some Razzies are Lazzies"
+          ],
+          "d": 3
+        },
+        {
+          "q": "What is 10 + 15?",
+          "a": "25",
+          "w": [
+            "20",
+            "30",
+            "35"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What is half of 100?",
+          "a": "50",
+          "w": [
+            "25",
+            "40",
+            "60"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What is 3 x 4?",
+          "a": "12",
+          "w": [
+            "7",
+            "14",
+            "16"
+          ],
+          "d": 1
+        },
+        {
+          "q": "How many minutes are in an hour?",
+          "a": "60",
+          "w": [
+            "30",
+            "100",
+            "24"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What comes next: 5, 10, 15, 20, ...?",
+          "a": "25",
+          "w": [
+            "30",
+            "22",
+            "35"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What is 100 - 1?",
+          "a": "99",
+          "w": [
+            "101",
+            "90",
+            "89"
+          ],
+          "d": 1
+        },
+        {
+          "q": "What is 9 x 8?",
+          "a": "72",
+          "w": [
+            "63",
+            "81",
+            "64"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What is 1/4 written as a decimal?",
+          "a": "0.25",
+          "w": [
+            "0.14",
+            "0.4",
+            "0.5"
+          ],
+          "d": 2
+        },
+        {
+          "q": "Which of these numbers is a prime number?",
+          "a": "17",
+          "w": [
+            "15",
+            "21",
+            "27"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What is 144 divided by 12?",
+          "a": "12",
+          "w": [
+            "11",
+            "14",
+            "10"
+          ],
+          "d": 2
+        },
+        {
+          "q": "How many degrees are in a right angle?",
+          "a": "90",
+          "w": [
+            "45",
+            "180",
+            "60"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What is the next square number after 25?",
+          "a": "36",
+          "w": [
+            "30",
+            "49",
+            "35"
+          ],
+          "d": 2
+        },
+        {
+          "q": "What is 2 to the power of 10?",
+          "a": "1,024",
+          "w": [
+            "512",
+            "2,048",
+            "1,000"
+          ],
+          "d": 3
+        },
+        {
+          "q": "What is the square root of 169?",
+          "a": "13",
+          "w": [
+            "12",
+            "14",
+            "16"
+          ],
+          "d": 3
+        },
+        {
+          "q": "A train travels 60 km in 45 minutes. What is its speed in km per hour?",
+          "a": "80",
+          "w": [
+            "75",
+            "90",
+            "70"
+          ],
+          "d": 3
+        },
+        {
+          "q": "What is the sum of all the whole numbers from 1 to 10?",
+          "a": "55",
+          "w": [
+            "50",
+            "45",
+            "60"
+          ],
+          "d": 3
+        },
+        {
+          "q": "How many edges does a cube have?",
+          "a": "12",
+          "w": [
+            "8",
+            "6",
+            "10"
+          ],
+          "d": 3
+        },
+        {
+          "q": "What is 12.5% written as a fraction?",
+          "a": "1/8",
+          "w": [
+            "1/6",
+            "1/10",
+            "1/4"
+          ],
+          "d": 3
+        }
+      ]
     }
-   ]
-  },
-  "sports": {
-   "name": "Sports",
-   "questions": [
-    {
-     "q": "Which sport is played at Wimbledon?",
-     "a": "Tennis",
-     "w": [
-      "Golf",
-      "Cricket",
-      "Rugby"
-     ],
-     "d": 1
-    },
-    {
-     "q": "How many players from one team are on the field at a time in football (soccer)?",
-     "a": "11",
-     "w": [
-      "9",
-      "10",
-      "12"
-     ],
-     "d": 1
-    },
-    {
-     "q": "In which sport might you score a slam dunk?",
-     "a": "Basketball",
-     "w": [
-      "Volleyball",
-      "Tennis",
-      "Football"
-     ],
-     "d": 1
-    },
-    {
-     "q": "Which sport uses a bat, a ball and bases?",
-     "a": "Baseball",
-     "w": [
-      "Basketball",
-      "Golf",
-      "Hockey"
-     ],
-     "d": 1
-    },
-    {
-     "q": "How many rings are on the Olympic flag?",
-     "a": "5",
-     "w": [
-      "4",
-      "6",
-      "7"
-     ],
-     "d": 2,
-     "f": "They stand for the five regions of the world joined in the Games."
-    },
-    {
-     "q": "Which country hosted the 2016 Summer Olympics?",
-     "a": "Brazil",
-     "w": [
-      "China",
-      "The UK",
-      "Japan"
-     ],
-     "d": 2,
-     "f": "The Games were held in Rio de Janeiro."
-    },
-    {
-     "q": "How long is an Olympic swimming pool?",
-     "a": "50 metres",
-     "w": [
-      "25 metres",
-      "100 metres",
-      "75 metres"
-     ],
-     "d": 2
-    },
-    {
-     "q": "In tennis, what is a score of zero called?",
-     "a": "Love",
-     "w": [
-      "Nil",
-      "Zero",
-      "Duck"
-     ],
-     "d": 2
-    },
-    {
-     "q": "Which sport uses a shuttlecock?",
-     "a": "Badminton",
-     "w": [
-      "Squash",
-      "Tennis",
-      "Volleyball"
-     ],
-     "d": 2
-    },
-    {
-     "q": "How many holes are played in a standard round of golf?",
-     "a": "18",
-     "w": [
-      "9",
-      "12",
-      "24"
-     ],
-     "d": 2
-    },
-    {
-     "q": "Which country has won the most men's football World Cups?",
-     "a": "Brazil",
-     "w": [
-      "Germany",
-      "Italy",
-      "Argentina"
-     ],
-     "d": 3,
-     "f": "Brazil has won it five times."
-    },
-    {
-     "q": "How many minutes does a standard rugby union match last?",
-     "a": "80",
-     "w": [
-      "60",
-      "70",
-      "90"
-     ],
-     "d": 3
-    }
-   ]
-  },
-  "music": {
-   "name": "Music",
-   "questions": [
-    {
-     "q": "How many strings does a standard guitar have?",
-     "a": "6",
-     "w": [
-      "4",
-      "5",
-      "8"
-     ],
-     "d": 1
-    },
-    {
-     "q": "Which instrument has black and white keys?",
-     "a": "Piano",
-     "w": [
-      "Drum",
-      "Flute",
-      "Violin"
-     ],
-     "d": 1
-    },
-    {
-     "q": "Which of these do you blow into to make music?",
-     "a": "Trumpet",
-     "w": [
-      "Violin",
-      "Drum",
-      "Harp"
-     ],
-     "d": 1
-    },
-    {
-     "q": "Which of these is a percussion instrument?",
-     "a": "Drums",
-     "w": [
-      "Flute",
-      "Violin",
-      "Trumpet"
-     ],
-     "d": 1
-    },
-    {
-     "q": "In 'do, re, mi', what comes after 'mi'?",
-     "a": "Fa",
-     "w": [
-      "So",
-      "La",
-      "Ti"
-     ],
-     "d": 2
-    },
-    {
-     "q": "Which band sang 'Yellow Submarine'?",
-     "a": "The Beatles",
-     "w": [
-      "Queen",
-      "ABBA",
-      "The Rolling Stones"
-     ],
-     "d": 2
-    },
-    {
-     "q": "Which Disney film features the song 'Let It Go'?",
-     "a": "Frozen",
-     "w": [
-      "Tangled",
-      "Moana",
-      "Brave"
-     ],
-     "d": 2
-    },
-    {
-     "q": "What is the largest string instrument in an orchestra?",
-     "a": "Double bass",
-     "w": [
-      "Cello",
-      "Violin",
-      "Viola"
-     ],
-     "d": 2
-    },
-    {
-     "q": "Which country does the band ABBA come from?",
-     "a": "Sweden",
-     "w": [
-      "Norway",
-      "Denmark",
-      "Finland"
-     ],
-     "d": 2
-    },
-    {
-     "q": "How many keys does a standard piano have?",
-     "a": "88",
-     "w": [
-      "76",
-      "92",
-      "100"
-     ],
-     "d": 3
-    },
-    {
-     "q": "Who composed 'The Four Seasons'?",
-     "a": "Vivaldi",
-     "w": [
-      "Mozart",
-      "Beethoven",
-      "Bach"
-     ],
-     "d": 3
-    },
-    {
-     "q": "A concert harp has about how many strings?",
-     "a": "47",
-     "w": [
-      "12",
-      "24",
-      "88"
-     ],
-     "d": 3
-    }
-   ]
-  },
-  "puzzles": {
-   "name": "Puzzles & Riddles",
-   "questions": [
-    {
-     "q": "What gets wetter the more it dries?",
-     "a": "A towel",
-     "w": [
-      "A sponge",
-      "A cloud",
-      "Soap"
-     ],
-     "d": 1
-    },
-    {
-     "q": "What can you catch but not throw?",
-     "a": "A cold",
-     "w": [
-      "A ball",
-      "A rope",
-      "A wave"
-     ],
-     "d": 1
-    },
-    {
-     "q": "Which number comes next: 2, 4, 6, 8, ...?",
-     "a": "10",
-     "w": [
-      "9",
-      "12",
-      "14"
-     ],
-     "d": 1
-    },
-    {
-     "q": "What is 6 x 7?",
-     "a": "42",
-     "w": [
-      "36",
-      "48",
-      "49"
-     ],
-     "d": 1
-    },
-    {
-     "q": "What has keys but cannot open locks?",
-     "a": "A piano",
-     "w": [
-      "A map",
-      "A door",
-      "A clock"
-     ],
-     "d": 2
-    },
-    {
-     "q": "Which number comes next: 1, 1, 2, 3, 5, 8, ...?",
-     "a": "13",
-     "w": [
-      "11",
-      "12",
-      "15"
-     ],
-     "d": 2,
-     "f": "Each number is the sum of the two before it. This is the Fibonacci sequence."
-    },
-    {
-     "q": "What has a neck but no head?",
-     "a": "A bottle",
-     "w": [
-      "A spoon",
-      "A pencil",
-      "A chair"
-     ],
-     "d": 2
-    },
-    {
-     "q": "You have 3 apples and you take away 2. How many do you have?",
-     "a": "2",
-     "w": [
-      "1",
-      "3",
-      "0"
-     ],
-     "d": 2,
-     "f": "You took 2, so you have the 2 you took."
-    },
-    {
-     "q": "How many months have 28 days?",
-     "a": "All of them",
-     "w": [
-      "Just February",
-      "Two",
-      "None"
-     ],
-     "d": 2,
-     "f": "Every month has at least 28 days."
-    },
-    {
-     "q": "Which number comes next: 3, 6, 12, 24, ...?",
-     "a": "48",
-     "w": [
-      "36",
-      "30",
-      "42"
-     ],
-     "d": 2
-    },
-    {
-     "q": "What comes once in a minute, twice in a moment, but never in a thousand years?",
-     "a": "The letter M",
-     "w": [
-      "The letter T",
-      "A second",
-      "A heartbeat"
-     ],
-     "d": 3
-    },
-    {
-     "q": "A farmer has 17 sheep and all but 9 run away. How many are left?",
-     "a": "9",
-     "w": [
-      "8",
-      "17",
-      "0"
-     ],
-     "d": 3,
-     "f": "'All but 9' means 9 stayed."
-    }
-   ]
-  },
-  "geography": {
-   "name": "Geography",
-   "questions": [
-    {
-     "q": "Which is the largest ocean?",
-     "a": "Pacific",
-     "w": [
-      "Atlantic",
-      "Indian",
-      "Arctic"
-     ],
-     "d": 1
-    },
-    {
-     "q": "How many continents are there?",
-     "a": "7",
-     "w": [
-      "5",
-      "6",
-      "8"
-     ],
-     "d": 1
-    },
-    {
-     "q": "Which country is famous for the Eiffel Tower?",
-     "a": "France",
-     "w": [
-      "Italy",
-      "Spain",
-      "Germany"
-     ],
-     "d": 1
-    },
-    {
-     "q": "What is the capital of England?",
-     "a": "London",
-     "w": [
-      "Paris",
-      "Dublin",
-      "Manchester"
-     ],
-     "d": 1
-    },
-    {
-     "q": "Which is the longest river in Africa?",
-     "a": "The Nile",
-     "w": [
-      "The Congo",
-      "The Niger",
-      "The Zambezi"
-     ],
-     "d": 2
-    },
-    {
-     "q": "What is the capital of Australia?",
-     "a": "Canberra",
-     "w": [
-      "Sydney",
-      "Melbourne",
-      "Perth"
-     ],
-     "d": 2,
-     "f": "Many people guess Sydney, but Canberra is the capital."
-    },
-    {
-     "q": "Which is the largest hot desert in the world?",
-     "a": "The Sahara",
-     "w": [
-      "The Gobi",
-      "The Kalahari",
-      "The Arabian Desert"
-     ],
-     "d": 2
-    },
-    {
-     "q": "Mount Everest is part of which mountain range?",
-     "a": "The Himalayas",
-     "w": [
-      "The Alps",
-      "The Andes",
-      "The Rockies"
-     ],
-     "d": 2
-    },
-    {
-     "q": "Which country has a maple leaf on its flag?",
-     "a": "Canada",
-     "w": [
-      "Australia",
-      "New Zealand",
-      "Ireland"
-     ],
-     "d": 2
-    },
-    {
-     "q": "Which is the largest country in the world by area?",
-     "a": "Russia",
-     "w": [
-      "Canada",
-      "China",
-      "The USA"
-     ],
-     "d": 2
-    },
-    {
-     "q": "What is the smallest country in the world?",
-     "a": "Vatican City",
-     "w": [
-      "Monaco",
-      "Malta",
-      "San Marino"
-     ],
-     "d": 3
-    },
-    {
-     "q": "What is the capital of Canada?",
-     "a": "Ottawa",
-     "w": [
-      "Toronto",
-      "Vancouver",
-      "Montreal"
-     ],
-     "d": 3
-    }
-   ]
-  },
-  "science": {
-   "name": "Science",
-   "questions": [
-    {
-     "q": "What do we call frozen water?",
-     "a": "Ice",
-     "w": [
-      "Steam",
-      "Mist",
-      "Fog"
-     ],
-     "d": 1
-    },
-    {
-     "q": "Which part of your body pumps blood?",
-     "a": "Heart",
-     "w": [
-      "Lungs",
-      "Brain",
-      "Stomach"
-     ],
-     "d": 1
-    },
-    {
-     "q": "Which gas do we need to breathe to stay alive?",
-     "a": "Oxygen",
-     "w": [
-      "Helium",
-      "Carbon dioxide",
-      "Hydrogen"
-     ],
-     "d": 1
-    },
-    {
-     "q": "How many planets are in our solar system?",
-     "a": "8",
-     "w": [
-      "7",
-      "9",
-      "10"
-     ],
-     "d": 1,
-     "f": "Pluto is now called a dwarf planet."
-    },
-    {
-     "q": "Which planet is known as the Red Planet?",
-     "a": "Mars",
-     "w": [
-      "Venus",
-      "Jupiter",
-      "Mercury"
-     ],
-     "d": 2
-    },
-    {
-     "q": "What is the hardest natural material?",
-     "a": "Diamond",
-     "w": [
-      "Gold",
-      "Iron",
-      "Quartz"
-     ],
-     "d": 2
-    },
-    {
-     "q": "What force pulls things towards the Earth?",
-     "a": "Gravity",
-     "w": [
-      "Magnetism",
-      "Friction",
-      "Wind"
-     ],
-     "d": 2
-    },
-    {
-     "q": "Which is the biggest planet in our solar system?",
-     "a": "Jupiter",
-     "w": [
-      "Saturn",
-      "Neptune",
-      "Earth"
-     ],
-     "d": 2
-    },
-    {
-     "q": "How many bones does an adult human have?",
-     "a": "206",
-     "w": [
-      "106",
-      "306",
-      "150"
-     ],
-     "d": 2,
-     "f": "Babies are born with about 300, and some fuse together as they grow."
-    },
-    {
-     "q": "What is the chemical symbol for gold?",
-     "a": "Au",
-     "w": [
-      "Ag",
-      "Go",
-      "Gd"
-     ],
-     "d": 3
-    },
-    {
-     "q": "Which blood cells carry oxygen around the body?",
-     "a": "Red blood cells",
-     "w": [
-      "White blood cells",
-      "Platelets",
-      "Nerve cells"
-     ],
-     "d": 3
-    },
-    {
-     "q": "About how long does sunlight take to reach Earth?",
-     "a": "8 minutes",
-     "w": [
-      "8 seconds",
-      "8 hours",
-      "1 minute"
-     ],
-     "d": 3
-    }
-   ]
-  },
-  "food": {
-   "name": "Food & Drink",
-   "questions": [
-    {
-     "q": "Which fruit is yellow and curved?",
-     "a": "Banana",
-     "w": [
-      "Apple",
-      "Orange",
-      "Grape"
-     ],
-     "d": 1
-    },
-    {
-     "q": "Pizza was first made in which country?",
-     "a": "Italy",
-     "w": [
-      "France",
-      "The USA",
-      "Greece"
-     ],
-     "d": 1
-    },
-    {
-     "q": "What is the main ingredient in bread?",
-     "a": "Flour",
-     "w": [
-      "Sugar",
-      "Rice",
-      "Butter"
-     ],
-     "d": 1
-    },
-    {
-     "q": "Which vegetable can make you cry when you chop it?",
-     "a": "Onion",
-     "w": [
-      "Carrot",
-      "Potato",
-      "Pepper"
-     ],
-     "d": 1
-    },
-    {
-     "q": "Which country is sushi from?",
-     "a": "Japan",
-     "w": [
-      "China",
-      "Korea",
-      "Thailand"
-     ],
-     "d": 2
-    },
-    {
-     "q": "What do you call a dried grape?",
-     "a": "A raisin",
-     "w": [
-      "A prune",
-      "A date",
-      "A fig"
-     ],
-     "d": 2
-    },
-    {
-     "q": "Which nut is used to make marzipan?",
-     "a": "Almond",
-     "w": [
-      "Peanut",
-      "Cashew",
-      "Walnut"
-     ],
-     "d": 2
-    },
-    {
-     "q": "Guacamole is mainly made from which fruit?",
-     "a": "Avocado",
-     "w": [
-      "Lime",
-      "Tomato",
-      "Mango"
-     ],
-     "d": 2
-    },
-    {
-     "q": "Tofu is made from which bean?",
-     "a": "Soybean",
-     "w": [
-      "Kidney bean",
-      "Black bean",
-      "Green bean"
-     ],
-     "d": 2
-    },
-    {
-     "q": "What is the main ingredient of hummus?",
-     "a": "Chickpeas",
-     "w": [
-      "Lentils",
-      "Black beans",
-      "Peas"
-     ],
-     "d": 2
-    },
-    {
-     "q": "Which is the most expensive spice in the world by weight?",
-     "a": "Saffron",
-     "w": [
-      "Cinnamon",
-      "Paprika",
-      "Ginger"
-     ],
-     "d": 3
-    },
-    {
-     "q": "Which cheese is traditionally in a Greek salad?",
-     "a": "Feta",
-     "w": [
-      "Cheddar",
-      "Mozzarella",
-      "Brie"
-     ],
-     "d": 3
-    }
-   ]
-  },
-  "general": {
-   "name": "General Knowledge",
-   "questions": [
-    {
-     "q": "How many days are in a week?",
-     "a": "7",
-     "w": [
-      "5",
-      "6",
-      "8"
-     ],
-     "d": 1
-    },
-    {
-     "q": "What colour do you get when you mix blue and yellow?",
-     "a": "Green",
-     "w": [
-      "Purple",
-      "Orange",
-      "Brown"
-     ],
-     "d": 1
-    },
-    {
-     "q": "How many sides does a triangle have?",
-     "a": "3",
-     "w": [
-      "4",
-      "5",
-      "6"
-     ],
-     "d": 1
-    },
-    {
-     "q": "Which season comes after winter?",
-     "a": "Spring",
-     "w": [
-      "Summer",
-      "Autumn",
-      "Monsoon"
-     ],
-     "d": 1
-    },
-    {
-     "q": "How many minutes are there in a day?",
-     "a": "1,440",
-     "w": [
-      "1,240",
-      "1,000",
-      "2,400"
-     ],
-     "d": 2
-    },
-    {
-     "q": "Who painted the Mona Lisa?",
-     "a": "Leonardo da Vinci",
-     "w": [
-      "Picasso",
-      "Van Gogh",
-      "Michelangelo"
-     ],
-     "d": 2
-    },
-    {
-     "q": "How many sides does a hexagon have?",
-     "a": "6",
-     "w": [
-      "5",
-      "7",
-      "8"
-     ],
-     "d": 2
-    },
-    {
-     "q": "In which month do people celebrate Halloween?",
-     "a": "October",
-     "w": [
-      "November",
-      "September",
-      "December"
-     ],
-     "d": 2
-    },
-    {
-     "q": "Which famous ship sank in 1912 after hitting an iceberg?",
-     "a": "The Titanic",
-     "w": [
-      "The Lusitania",
-      "The Mayflower",
-      "The Bismarck"
-     ],
-     "d": 2
-    },
-    {
-     "q": "How many strings does a violin have?",
-     "a": "4",
-     "w": [
-      "3",
-      "5",
-      "6"
-     ],
-     "d": 2
-    },
-    {
-     "q": "Which language has the most native speakers in the world?",
-     "a": "Mandarin Chinese",
-     "w": [
-      "English",
-      "Spanish",
-      "Hindi"
-     ],
-     "d": 3
-    },
-    {
-     "q": "What is 50 in Roman numerals?",
-     "a": "L",
-     "w": [
-      "D",
-      "C",
-      "X"
-     ],
-     "d": 3
-    }
-   ]
-  },
-  "words": {
-   "name": "Words & Stories",
-   "questions": [
-    {
-     "q": "Which word is spelled correctly?",
-     "a": "because",
-     "w": [
-      "becuase",
-      "becos",
-      "becaus"
-     ],
-     "d": 1,
-     "f": "Remember: Big Elephants Can Always Understand Small Elephants."
-    },
-    {
-     "q": "What is a word that means the opposite of \"generous\"?",
-     "a": "Selfish",
-     "w": [
-      "Kind",
-      "Helpful",
-      "Polite"
-     ],
-     "d": 1
-    },
-    {
-     "q": "In a story, what do you call the person who draws the pictures?",
-     "a": "Illustrator",
-     "w": [
-      "Author",
-      "Publisher",
-      "Narrator"
-     ],
-     "d": 1
-    },
-    {
-     "q": "Which word has a silent \"b\"?",
-     "a": "Thumb",
-     "w": [
-      "Table",
-      "Ribbon",
-      "Rabbit"
-     ],
-     "d": 1
-    },
-    {
-     "q": "Which sentence uses \"their\" correctly?",
-     "a": "They left their bags in the hall.",
-     "w": [
-      "Their going to the match.",
-      "Put the keys over their.",
-      "Their is a cat outside."
-     ],
-     "d": 2
-    },
-    {
-     "q": "What does the prefix \"tele-\" mean in \"telescope\" and \"telephone\"?",
-     "a": "Far / distant",
-     "w": [
-      "Small",
-      "Fast",
-      "Light"
-     ],
-     "d": 2,
-     "f": "It comes from the Greek word \"tele\", meaning far off."
-    },
-    {
-     "q": "Which figure of speech compares two things using \"like\" or \"as\"?",
-     "a": "Simile",
-     "w": [
-      "Metaphor",
-      "Alliteration",
-      "Onomatopoeia"
-     ],
-     "d": 2
-    },
-    {
-     "q": "Which spelling is right?",
-     "a": "Definitely",
-     "w": [
-      "Definately",
-      "Definitly",
-      "Definetely"
-     ],
-     "d": 2,
-     "f": "It shares its root with \"finite\"!"
-    },
-    {
-     "q": "What does the word \"ephemeral\" mean?",
-     "a": "Lasting a very short time",
-     "w": [
-      "Impossible to forget",
-      "Extremely heavy",
-      "Spoken loudly"
-     ],
-     "d": 3
-    },
-    {
-     "q": "Which word is spelled with two Cs and two Ms?",
-     "a": "Accommodate",
-     "w": [
-      "Recommend",
-      "Occasion",
-      "Accumulate"
-     ],
-     "d": 3
-    },
-    {
-     "q": "What is a \"palindromic\" word?",
-     "a": "A word that reads the same forwards and backwards",
-     "w": [
-      "A word borrowed from Greek",
-      "A word with two opposite meanings",
-      "A word made of two nouns"
-     ],
-     "d": 3,
-     "f": "Examples include \"level\", \"radar\", and \"kayak\"."
-    },
-    {
-     "q": "Which sentence uses \"affect\" correctly?",
-     "a": "Rain may affect our travel plans.",
-     "w": [
-      "The affect of the medicine was quick.",
-      "She spoke with a calm affect.",
-      "What is the main affect?"
-     ],
-     "d": 3
-    }
-   ]
-  },
-  "numbers": {
-   "name": "Numbers & Logic",
-   "questions": [
-    {
-     "q": "What comes next in the pattern: 4, 8, 12, 16, ...?",
-     "a": "20",
-     "w": [
-      "18",
-      "22",
-      "24"
-     ],
-     "d": 1
-    },
-    {
-     "q": "A pizza is cut into 8 equal slices. You eat 2. What fraction is left?",
-     "a": "3/4",
-     "w": [
-      "1/2",
-      "1/4",
-      "2/3"
-     ],
-     "d": 1
-    },
-    {
-     "q": "If 3 pencils cost 15 coins, how much does 1 pencil cost?",
-     "a": "5 coins",
-     "w": [
-      "3 coins",
-      "10 coins",
-      "12 coins"
-     ],
-     "d": 1
-    },
-    {
-     "q": "Maya is taller than Sam. Leo is taller than Maya. Who is shortest?",
-     "a": "Sam",
-     "w": [
-      "Maya",
-      "Leo",
-      "Cannot tell"
-     ],
-     "d": 1
-    },
-    {
-     "q": "What is 15% of 80?",
-     "a": "12",
-     "w": [
-      "10",
-      "15",
-      "16"
-     ],
-     "d": 2,
-     "f": "10% of 80 is 8, and 5% is 4, so 8 + 4 = 12."
-    },
-    {
-     "q": "Solve for x: 3x + 7 = 22",
-     "a": "5",
-     "w": [
-      "4",
-      "6",
-      "7"
-     ],
-     "d": 2
-    },
-    {
-     "q": "What is the next number in the Fibonacci sequence: 1, 1, 2, 3, 5, 8, ...?",
-     "a": "13",
-     "w": [
-      "11",
-      "12",
-      "15"
-     ],
-     "d": 2
-    },
-    {
-     "q": "A rectangle has a perimeter of 24 cm and a width of 4 cm. What is its length?",
-     "a": "8 cm",
-     "w": [
-      "6 cm",
-      "10 cm",
-      "12 cm"
-     ],
-     "d": 2
-    },
-    {
-     "q": "What is the sum of the interior angles of a pentagon?",
-     "a": "540°",
-     "w": [
-      "360°",
-      "450°",
-      "720°"
-     ],
-     "d": 3,
-     "f": "Formula: (n − 2) × 180° = 3 × 180° = 540°."
-    },
-    {
-     "q": "If two fair dice are rolled, what is the probability of getting a sum of 7?",
-     "a": "1/6",
-     "w": [
-      "1/12",
-      "1/9",
-      "1/36"
-     ],
-     "d": 3,
-     "f": "6 out of 36 outcomes sum to 7: (1,6), (2,5), (3,4), (4,3), (5,2), (6,1)."
-    },
-    {
-     "q": "What comes next: 2, 6, 12, 20, 30, ...?",
-     "a": "42",
-     "w": [
-      "38",
-      "40",
-      "44"
-     ],
-     "d": 3,
-     "f": "The differences increase by 2 each time: +4, +6, +8, +10, +12."
-    },
-    {
-     "q": "If all Bloops are Razzies and no Razzies are Lazzies, which must be true?",
-     "a": "No Bloops are Lazzies",
-     "w": [
-      "Some Bloops are Lazzies",
-      "All Lazzies are Bloops",
-      "Some Razzies are Lazzies"
-     ],
-     "d": 3
-    }
-   ]
   }
- }
 }
