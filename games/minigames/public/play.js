@@ -2,17 +2,12 @@ import { h, avatar, timer, byId, serverNow, onTick, ordinal } from '/shared/ui.j
 import { play as sfx } from '/shared/sound.js';
 import { t as tx } from '/shared/i18n.js';
 import { meBar, hostButton, final } from '/sdk/play.js';
-import * as memory from '/play/mg/memory.js';
-import * as scramble from '/play/mg/scramble.js';
-import * as reaction from '/play/mg/reaction.js';
-import * as pattern from '/play/mg/pattern.js';
-import * as clash from '/play/mg/clash.js';
-import * as math from '/play/mg/math.js';
-import * as logic from '/play/mg/logic.js';
-import * as literacy from '/play/mg/literacy.js';
 
-const MODS = { memory, scramble, reaction, pattern, clash, math, logic, literacy };
 const game = (a, extra) => ({ t: 'g', a, ...extra });
+
+// Each mini-game is its own module (see docs/GAME-SDK.md); loaded when its round is announced, well before the countdown ends.
+const modules = new Map();
+const loadMini = (url) => { if (!modules.has(url)) modules.set(url, import(url)); return modules.get(url); };
 
 export function screen(s, ctx) {
   const g = s.game;
@@ -82,8 +77,11 @@ function play(s, ctx) {
     started = true;
     overlay.style.display = 'none';
     root.replaceChildren();
-    api = MODS[g.mg.id].start({ root, seed: g.seed, level: g.level, durationMs: g.endAt - g.startAt, progress, finish });
-    stopId = setTimeout(() => finish(api.score()), Math.max(0, g.endAt - serverNow()));
+    loadMini(g.mg.client).then((mod) => {
+      if (finished || api) return;
+      api = mod.start({ root, seed: g.seed, level: g.level, durationMs: g.endAt - g.startAt, progress, finish });
+      stopId = setTimeout(() => finish(api.score()), Math.max(0, g.endAt - serverNow()));
+    }).catch(() => finish(0));
   };
 
   if (!g.inRound) {
@@ -94,6 +92,7 @@ function play(s, ctx) {
     showDone(g.myResult);
   } else {
     root.replaceChildren(h('p', { class: 'lead' }, g.mg.howto));
+    loadMini(g.mg.client).catch(() => {}); // warm up while the how-to is on screen
     onTick(el, () => {
       const left = g.startAt - serverNow();
       if (!started && !finished) {

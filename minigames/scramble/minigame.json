@@ -1,0 +1,12 @@
+{
+  "sdk": 1,
+  "id": "scramble",
+  "name": "Word Builder",
+  "description": "Tap tiles to spell words and learn clues.",
+  "howto": "Tap the letter tiles to spell the word that fits the clue. Example: the clue \"Frozen water\" is ICE. Tap Hint if you are stuck (it costs points). Words in a row build a streak bonus.",
+  "duration": 60,
+  "max": 3000,
+  "group": "brain",
+  "order": 0,
+  "client": "client.js"
+}

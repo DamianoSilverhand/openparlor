@@ -1,6 +1,6 @@
 import { h } from '/shared/ui.js';
 import { play } from '/shared/sound.js';
-import { rng, timeouts } from './util.js';
+import { rng, timeouts } from '/sdk/minigame.js';
 
 const PADS = ['#e8472b', '#6fb3e0', '#6baa4f', '#f2b632'];
 const SPEED = { easy: 750, medium: 600, hard: 450 };

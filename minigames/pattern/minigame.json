@@ -1,0 +1,12 @@
+{
+  "sdk": 1,
+  "id": "pattern",
+  "name": "Copy Cat",
+  "description": "Watch the lights and repeat the sequence.",
+  "howto": "Watch the colours light up, then repeat the pattern. It gets one step longer each round.",
+  "duration": 90,
+  "max": 3500,
+  "group": "speed",
+  "order": 50,
+  "client": "client.js"
+}

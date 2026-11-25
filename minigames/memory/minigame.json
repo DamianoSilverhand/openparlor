@@ -1,0 +1,12 @@
+{
+  "sdk": 1,
+  "id": "memory",
+  "name": "Memory Match",
+  "description": "Flip cards and match all pairs.",
+  "howto": "Flip two cards at a time and find every matching pair. Fewer misses and a faster finish score more.",
+  "duration": 60,
+  "max": 1400,
+  "group": "brain",
+  "order": 40,
+  "client": "client.js"
+}

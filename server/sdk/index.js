@@ -8,6 +8,7 @@ const { config, bands } = require('../config');
 const content = require('../content');
 const profiles = require('../profiles');
 const records = require('../records');
+const minigames = require('./minigames');
 
 module.exports = {
   version: 1,
@@ -18,6 +19,7 @@ module.exports = {
   content, // the loaded content packs: questions, prompts, words, scramble, literacy
   profiles, // saved profiles and mini-game scores
   records, // group records
+  minigames, // the loaded mini-games: { byId, list }
   settings: { brand: config.brand, profilesEnabled: !!config.profiles.enabled },
   log: (...args) => console.log('[game]', ...args),
 };

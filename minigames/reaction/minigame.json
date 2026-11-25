@@ -1,0 +1,12 @@
+{
+  "sdk": 1,
+  "id": "reaction",
+  "name": "Quick Tap",
+  "description": "Wait for green, then tap fast.",
+  "howto": "Wait for the screen to turn green, then tap as fast as you can. Tap too early and you lose time. Five tries.",
+  "duration": 50,
+  "max": 2500,
+  "group": "speed",
+  "order": 70,
+  "client": "client.js"
+}

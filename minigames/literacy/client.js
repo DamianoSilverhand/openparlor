@@ -1,6 +1,6 @@
 import { h } from '/shared/ui.js';
 import { play } from '/shared/sound.js';
-import { rng, shuffled, timeouts } from './util.js';
+import { rng, shuffled, timeouts } from '/sdk/minigame.js';
 
 const FALLBACK = {
   easy: [

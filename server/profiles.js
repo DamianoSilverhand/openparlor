@@ -5,7 +5,10 @@ const { clean } = require('./util');
 const { bands } = require('./config');
 const { getDb } = require('./db');
 
-const GAME_IDS = ['scramble', 'literacy', 'math', 'logic', 'memory', 'pattern', 'clash', 'reaction'];
+// The mini-games that can have scores. The mini-game loader fills this in at start-up.
+let GAME_IDS = ['scramble', 'literacy', 'math', 'logic', 'memory', 'pattern', 'clash', 'reaction'];
+const registerGameIds = (ids) => { GAME_IDS = [...ids]; };
+const isGameId = (id) => GAME_IDS.includes(id);
 const ID_RE = /^p_[0-9a-f]{8}$/;
 const day = (offset = 0) => new Date(Date.now() + offset * 86400000).toISOString().slice(0, 10);
 
@@ -71,7 +74,7 @@ function upsert({ id, name, avatar, level }) {
 
 // Records one mini-game result: updates the personal best and the daily streak, and keeps the score for history.
 function record(id, gameId, score, runStreak = 0, mode = 'solo') {
-  if (!GAME_IDS.includes(gameId)) return null;
+  if (!isGameId(gameId)) return null;
   const db = getDb();
   const s = Math.max(0, Math.round(Number(score) || 0));
   const run = Math.max(0, Math.round(Number(runStreak) || 0));
@@ -153,7 +156,7 @@ function importProfile(bundle) {
       db.run('INSERT INTO profiles (id, name, avatar, band, games_played, created_at, updated_at) VALUES (?, ?, ?, ?, 0, ?, ?)', id, unique, av, band, now, now);
     }
     for (const s of stats) {
-      if (!isObj(s) || !GAME_IDS.includes(s.game_id)) continue;
+      if (!isObj(s) || !isGameId(s.game_id)) continue;
       db.run(
         `INSERT INTO profile_game_stats (profile_id, game_id, best, plays, streak_current, streak_best, streak_last_date, best_run)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?)
@@ -163,7 +166,7 @@ function importProfile(bundle) {
       );
     }
     for (const sc of scores) {
-      if (!isObj(sc) || !GAME_IDS.includes(sc.game_id) || typeof sc.played_at !== 'string') continue;
+      if (!isObj(sc) || !isGameId(sc.game_id) || typeof sc.played_at !== 'string') continue;
       if (db.get('SELECT 1 AS x FROM scores WHERE profile_id = ? AND game_id = ? AND score = ? AND played_at = ?', id, sc.game_id, int(sc.score), sc.played_at)) continue;
       db.run('INSERT INTO scores (profile_id, game_id, score, mode, played_at) VALUES (?, ?, ?, ?, ?)', id, sc.game_id, int(sc.score), sc.mode === 'room' ? 'room' : 'solo', sc.played_at);
     }
@@ -173,4 +176,4 @@ function importProfile(bundle) {
   return { profile: get(pid) };
 }
 
-module.exports = { list, get, upsert, record, remove, leaderboard, exportProfile, importProfile, GAME_IDS, ID_RE };
+module.exports = { list, get, upsert, record, remove, leaderboard, exportProfile, importProfile, registerGameIds, isGameId, ID_RE };

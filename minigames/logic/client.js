@@ -1,6 +1,6 @@
 import { h } from '/shared/ui.js';
 import { play } from '/shared/sound.js';
-import { rng, int, pick, shuffled, timeouts } from './util.js';
+import { rng, int, pick, shuffled, timeouts } from '/sdk/minigame.js';
 
 const ODD = {
   easy: [

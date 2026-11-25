@@ -1,0 +1,12 @@
+{
+  "sdk": 1,
+  "id": "clash",
+  "name": "Colour Clash",
+  "description": "Tap the ink colour, not the word.",
+  "howto": "Tap the colour of the INK, not the colour the word says. Wrong taps cost you.",
+  "duration": 30,
+  "max": 3500,
+  "group": "speed",
+  "order": 60,
+  "client": "client.js"
+}

@@ -1,17 +1,9 @@
-const { GameBase, shuffle, bands, profiles, records, settings: sdkSettings } = require('../../server/sdk');
+const { GameBase, shuffle, bands, profiles, records, minigames: mini, settings: sdkSettings } = require('../../server/sdk');
 
-// The mini-games themselves run on the phones. The server picks the set, hands out a shared seed and
-// start time, collects each player's score, and awards points for finishing 1st, 2nd, 3rd and so on.
-const MINI = {
-  memory: { name: 'Memory Match', howto: 'Flip two cards at a time and find every matching pair. Fewer misses and a faster finish score more.', duration: 60, max: 1400 },
-  scramble: { name: 'Word Builder', howto: 'Tap the letter tiles to spell the word that fits the clue. Example: the clue "Frozen water" is ICE. Tap Hint if you are stuck (it costs points). Words in a row build a streak bonus.', duration: 60, max: 3000 },
-  math: { name: 'Number Dash', howto: 'Tap the right answer to each sum as fast as you can. Example: 6 × 7 is 42. A streak of right answers multiplies your points. A wrong tap costs you.', duration: 40, max: 3500 },
-  logic: { name: 'Logic Chain', howto: 'Work out the answer to each puzzle. Number pattern: 2, 4, 6, ? is 8. Odd one out: 2, 4, 7, 8 is 7. Some are quick riddles, like who is taller.', duration: 50, max: 3000 },
-  literacy: { name: 'Word Match', howto: 'Pick the correct option. It might be the right spelling (because, not becuase), the meaning of a word, or the missing word in a sentence.', duration: 50, max: 3000 },
-  reaction: { name: 'Quick Tap', howto: 'Wait for the screen to turn green, then tap as fast as you can. Tap too early and you lose time. Five tries.', duration: 50, max: 2500 },
-  pattern: { name: 'Copy Cat', howto: 'Watch the colours light up, then repeat the pattern. It gets one step longer each round.', duration: 90, max: 3500 },
-  clash: { name: 'Colour Clash', howto: 'Tap the colour of the INK, not the colour the word says. Wrong taps cost you.', duration: 30, max: 3500 },
-};
+// The mini-games themselves run on the phones and are separate plugins (minigames/ and plugins/): each is a manifest
+// plus a client.js. The server picks the set, hands out a shared seed and start time, collects each player's score, and
+// awards points for finishing 1st, 2nd, 3rd and so on.
+const MINI = mini.byId;
 const POINTS = [10, 7, 5];
 const OTHER_POINTS = 3;
 const INTRO_MS = 9000;
@@ -19,18 +11,23 @@ const COUNTDOWN_MS = 3200;
 const GRACE_MS = 3000;
 const RESULTS_MS = 10000;
 
+const ids = (group) => mini.list.filter((m) => !group || m.group === group).map((m) => m.id);
 const FOCUS = {
-  mix: Object.keys(MINI),
-  brain: ['scramble', 'math', 'logic', 'literacy', 'memory'],
-  speed: ['reaction', 'pattern', 'clash'],
+  mix: ids(),
+  brain: ids('brain'),
+  speed: ids('speed'),
 };
 
 class MiniGames extends GameBase {
   constructor(room) {
     super(room);
-    const pool = FOCUS[this.s.focus] || FOCUS.mix;
+    const pool = (FOCUS[this.s.focus] && FOCUS[this.s.focus].length ? FOCUS[this.s.focus] : FOCUS.mix);
     const picked = shuffle(pool);
-    while (picked.length < this.s.games) picked.push(...shuffle(Object.keys(MINI)).filter((k) => !picked.includes(k)));
+    // Fewer mini-games than the set size (for example one group has few): fill up, repeating games if there is no other choice.
+    while (picked.length < this.s.games) {
+      const rest = shuffle(Object.keys(MINI)).filter((k) => !picked.includes(k));
+      picked.push(...(rest.length ? rest : shuffle(Object.keys(MINI))));
+    }
     this.order = picked.slice(0, this.s.games);
     this.total = this.order.length;
     this.idx = 0;
@@ -223,7 +220,7 @@ class MiniGames extends GameBase {
       deadline: this.deadline,
       timerTotal: this.timerTotal,
       title: 'Mini-Games',
-      mg: { id: this.id, name: this.def.name, howto: this.def.howto, duration: this.def.duration, max: this.def.max },
+      mg: { id: this.id, name: this.def.name, howto: this.def.howto, duration: this.def.duration, max: this.def.max, client: this.def.url },
       lineup: this.order.map((id) => MINI[id].name),
       team: this.s.mode === 'team',
     };
@@ -266,6 +263,7 @@ class MiniGames extends GameBase {
 }
 
 module.exports = {
+  available: () => mini.list.length > 0,
   defaults: { games: 5, focus: 'mix', handicap: 'on', mode: 'race' },
   options: [
     { key: 'games', label: 'Games in the set', values: [[3, '3'], [4, '4'], [5, '5'], [6, '6']] },

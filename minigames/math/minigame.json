@@ -1,0 +1,12 @@
+{
+  "sdk": 1,
+  "id": "math",
+  "name": "Number Dash",
+  "description": "Solve math sums calibrated to your level.",
+  "howto": "Tap the right answer to each sum as fast as you can. Example: 6 × 7 is 42. A streak of right answers multiplies your points. A wrong tap costs you.",
+  "duration": 40,
+  "max": 3500,
+  "group": "brain",
+  "order": 20,
+  "client": "client.js"
+}

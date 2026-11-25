@@ -1,0 +1,12 @@
+{
+  "sdk": 1,
+  "id": "literacy",
+  "name": "Word Match",
+  "description": "Pick the right spelling, meaning, or missing word.",
+  "howto": "Pick the correct option. It might be the right spelling (because, not becuase), the meaning of a word, or the missing word in a sentence.",
+  "duration": 50,
+  "max": 3000,
+  "group": "brain",
+  "order": 10,
+  "client": "client.js"
+}

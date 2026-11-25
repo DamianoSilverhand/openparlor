@@ -12,6 +12,7 @@ const content = require('./content');
 const history = require('./history');
 const records = require('./records');
 const { getDb, closeDb } = require('./db');
+const minigames = require('./sdk/minigames');
 const { startBackups } = require('./backup');
 
 const PORT = Number(process.env.PORT) || 3100;
@@ -87,6 +88,27 @@ function serveGameAsset(req, res, pathname) {
   });
 }
 
+// A mini-game's folder is served at /mini/<id>/, for the same reason as game assets.
+function serveMiniAsset(req, res, pathname) {
+  const m = pathname.match(/^\/mini\/([a-z][a-z0-9-]*)\/(.+)$/);
+  const mg = m && minigames.byId[m[1]];
+  let rel;
+  try {
+    rel = m && decodeURIComponent(m[2]);
+  } catch {
+    return json(res, 400, { error: 'bad request' });
+  }
+  if (!mg || rel.includes('\0')) return json(res, 404, { error: 'not found' });
+  const file = path.join(mg.dir, rel);
+  const inside = path.relative(mg.dir, file);
+  if (inside.startsWith('..') || path.isAbsolute(inside)) return json(res, 403, { error: 'forbidden' });
+  fs.readFile(file, (err, data) => {
+    if (err) return json(res, 404, { error: 'not found' });
+    res.writeHead(200, { 'Content-Type': MIME[path.extname(file)] || 'application/octet-stream', 'Cache-Control': 'no-cache' });
+    res.end(data);
+  });
+}
+
 function serveStatic(req, res, pathname) {
   let rel;
   try {
@@ -148,6 +170,8 @@ async function handleRequest(req, res) {
   const { pathname } = url;
 
   if (pathname === '/api/config') return json(res, 200, publicConfig());
+  // The mini-games Solo Practice offers (the same ones the Mini-Games game uses).
+  if (pathname === '/api/minigames') return json(res, 200, { minigames: minigames.list.map((m) => ({ id: m.id, name: m.name, desc: m.desc, duration: m.duration, url: m.url })) });
   if (pathname === '/api/info') {
     const ips = lanAddresses();
     return json(res, 200, { ips, port: PORT, base: `http://${ips[0] || 'localhost'}:${PORT}` });
@@ -169,7 +193,7 @@ async function handleRequest(req, res) {
     if (!config.profiles.enabled) return json(res, 404, { error: 'profiles are turned off' });
     if (pathname === '/api/leaderboard' && req.method === 'GET') {
       const game = url.searchParams.get('game');
-      if (!profiles.GAME_IDS.includes(game)) return json(res, 400, { error: 'unknown game' });
+      if (!profiles.isGameId(game)) return json(res, 400, { error: 'unknown game' });
       return json(res, 200, { game, entries: profiles.leaderboard(game, url.searchParams.get('limit')) });
     }
     if (pathname === '/api/history' && req.method === 'GET') return json(res, 200, { games: history.recent(url.searchParams.get('limit')) });
@@ -223,6 +247,7 @@ async function handleRequest(req, res) {
     }
   }
   if (pathname.startsWith('/games/')) return serveGameAsset(req, res, pathname);
+  if (pathname.startsWith('/mini/')) return serveMiniAsset(req, res, pathname);
   serveStatic(req, res, pathname);
 }
 
@@ -369,6 +394,7 @@ server.listen(PORT, '0.0.0.0', () => {
   console.log(`  On this computer:  http://localhost:${PORT}`);
   for (const ip of ips) console.log(`  On your network:   http://${ip}:${PORT}`);
   console.log('\nOpen the network address on the TV, then scan the QR code with phones.\n');
+  if (minigames.problems.length) console.log(`Some mini-games could not be loaded (${minigames.problems.length}); see the messages above.\n`);
   if (gameProblems.length) console.log(`Some games could not be loaded (${gameProblems.length}); see the messages above.\n`);
   if (content.problems.length) console.log(`Some content packs have problems (${content.problems.length}); run "npm run validate" for details.\n`);
 });

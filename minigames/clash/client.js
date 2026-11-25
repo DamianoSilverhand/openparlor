@@ -1,6 +1,6 @@
 import { h } from '/shared/ui.js';
 import { play } from '/shared/sound.js';
-import { rng, int, timeouts } from './util.js';
+import { rng, int, timeouts } from '/sdk/minigame.js';
 
 const COLORS = [
   { n: 'RED', c: '#e8472b' },

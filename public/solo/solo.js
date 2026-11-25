@@ -2,25 +2,9 @@ import { h, avatar, AVATARS, soundToggle } from '/shared/ui.js';
 import { config, bands, bandLabel, tierOfBand } from '/shared/config.js';
 import { t } from '/shared/i18n.js';
 import { play as sfx } from '/shared/sound.js';
-import * as memory from '/play/mg/memory.js';
-import * as scramble from '/play/mg/scramble.js';
-import * as reaction from '/play/mg/reaction.js';
-import * as pattern from '/play/mg/pattern.js';
-import * as clash from '/play/mg/clash.js';
-import * as math from '/play/mg/math.js';
-import * as logic from '/play/mg/logic.js';
-import * as literacy from '/play/mg/literacy.js';
 
-const GAMES = [
-  { id: 'scramble', name: 'Word Builder', desc: 'Tap tiles to spell words and learn clues.', duration: 60, mod: scramble },
-  { id: 'literacy', name: 'Word Match', desc: 'Pick the right spelling, meaning, or missing word.', duration: 50, mod: literacy },
-  { id: 'math', name: 'Number Dash', desc: 'Solve math sums calibrated to your grade.', duration: 40, mod: math },
-  { id: 'logic', name: 'Logic Chain', desc: 'Patterns, odd-one-out, and quick deductions.', duration: 50, mod: logic },
-  { id: 'memory', name: 'Memory Match', desc: 'Flip cards and match all pairs.', duration: 60, mod: memory },
-  { id: 'pattern', name: 'Copy Cat', desc: 'Watch the lights and repeat the sequence.', duration: 90, mod: pattern },
-  { id: 'clash', name: 'Colour Clash', desc: 'Tap the ink colour, not the word.', duration: 30, mod: clash },
-  { id: 'reaction', name: 'Quick Tap', desc: 'Wait for green, then tap fast.', duration: 50, mod: reaction },
-];
+// The mini-games come from the server (the built-in ones plus any plugins).
+let GAMES = [];
 
 const app = document.getElementById('app');
 let profiles = [];
@@ -164,7 +148,7 @@ function importProfile(input) {
   }).catch(() => alert('That file could not be imported.'));
 }
 
-function playGame(g) {
+async function playGame(g) {
   cleanup();
   const root = h('div', { class: 'mg-root' });
   const clock = h('span', { class: 'mg-clock' }, `${g.duration}s`);
@@ -209,7 +193,9 @@ function playGame(g) {
   );
 
   const seed = Math.floor(Math.random() * 2 ** 31);
-  activeApi = g.mod.start({
+  const mod = await import(g.url).catch(() => null);
+  if (!mod) return hubScreen();
+  activeApi = mod.start({
     root,
     seed,
     level: tierOfBand(profile.level),
@@ -226,5 +212,12 @@ function playGame(g) {
   }, 200);
 }
 
-if (config.profiles.enabled) loadProfiles().then(profileScreen);
+async function start() {
+  try {
+    GAMES = ((await (await fetch('/api/minigames')).json()).minigames || []).map((m) => ({ id: m.id, name: m.name, desc: m.desc, duration: m.duration, url: m.url }));
+  } catch {}
+  await loadProfiles();
+  profileScreen();
+}
+if (config.profiles.enabled) start();
 else app.replaceChildren(h('div', { class: 'screen' }, h('h1', { class: 'title' }, 'Solo Practice'), h('p', { class: 'lead' }, 'Solo practice saves scores to a profile, and profiles are turned off on this server.'), h('a', { class: 'link', href: '/' }, '← Home')));

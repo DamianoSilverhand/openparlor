@@ -1,6 +1,6 @@
 import { h } from '/shared/ui.js';
 import { play } from '/shared/sound.js';
-import { rng, shuffled, timeouts } from './util.js';
+import { rng, shuffled, timeouts } from '/sdk/minigame.js';
 
 const FACES = ['🐶', '🐱', '🐸', '🦊', '🐼', '🐵', '🦁', '🐷', '🐮', '🐔', '🐢', '🐙', '🦄', '🐝'];
 const GRID = { easy: [3, 4], medium: [4, 4], hard: [4, 5] }; // columns x rows
