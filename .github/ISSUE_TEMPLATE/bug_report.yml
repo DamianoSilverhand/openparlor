@@ -1,0 +1,37 @@
+name: Bug report
+description: Something does not work the way the docs say it should
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where did it happen?
+      options: [TV or big screen, Phone, Solo Practice, Server or start-up, A plugin, Content or packs, Other]
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+  - type: input
+    id: node
+    attributes:
+      label: Node version (`node -v`)
+  - type: input
+    id: devices
+    attributes:
+      label: Devices and browsers
+      description: For example "TV: Chrome on a laptop, phones: Safari on iPhone 14 and Chrome on Android".
+  - type: textarea
+    id: log
+    attributes:
+      label: Server log or browser console output
+      description: Anything the server printed, or errors from the browser console. Remove names or addresses you do not want to share.
+      render: text

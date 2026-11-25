@@ -1,0 +1,19 @@
+name: Feature request
+description: An idea for OpenParlor
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do?
+      description: Describe the situation (for example "a class of 30 students" or "a family on a phone-only evening") rather than the feature.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help?
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Anything you tried instead, or a plugin that could do this?

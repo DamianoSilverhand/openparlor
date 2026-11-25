@@ -1,0 +1,24 @@
+name: Content problem or pack
+description: A wrong answer, an unsuitable question, or a pack you would like to share
+labels: [content]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What is it?
+      options: [A wrong or unclear answer, An unsuitable or offensive item, A typo, A pack I would like to contribute]
+    validations:
+      required: true
+  - type: textarea
+    id: item
+    attributes:
+      label: Which item, and what is wrong?
+      description: Quote the question or prompt and say where it is (file and topic). For a wrong answer, give a source that shows the right one.
+    validations:
+      required: true
+  - type: checkboxes
+    id: licence
+    attributes:
+      label: If you are contributing content
+      options:
+        - label: The wording is my own, and I am happy for it to be shared under CC BY-SA 4.0 (see LICENSE-CONTENT.md).
