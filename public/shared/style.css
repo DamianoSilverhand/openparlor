@@ -1,4 +1,13 @@
-/* Printed-box-game look: flat colour, thick ink outlines, hard offset shadows. */
+/* Printed-box-game look: flat colour, thick ink outlines, hard offset shadows.
+
+   Theme tokens (use these in games and plugins, never fixed colours):
+   --paper / --card   page and card backgrounds       --ink / --soft   text on them
+   --mustard, --tomato, --teal, --leaf, --pink, --sky   accent fills
+   --on-color / --on-color-soft   text on a light or accent fill (mustard, pink, sky, white...); stays dark in both themes
+   --tomato-text / --teal-text    red and green used as text on a card, lightened in the dark theme
+   --paper-light                  a card that stays light in both themes (for ink colours that need a light background)
+   A surface with an accent fill sets  color: var(--on-color); --soft: var(--on-color-soft);  and everything inside it
+   follows, so dark mode needs no per-class overrides. */
 :root {
   --paper: #f3eadb;
   --card: #fffbf2;
@@ -10,6 +19,11 @@
   --leaf: #4d8a34;
   --pink: #f29bb5;
   --sky: #6fb3e0;
+  --on-color: #1d1a17;
+  --on-color-soft: #5d554d;
+  --tomato-text: var(--tomato);
+  --teal-text: var(--teal);
+  --paper-light: #fffbf2;
   --border: 3px solid var(--ink);
   --shadow: 5px 5px 0 var(--ink);
   --display: "Avenir Next", "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
@@ -22,17 +36,10 @@
     --card: #24201c;
     --ink: #f5efe4;
     --soft: #b3a99c;
+    --tomato-text: #ff7d63;
+    --teal-text: #5fc9c9;
     --shadow: 5px 5px 0 #090807;
   }
-  /* Surfaces that stay light or coloured in dark mode need dark text. html :is() lifts specificity above
-     the plain colour rules declared later in play.css and tv.css. */
-  html :is(.prompt, .cat-card, .team-bar, .team-hero, .scr-tile, .rank-list .r.me, .choice.a, .big-result.fool, .word.easy, .word.medium, .word.hard, .sz.on, .ptile.shown, .gl.close, .mem-card, .mem-card.done, .wb-slot.filled, .rx-pad.early, .rx-pad.hit, .qopt.suggested, .steps b, .prompt-card, .pod .blk, .tile.shown, .lu.now, .group-total, .rec-list, .row .fill, .tchip.done),
-  html .btn:not(.red):not(.teal):not(.plain) { color: #1d1a17; }
-  html .btn:disabled { color: #5d554d; }
-  html :is(.prompt, .cat-card, .team-bar, .team-hero, .scr-tile, .rank-list .r.me, .choice.a, .big-result.fool, .word.easy, .word.medium, .word.hard, .sz.on, .ptile.shown, .gl.close, .mem-card, .mem-card.done, .wb-slot.filled, .rx-pad.early, .rx-pad.hit, .qopt.suggested, .steps b, .prompt-card, .pod .blk, .tile.shown, .lu.now, .group-total, .rec-list, .row .fill, .tchip.done) :is(p, small, span, b, h1, h2, h3) { color: inherit; }
-  html .cl-card { background: #fffbf2; color: #1d1a17; } /* the ink colours in Colour Clash need a light card */
-  html :is(.rank-list .r .gain, .tally .pts, .row .gain, .gains b, .res .pts) { color: #5fc9c9; }
-  html :is(.nd-prob.bad, .lg-q.bad, .timer.low b, .mg-clock.low, .res.no .pts, h1 span, .lobby h1 span) { color: #ff7d63; }
 }
 
 * { box-sizing: border-box; }
@@ -60,7 +67,8 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; letter-spa
   font-family: var(--display);
   font-weight: 800;
   background: var(--mustard);
-  color: var(--ink);
+  color: var(--on-color);
+  --soft: var(--on-color-soft);
   border: var(--border);
   border-radius: 14px;
   box-shadow: 4px 4px 0 var(--ink);
@@ -69,10 +77,10 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; letter-spa
   transition: transform 0.06s, box-shadow 0.06s;
 }
 .btn:active:not(:disabled) { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--ink); }
-.btn:disabled { background: #ddd3c3; color: var(--soft); box-shadow: 2px 2px 0 var(--soft); border-color: var(--soft); cursor: default; }
+.btn:disabled { background: #ddd3c3; color: var(--on-color-soft); box-shadow: 2px 2px 0 var(--soft); border-color: var(--soft); cursor: default; }
 .btn.red { background: var(--tomato); color: #fff; }
 .btn.teal { background: var(--teal); color: #fff; }
-.btn.plain { background: var(--card); }
+.btn.plain { background: var(--card); color: var(--ink); --soft: #b3a99c; }
 .btn.small { font-size: 0.85em; padding: 0.55em 0.9em; box-shadow: 3px 3px 0 var(--ink); }
 
 .avatar {
@@ -95,7 +103,7 @@ h1, h2, h3, .display { font-family: var(--display); font-weight: 900; letter-spa
 .timer .track i { display: block; height: 100%; background: var(--teal); transform-origin: left; }
 .timer b { min-width: 1.8em; text-align: right; font-size: 1.3em; }
 .timer.low .track i { background: var(--tomato); }
-.timer.low b { color: var(--tomato); }
+.timer.low b { color: var(--tomato-text); }
 
 .pill {
   display: inline-block;
