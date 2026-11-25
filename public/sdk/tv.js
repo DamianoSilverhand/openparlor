@@ -16,7 +16,8 @@ export function finalScreen(s, awards) {
       h('div', { class: 'blk' }, i + 1),
     );
   });
-  const rest = g.standings.slice(3).map((x, i) => h('span', { class: 'tag' }, ordinal(i + 3), ' ', get(x.id).name, ` · ${x.score}`));
+  const rest = g.standings.slice(3, 13).map((x, i) => h('span', { class: 'tag' }, ordinal(i + 3), ' ', get(x.id).name, ` · ${x.score}`));
+  if (g.standings.length > 13) rest.push(h('span', { class: 'tag more' }, `+${g.standings.length - 13} more`));
   const cards = awards.filter(Boolean).map((a) => {
     const p = get(a.id);
     return h('div', { class: 'card award' }, avatar(p), h('div', null, h('div', { class: 't' }, a.title), h('div', { class: 'd' }, `${p.name}: ${a.text}`)));

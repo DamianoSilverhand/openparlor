@@ -38,9 +38,13 @@ export const AVATARS = [
   { e: '🦄', c: '#FF9F8F' },
 ];
 
+// An avatar number is an animal (0 to 11) plus 12 times a colour shift (0 to 11): the background is the colour of the
+// animal that many places along, so a room of up to 144 people can all look different.
 export function avatar(p, size) {
-  const a = AVATARS[(p && p.avatar) % AVATARS.length] || AVATARS[0];
-  return h('span', { class: 'avatar', style: { background: a.c, ...(size ? { '--s': size } : {}) } }, a.e);
+  const n = Math.max(0, Math.floor((p && p.avatar) || 0));
+  const a = AVATARS[n % AVATARS.length];
+  const bg = AVATARS[(n + Math.floor(n / AVATARS.length)) % AVATARS.length].c;
+  return h('span', { class: 'avatar', style: { background: bg, ...(size ? { '--s': size } : {}) } }, a.e);
 }
 
 export function tag(p, extra) {

@@ -359,12 +359,16 @@ wss.on('connection', (ws) => {
         p.ws = ws;
         p.connected = true;
       } else {
-        if (config.limits.maxPlayers > 0 && room.players.size >= config.limits.maxPlayers) return fail('full', 'This room is full.');
-        p = room.addPlayer(msg.name, msg.avatar, ws, msg.profileId, msg.level);
+        // Someone who asks to watch, arrives while a game that cannot take newcomers is on, or finds every seat taken, joins
+        // the audience: they can react and vote, and they get a seat again when the game ends.
+        const chose = msg.audience === true;
+        const midGame = !!(room.game || room.briefing) && !room.def().lateJoin;
+        const full = config.limits.maxPlayers > 0 && room.players.size >= config.limits.maxPlayers;
+        p = room.addPlayer(msg.name, msg.avatar, ws, msg.profileId, msg.level, { audience: chose || midGame || full, auto: !chose });
       }
       ctx.room = room;
       ctx.pid = p.id;
-      ws.send(JSON.stringify({ t: 'welcome', id: p.id, token: p.token, code: room.code, name: p.name, avatar: p.avatar }));
+      ws.send(JSON.stringify({ t: 'welcome', id: p.id, token: p.token, code: room.code, name: p.name, avatar: p.avatar, audience: !!p.audience }));
       room.playerChanged();
       return;
     }
@@ -379,10 +383,11 @@ wss.on('connection', (ws) => {
       room.tvs.delete(ws);
       return;
     }
-    const p = room.players.get(ctx.pid);
+    const p = room.participant(ctx.pid);
     if (p && p.ws === ws) {
       p.ws = null;
       p.connected = false;
+      p.leftAt = Date.now();
       room.playerChanged();
     }
   });

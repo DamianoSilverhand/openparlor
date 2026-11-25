@@ -42,7 +42,8 @@ function intro(s) {
         h('div', { class: 'card team-card', style: { '--tc': tm.color, animationDelay: `${i * 120}ms` } },
           h('div', { class: 'band' }, tm.name),
           h('div', { class: 'roster-col' },
-            tm.members.map((id) => get(id)).filter(Boolean).map((p) => h('div', { class: 'who-row' }, avatar(p), p.name)),
+            ...tm.members.slice(0, 6).map((id) => get(id)).filter(Boolean).map((p) => h('div', { class: 'who-row' }, avatar(p), p.name)),
+            tm.members.length > 6 && h('div', { class: 'who-row more' }, `+${tm.members.length - 6} more`),
           ),
         ),
       ),
@@ -81,7 +82,7 @@ function question(s) {
   const chips = h('div', { class: 'chips' });
   const head = h('div', { class: 'bar' });
   const opts = h('div', { class: 'opts' },
-    g.options.map((text, i) => h('div', { class: `opt-tv o${i}` }, h('span', { class: 'let' }, LETTERS[i]), h('span', { class: 'txt' }, text), h('span', { class: 'tick' }))),
+    g.options.map((text, i) => h('div', { class: `opt-tv o${i}` }, h('span', { class: 'let' }, LETTERS[i]), h('span', { class: 'txt' }, text), h('span', { class: 'crowd' }), h('span', { class: 'tick' }))),
   );
   const results = h('div', { class: 'results' });
   // Optional: speak the question and answers with the browser's built-in voice.
@@ -117,13 +118,20 @@ function question(s) {
       o.classList.toggle('right', reveal && i === g.correct);
       o.classList.toggle('wrong', reveal && i !== g.correct);
     });
+    // The audience's guesses: only the total while the question is open (so nobody is swayed), the split once it is revealed.
+    const poll = g.poll;
+    [...opts.children].forEach((o, i) => {
+      const crowd = o.querySelector('.crowd');
+      crowd.textContent = reveal && poll && poll.total > 0 ? `${Math.round((poll.counts[i] / poll.total) * 100)}%` : '';
+    });
     t.el.parentElement.style.visibility = reveal ? 'hidden' : 'visible';
     if (!reveal) {
       const teams = g.teams.filter((tm) => g.active.includes(tm.id));
       const spotOf = (id) => (g.spots.find((x) => x.team === id) || {}).pid;
       chips.replaceChildren(...teams.map((tm) => teamChip(tm, s, g.answered.includes(tm.id), spotOf(tm.id))));
       results.replaceChildren(chips);
-      fact.textContent = g.target ? (g.solo ? 'Full points if this is your group, half points if it is not.' : 'The player in each team at this group answers. Everyone else helps.') : '';
+      const crowdNote = poll && poll.total > 0 ? `  Audience guesses so far: ${poll.total}.` : '';
+      fact.textContent = (g.target ? (g.solo ? 'Full points if this is your group, half points if it is not.' : 'The player in each team at this group answers. Everyone else helps.') : '') + crowdNote;
     } else {
       results.replaceChildren(
         ...g.results.map((r) => {
@@ -137,7 +145,7 @@ function question(s) {
           );
         }),
       );
-      fact.textContent = g.fact || '';
+      fact.textContent = (g.fact || '') + (poll && poll.total > 0 ? `  The audience (${poll.total}) agreed on ${poll.labels[poll.counts.indexOf(Math.max(...poll.counts))]}.` : '');
     }
   }
   update(s);
@@ -178,7 +186,7 @@ function board(s) {
   const get = byId(s.players);
   const max = Math.max(1, ...g.standings.map((x) => x.score));
   return h('div', { class: 'board' },
-    g.standings.map((x, i) =>
+    g.standings.slice(0, 10).map((x, i) => // many teams: the top ten
       h('div', { class: 'row', style: { animationDelay: `${i * 70}ms` } },
         h('span', { class: 'rank' }, i + 1),
         h('div', { class: 'meter' },
@@ -219,7 +227,8 @@ function final(s) {
       h('div', { class: 'blk', style: { background: top[i].color } }, i + 1),
     ),
   );
-  const rest = g.standings.slice(3).map((x, i) => h('span', { class: 'tag' }, ordinal(i + 3), ' ', x.name, ` · ${x.score}`));
+  const rest = g.standings.slice(3, 10).map((x, i) => h('span', { class: 'tag' }, ordinal(i + 3), ' ', x.name, ` · ${x.score}`));
+  if (g.standings.length > 10) rest.push(h('span', { class: 'tag more' }, `+${g.standings.length - 10} more`));
   const award = (title, text, a) => {
     if (!a) return null;
     const tm = g.teams.find((t) => t.id === a.id);

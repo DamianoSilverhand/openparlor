@@ -47,5 +47,17 @@
   "solo.savedOffline": "Saved on this device. It will be sent to the server when you are back online.",
   "solo.offlineNote": "You are offline. Saved profiles still work, and new scores are kept on this device until you reconnect.",
   "solo.pendingNote": "{count} result(s) waiting to be sent.",
-  "solo.needsConnection": "Adding a person needs a connection to the server."
+  "solo.needsConnection": "Adding a person needs a connection to the server.",
+  "audience.watching": "Audience",
+  "audience.watchTv": "Watch the big screen. Send a reaction any time.",
+  "audience.pollOpen": "Guess the answer! Your vote does not score, but the TV shows what the crowd thinks.",
+  "audience.joinAsAudience": "Just watch (audience)",
+  "audience.lobbyTitle": "You're watching",
+  "audience.takeSeat": "Take a seat",
+  "audience.watchOnly": "Just watch",
+  "audience.watchingCount": "{count} watching",
+  "audience.moveToAudience": "→ audience",
+  "audience.moveToPlayers": "→ player",
+  "audience.nextGame": "You will get a seat when the game ends.",
+  "audience.autoNote": "This game started before you arrived, so you are watching. You will get a seat when it ends."
 }

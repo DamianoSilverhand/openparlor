@@ -1,7 +1,7 @@
 import { h, avatar, timer, byId, serverNow, onTick, ordinal } from '/shared/ui.js';
 import { play as sfx } from '/shared/sound.js';
 import { t as tx } from '/shared/i18n.js';
-import { meBar, hostButton, final } from '/sdk/play.js';
+import { meBar, hostButton, final, topAndMe } from '/sdk/play.js';
 
 const game = (a, extra) => ({ t: 'g', a, ...extra });
 
@@ -125,12 +125,13 @@ function results(s, ctx) {
     h('h1', { class: 'title' }, mine ? (mine.rank === 0 ? 'You won this one!' : `You came ${ordinal(mine.rank)}`) : 'Round over'),
     (g.personalBests || []).includes(s.me) && h('div', { class: 'card pad big-result good' }, h('h2', null, 'New personal best!'), h('p', null, `Score: ${mine ? mine.score : ''}`)),
     h('div', { class: 'rank-list' },
-      g.rows.map((r) =>
-        h('div', { class: 'r' + (r.id === s.me ? ' me' : '') },
+      ...topAndMe(g.rows, (r) => r.id === s.me).rows.map(({ x: r, gap }) =>
+        h('div', { class: 'r' + (r.id === s.me ? ' me' : '') + (gap ? ' gap' : '') },
           h('span', { class: 'tag' }, h('b', null, r.rank + 1), avatar(get(r.id)), get(r.id) ? get(r.id).name : '?'),
           h('span', null, h('span', { class: 'gain' }, `+${r.pts}`), r.score),
         ),
       ),
+      g.rows.length > 9 && h('p', { class: 'more-note' }, `${g.rows.length} players`),
     ),
     t.el,
     hostButton(s, ctx, g.idx >= g.total ? 'See the winners' : 'Next game', true),
@@ -154,7 +155,7 @@ function resultsTogether(s, ctx) {
       : tr.previous ? h('p', { class: 'lead' }, tx('mini.recordForPhone', { scope: tr.scope, previous: tr.previous })) : null,
     !tr.complete && h('p', { class: 'lead' }, 'Records need a score from everyone who started.'),
     h('div', { class: 'rank-list' },
-      g.rows.map((r) =>
+      ...topAndMe(g.rows, (r) => r.id === s.me).rows.map(({ x: r }) =>
         h('div', { class: 'r' + (r.id === s.me ? ' me' : '') }, h('span', { class: 'tag' }, avatar(get(r.id)), get(r.id) ? get(r.id).name : '?'), h('span', null, r.score)),
       ),
     ),
@@ -174,7 +175,7 @@ function finalTogether(s, ctx) {
     h('h1', { class: 'title' }, `Together you scored ${g.teamTotal}`),
     broken.length > 0 && h('div', { class: 'card pad big-result good' }, h('h2', null, tx('mini.newRecords')), broken.map((r) => h('p', null, `${r.name}: ${r.total} (${r.scope})`))),
     h('div', { class: 'rank-list' },
-      g.standings.map((x) => h('div', { class: 'r' + (x.id === s.me ? ' me' : '') }, h('span', { class: 'tag' }, avatar(get(x.id)), get(x.id).name), h('span', null, x.score))),
+      ...topAndMe(g.standings, (x) => x.id === s.me).rows.map(({ x }) => h('div', { class: 'r' + (x.id === s.me ? ' me' : '') }, h('span', { class: 'tag' }, avatar(get(x.id)), get(x.id).name), h('span', null, x.score))),
     ),
     h('button', { class: 'btn block push', onclick: () => ctx.send({ t: 'again' }) }, 'Play again'),
     h('button', { class: 'btn plain block', onclick: () => ctx.send({ t: 'lobby' }) }, 'Back to the lobby'),

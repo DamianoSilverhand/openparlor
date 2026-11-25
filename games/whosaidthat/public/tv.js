@@ -68,7 +68,8 @@ function reveal(s) {
   const g = s.game;
   const get = byId(s.players);
   const author = get(g.author);
-  const names = (ids) => ids.map((id) => get(id)).filter(Boolean).map((p) => h('span', { class: 'chip' }, avatar(p), p.name));
+  // A handful of names as chips; a crowd as a count.
+  const names = (ids) => (ids.length > 10 ? [h('span', { class: 'chip' }, `${ids.length} players`)] : ids.map((id) => get(id)).filter(Boolean).map((p) => h('span', { class: 'chip' }, avatar(p), p.name)));
   const laughs = h('span', { class: 'laughs' });
   const listOf = (title, pts, ids, none) =>
     h('div', { class: 'card' },
@@ -102,8 +103,9 @@ export function board(s) {
   const g = s.game;
   const get = byId(s.players);
   const max = Math.max(1, ...g.standings.map((x) => x.score));
+  const shown = g.standings.slice(0, 10); // a long ranking shows the top ten
   return h('div', { class: 'board' },
-    g.standings.map((x, i) => {
+    shown.map((x, i) => {
       const p = get(x.id);
       return h('div', { class: 'row', style: { animationDelay: `${i * 70}ms` } },
         h('span', { class: 'rank' }, i + 1),

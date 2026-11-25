@@ -90,7 +90,7 @@ test('config/local.json can rename the brand and define its own bands', async (t
   assert.match(s.log(), /ignored an invalid band/);
 });
 
-test('the player limit and host-claim options are enforced', async (t) => {
+test('the player limit gives extra people the audience, and host-claim can be switched off', async (t) => {
   const dir = tmp(t, 'op-config-');
   fs.cpSync(path.join(ROOT, 'config'), dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'local.json'), JSON.stringify({ host: { allowClaim: false }, limits: { maxPlayers: 2 } }));
@@ -99,16 +99,21 @@ test('the player limit and host-claim options are enforced', async (t) => {
   const code = await createRoom(s.base);
   const host = await connect(s, code, 'Host');
   const guest = await connect(s, code, 'Guest');
-  const third = await new Promise((resolve) => {
+  // The player limit applies to seats: the next person joins the audience instead of being turned away.
+  const third = await new Promise((resolve, reject) => {
     const WebSocket = require('ws');
     const ws = new WebSocket(`ws://127.0.0.1:${s.port}/ws`);
     ws.on('open', () => ws.send(JSON.stringify({ t: 'join', room: code, name: 'Third', avatar: 1 })));
     ws.on('message', (d) => {
       const m = JSON.parse(d);
-      if (m.t === 'error') resolve(m);
+      if (m.t === 'welcome') resolve(m);
     });
+    setTimeout(() => reject(new Error('no welcome')), 5000);
   });
-  assert.equal(third.code, 'full');
+  assert.equal(third.audience, true, 'no seat left, so they watch');
+  await sleep(150);
+  assert.equal(host.last.players.length, 2);
+  assert.equal(host.last.audienceCount, 1);
   guest.send({ t: 'claimHost' });
   await sleep(150);
   assert.equal(host.last.hostId, host.last.players.find((p) => p.name === 'Host').id, 'claiming host is switched off');

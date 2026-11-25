@@ -16,5 +16,6 @@
     "scoring": "Guess sooner for more points. Harder words are worth more. The artist earns points for every person who guesses it, plus a bonus if everyone does."
   },
   "tv": "tv.js",
-  "play": "play.js"
+  "play": "play.js",
+  "lateJoin": true
 }

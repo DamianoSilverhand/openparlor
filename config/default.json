@@ -7,7 +7,7 @@
   },
   "language": "en",
   "limits": {
-    "maxPlayers": 12,
+    "maxPlayers": 0,
     "maxRooms": 500,
     "maxConnections": 2000
   },

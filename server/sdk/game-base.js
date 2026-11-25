@@ -52,6 +52,36 @@ class GameBase {
     this.gains.set(pid, (this.gains.get(pid) || 0) + pts);
   }
 
+  // ---- crowd poll -----------------------------------------------------------------------------------------------
+  // Watchers cannot score or be given a turn, but they can vote in a poll a game opens: openPoll(['A', 'B', 'C', 'D']).
+  // The room adds `poll: { labels, counts, total, open }` to every state while a poll exists, so the big screen can show
+  // the crowd's answer. closePoll() stops voting but keeps the counts until the next openPoll() or clearPoll().
+  // Votes never change scores.
+  openPoll(labels) {
+    this.poll = { labels: labels.map(String), votes: new Map(), open: true };
+  }
+
+  closePoll() {
+    if (this.poll) this.poll.open = false;
+  }
+
+  clearPoll() {
+    this.poll = null;
+  }
+
+  audienceVote(pid, idx) {
+    const poll = this.poll;
+    if (!poll || !poll.open || !Number.isInteger(idx) || idx < 0 || idx >= poll.labels.length) return;
+    poll.votes.set(pid, idx); // one vote each, and it can be changed while the poll is open
+    this.room.update();
+  }
+
+  pollState() {
+    const counts = this.poll.labels.map(() => 0);
+    for (const idx of this.poll.votes.values()) counts[idx]++;
+    return { labels: this.poll.labels, counts, total: this.poll.votes.size, open: this.poll.open };
+  }
+
   // Players who are currently connected.
   connected() {
     return [...this.room.players.values()].filter((p) => p.connected);

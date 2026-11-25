@@ -8,6 +8,10 @@ const MAX_DELAY = 5000;
 const PING_EVERY = 15000;
 const PONG_WITHIN = 7000;
 
+// The server leaves out the slow-changing parts of the state (players, games, options, settings) when a connection already
+// has the current copy. Keep what was received before and lay the new message over it.
+export const mergeState = (prev, next) => (prev ? { ...prev, ...next } : next);
+
 export function connect({ onMessage, onOpen, onClose, banner = true }) {
   let ws = null;
   let delay = MIN_DELAY;

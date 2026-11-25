@@ -2,6 +2,10 @@ const { GameBase, clean, shuffle, content } = require('../../server/sdk');
 
 const CONTENT = { packs: content.prompts };
 
+// In a big room a hundred answers cannot all be read out and voted on. A round shows at most MAX_ITEMS of them (rooms of up
+// to 12 are unaffected), and each voter chooses from a ballot of BALLOT names (the real author among random others).
+const MAX_ITEMS = 12;
+const BALLOT = 8;
 const VOTE_MS = 25000;
 const REVEAL_MS = 14000;
 const SCORES_MS = 30000;
@@ -70,9 +74,24 @@ class WhoSaidThat extends GameBase {
       this.toScores();
       return;
     }
-    this.items = shuffle(list);
+    this.items = shuffle(list).slice(0, MAX_ITEMS);
     this.idx = -1;
     this.nextItem();
+  }
+
+  // The names one voter may choose from for the current answer: everyone who answered (except themselves), or, in a big
+  // room, the real author with BALLOT - 1 random others. Made once per voter and kept, so the choices do not change.
+  ballot(it, pid) {
+    if (!it.ballots) it.ballots = new Map();
+    if (!it.ballots.has(pid)) {
+      const others = [...this.answers.keys()].filter((id) => id !== pid && !this.hidden.has(id));
+      if (others.length <= BALLOT) it.ballots.set(pid, others);
+      else {
+        const decoys = shuffle(others.filter((id) => id !== it.author)).slice(0, BALLOT - 1);
+        it.ballots.set(pid, shuffle([...decoys, it.author]));
+      }
+    }
+    return it.ballots.get(pid);
   }
 
   nextItem() {
@@ -187,7 +206,7 @@ class WhoSaidThat extends GameBase {
       case 'vote': {
         const it = this.cur;
         if (this.phase !== 'vote' || !it || pid === it.author) return;
-        if (!this.answers.has(msg.guess) || this.hidden.has(msg.guess) || msg.guess === pid) return;
+        if (!this.answers.has(msg.guess) || this.hidden.has(msg.guess) || msg.guess === pid || !this.ballot(it, pid).includes(msg.guess)) return;
         it.votes.set(pid, msg.guess);
         room.update();
         this.checkProgress();
@@ -267,7 +286,7 @@ class WhoSaidThat extends GameBase {
         g.isAuthor = it.author === pid;
         g.myVote = it.votes.get(pid) || null;
         g.myLaughs = it.laughs.get(pid) || 0;
-        g.options = [...this.answers.keys()].filter((id) => id !== pid && !this.hidden.has(id));
+        g.options = this.ballot(it, pid);
       }
       if (this.phase === 'reveal') {
         g.author = it.author;

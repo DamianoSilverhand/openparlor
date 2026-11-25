@@ -2,9 +2,10 @@ import { h, avatar, AVATARS, byId, setServerNow, soundToggle, timer } from '/sha
 import '/shared/pwa.js';
 import '/shared/store.js';
 import { play } from '/shared/sound.js';
+import { audienceScreen, reactionBar } from '/sdk/play.js';
 import { config, bands, bandId, bandLabel } from '/shared/config.js';
 import { t } from '/shared/i18n.js';
-import { connect } from '/shared/net.js';
+import { connect, mergeState } from '/shared/net.js';
 import { keepAwake } from '/shared/wake.js';
 
 // Games are loaded on demand from the paths the server lists in s.games (see docs/GAME-SDK.md).
@@ -92,11 +93,14 @@ function joinScreen(message) {
     );
   draw();
 
+  let watch = false; // join as audience: react and vote, no seat
+  const watchBtn = h('button', { class: 'link watch-toggle', onclick: () => { watch = !watch; watchBtn.textContent = (watch ? '☑ ' : '☐ ') + t('audience.joinAsAudience'); } }, '☐ ' + t('audience.joinAsAudience'));
+
   const joinWith = (n, av, level, profileId) => {
     store.set('op:name', n);
     store.set('op:avatar', av);
     if (level) store.set('op:level', level);
-    send({ t: 'join', room, name: n, avatar: av, level, profileId });
+    send({ t: 'join', room, name: n, avatar: av, level, profileId, audience: watch });
   };
 
   if (config.profiles.enabled) fetch('/api/profiles').then((r) => r.json()).then((d) => {
@@ -143,6 +147,7 @@ function joinScreen(message) {
       h('div', { class: 'field' }, h('label', null, t('profile.orNew')), name),
       bands.length > 1 && h('div', { class: 'field' }, h('label', null, t('level.label')), lvlSeg),
       h('div', { class: 'field' }, h('label', null, 'Pick an animal'), grid),
+      watchBtn,
       h('button', { class: 'btn block push', onclick: submit }, "I'm ready"),
     ),
   }));
@@ -188,9 +193,9 @@ if (!room) {
         messageScreen('You were removed', 'The host took you out of the room. You can join again if that was a mistake.', { label: 'Join again', fn: () => location.reload() });
       } else if (m.t === 'state') {
         setServerNow(m.now);
-        last = m;
-        render(m);
-        cues(m);
+        last = mergeState(last, m);
+        render(last);
+        cues(last);
       }
     },
   });
@@ -203,6 +208,10 @@ let wakeOn = false;
 function render(s) {
   if (!wakeOn) { wakeOn = true; wake.start(); }
   const mod = ensureGame(s); // start loading the chosen game as soon as it is picked
+  if (s.audience) {
+    if (s.inGame && s.game) return mount('aud:' + s.gameId, (st) => audienceScreen(st, { send }), s);
+    return mount('aud-lobby', audienceLobby, s);
+  }
   if (s.inGame && s.game) {
     if (!mod) return mount('loading', () => ({ el: h('div', { class: 'screen' }, h('h1', { class: 'title' }, '...')) }), s);
     const scr = mod.screen(s, { send });
@@ -233,9 +242,38 @@ function briefing(s) {
   return { el, update: up };
 }
 
+// ---- lobby for people who are watching ------------------------------------------------------
+function audienceLobby(s) {
+  const el = h('div', { class: 'screen' });
+  function update(s) {
+    const me = s.you || null;
+    const busy = s.inGame || !!s.briefing;
+    el.replaceChildren(...[
+      h('div', { class: 'me' }, h('span', { class: 'who' }, me && avatar(me), me && me.name), soundToggle()),
+      h('h1', { class: 'title' }, t('audience.lobbyTitle')),
+      s.lobbyNote && h('div', { class: 'err' }, s.lobbyNote),
+      h('p', { class: 'lead' }, busy ? t('audience.nextGame') : `Waiting for the host to start ${s.gameName}.`),
+      h('p', { class: 'lead' }, `${s.players.filter((p) => p.connected).length} playing · ${t('audience.watchingCount', { count: s.audienceCount })}`),
+      !busy && h('button', { class: 'btn block push', onclick: () => send({ t: 'role', audience: false }) }, t('audience.takeSeat')),
+      reactionBar({ send }),
+    ].filter(Boolean));
+  }
+  update(s);
+  return { el, update };
+}
+
 // ---- lobby ------------------------------------------------------------------------------
 function seg(options, value, onPick) {
   return h('div', { class: 'seg' }, options.map(([v, label]) => h('button', { class: v === value ? 'on' : '', onclick: () => onPick(v) }, label)));
+}
+
+// In a big room the lobby shows the host, you, and then as many others as fit, instead of a hundred name tags.
+const ROSTER_MAX = 24;
+function rosterFor(s, get) {
+  if (s.players.length <= ROSTER_MAX) return s.players;
+  const first = [get(s.hostId), get(s.me)].filter(Boolean);
+  const rest = s.players.filter((p) => !first.includes(p));
+  return [...new Set([...first, ...rest])].slice(0, ROSTER_MAX);
 }
 
 function lobby(s) {
@@ -259,14 +297,17 @@ function lobby(s) {
           ? `${s.gameName} needs ${s.minPlayers} players. Share the code ${s.code} with ${need} more.`
           : 'Everyone ready? Choose your settings, then start.'
         : `Waiting for ${get(s.hostId) ? get(s.hostId).name : 'the host'} to start ${s.gameName}.`),
-      h('div', { class: 'players' }, s.players.map((p) =>
+      h('div', { class: 'players' }, rosterFor(s, get).map((p) =>
         h('span', { class: 'tag' + (p.connected ? '' : ' off') },
           avatar(p),
           p.name,
           p.id === s.hostId && h('span', { class: 'host-pill' }, 'host'),
           isHost && p.id !== s.me && p.connected && h('button', { class: 'pass-host', title: `Make ${p.name} host`, onclick: () => send({ t: 'makeHost', id: p.id }) }, '→ host'),
+          isHost && p.id !== s.me && p.connected && h('button', { class: 'pass-host', title: `Move ${p.name} to the audience`, onclick: () => send({ t: 'setRole', id: p.id, audience: true }) }, t('audience.moveToAudience')),
         ),
-      )),
+      ).concat(s.players.length > ROSTER_MAX ? [h('span', { class: 'tag more' }, `+${s.players.length - ROSTER_MAX} more`)] : [])),
+      s.audienceCount > 0 && h('p', { class: 'status' }, t('audience.watchingCount', { count: s.audienceCount })),
+      !(isHost && s.players.length === 1) && h('button', { class: 'link', style: { alignSelf: 'flex-start', padding: '2px 0' }, onclick: () => send({ t: 'role', audience: true }) }, t('audience.watchOnly')),
       !isHost && config.host.allowClaim && h('button', { class: 'link', style: { alignSelf: 'flex-start', padding: '2px 0' }, onclick: () => send({ t: 'claimHost' }) }, 'Take over as host'),
       s.usesLevels && bands.length > 1 && h('div', { class: 'card pad' },
         h('div', { class: 'seg-label', style: { marginTop: 0 } }, t('level.whoHolding')),

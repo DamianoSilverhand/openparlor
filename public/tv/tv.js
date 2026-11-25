@@ -1,7 +1,7 @@
 import { h, avatar, byId, setServerNow, serverNow, soundToggle, timer } from '/shared/ui.js';
 import '/shared/pwa.js';
 import { play, isRunning, isMuted, onChange } from '/shared/sound.js';
-import { connect } from '/shared/net.js';
+import { connect, mergeState } from '/shared/net.js';
 import { keepAwake } from '/shared/wake.js';
 import { config } from '/shared/config.js';
 import { t } from '/shared/i18n.js';
@@ -38,6 +38,21 @@ let current = { key: null, api: null };
 
 fetch('/api/info').then((r) => r.json()).then((i) => { info = i; if (last) render(last); });
 
+// People who are only watching: a count in the corner, and their emoji reactions floating up the screen.
+const audBadge = h('div', { class: 'aud-badge' });
+const reactLayer = h('div', { class: 'react-layer' });
+document.body.append(audBadge, reactLayer);
+function showReactions(counts) {
+  for (const [emoji, n] of Object.entries(counts || {})) {
+    for (let i = 0; i < Math.min(n, 6); i++) {
+      const el = h('span', { class: 'react-float', style: { left: `${5 + Math.random() * 90}%`, animationDelay: `${Math.random() * 0.4}s` } }, emoji);
+      reactLayer.append(el);
+      setTimeout(() => el.remove(), 4200);
+    }
+  }
+  while (reactLayer.children.length > 60) reactLayer.firstChild.remove();
+}
+
 // The big screen should never go to sleep during a game night.
 keepAwake().start();
 
@@ -52,9 +67,13 @@ const net = connect({
       if (!waiting.has(m.game)) waiting.set(m.game, []);
       return waiting.get(m.game).push(m);
     }
+    if (m.t === 'reactions') return showReactions(m.counts);
     if (m.t !== 'state') return;
     setServerNow(m.now);
-    last = m;
+    last = mergeState(last, m);
+    m = last;
+    audBadge.style.display = m.audienceCount > 0 ? 'block' : 'none';
+    audBadge.textContent = `👀 ${m.audienceCount}`;
     render(m);
     cues(m);
   },
@@ -149,14 +168,18 @@ function lobby(s) {
     gameName.textContent = s.gameName;
     gameDesc.textContent = s.gameDesc;
     const get = byId(s.players);
+    // A big room shows faces only (names would not fit), with the count.
+    const crowded = s.players.length > 24;
+    roster.classList.toggle('compact', crowded);
     roster.replaceChildren(
       ...s.players.map((p) =>
-        h('span', { class: 'tag' + (p.connected ? '' : ' off') },
+        h('span', { class: 'tag' + (p.connected ? '' : ' off'), title: p.name },
           avatar(p),
-          h('span', { class: 'tag-name' }, p.name),
-          p.id === s.hostId && h('span', { class: 'host' }, 'host'),
+          !crowded && h('span', { class: 'tag-name' }, p.name),
+          !crowded && p.id === s.hostId && h('span', { class: 'host' }, 'host'),
         ),
       ),
+      crowded && h('span', { class: 'roster-count' }, `${s.players.length} players`),
     );
     const need = s.minPlayers - s.players.filter((p) => p.connected).length;
     const host = get(s.hostId);

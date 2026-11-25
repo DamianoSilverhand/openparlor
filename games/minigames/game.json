@@ -16,5 +16,6 @@
     "scoring": "Race: 1st place 10 points, 2nd 7, 3rd 5, everyone else 3. Play together: the group total is saved as a record."
   },
   "tv": "tv.js",
-  "play": "play.js"
+  "play": "play.js",
+  "lateJoin": true
 }

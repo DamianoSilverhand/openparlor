@@ -61,7 +61,7 @@ function connect(server, code, name, extra = {}) {
       const m = JSON.parse(d);
       if (m.t === 'welcome') welcomed = true;
       if (m.t === 'state') {
-        c.last = m;
+        c.last = c.last ? { ...c.last, ...m } : m; // the server omits unchanged slow parts of the state
         if (welcomed || name === null) resolve(c); // ready once the first state has arrived
       }
     });

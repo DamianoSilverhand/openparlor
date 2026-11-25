@@ -44,7 +44,9 @@ function play(s) {
     rows,
     count,
   );
-  for (const id of g.roster) {
+  // A big room shows the ten in front and a count, not a bar for everyone.
+  const crowded = g.roster.length > 12;
+  for (const id of crowded ? [] : g.roster) {
     const p = get(id);
     if (!p) continue;
     const fill = h('div', { class: 'rfill' });
@@ -67,6 +69,22 @@ function play(s) {
   });
   function update(s) {
     const g2 = s.game;
+    if (crowded) {
+      const lead = g2.live.slice().sort((a, b) => b.score - a.score).slice(0, 10);
+      rows.replaceChildren(
+        h('div', { class: 'rrow' }, h('div', { class: 'rwho' }, h('span', null, `${g2.roster.length} playing · ${g2.done.length} finished`))),
+        ...lead.map((l) => {
+          const p = get(l.id);
+          return h('div', { class: 'rrow' },
+            h('div', { class: 'rwho' }, p && avatar(p), h('span', null, p ? p.name : '?')),
+            h('div', { class: 'rtrack' }, h('div', { class: 'rfill', style: { width: `${Math.max(1.5, (l.score / g2.mg.max) * 100)}%` } })),
+            h('span', { class: 'rnum' }, l.score),
+            h('span', { class: 'rdone' }, g2.done.includes(l.id) ? '✓' : ''),
+          );
+        }),
+      );
+      return;
+    }
     for (const l of g2.live) {
       const b = bars.get(l.id);
       if (!b) continue;
@@ -104,7 +122,7 @@ function results(s) {
     head(g, h('span', { class: 'code' }, `${g.mg.name.toUpperCase()}: RESULTS`)),
     banner,
     h('div', { class: 'board' },
-      g.rows.map((r, i) =>
+      g.rows.slice(0, 10).map((r, i) => // a big room: the top ten
         h('div', { class: 'row', style: { animationDelay: `${i * 70}ms` } },
           h('span', { class: 'rank' }, g.team ? '' : r.rank + 1),
           h('div', { class: 'meter' },
@@ -143,7 +161,7 @@ function teamFinal(s) {
           : h('p', { class: 'hint' }, tx('mini.beat')),
       ),
       h('div', { class: 'board' },
-        g.standings.map((x, i) =>
+        g.standings.slice(0, 10).map((x, i) =>
           h('div', { class: 'row', style: { animationDelay: `${i * 70}ms` } },
             h('span', { class: 'rank' }, ''),
             h('div', { class: 'meter' },

@@ -2,6 +2,8 @@ const { GameBase, clean, shuffle, content } = require('../../server/sdk');
 
 const WORDS = content.words;
 
+const BIG_ROOM = 12;
+const MAX_DRAWINGS = 10;
 const CHOOSE_MS = 15000;
 const RESULT_MS = 9000;
 const MULT = { easy: 1, medium: 1.3, hard: 1.6 };
@@ -31,7 +33,9 @@ class Draw extends GameBase {
   constructor(room) {
     super(room);
     this.order = shuffle([...room.players.values()].filter((p) => p.connected).map((p) => p.id));
-    this.turnsTotal = this.order.length * this.s.turns;
+    // Everyone draws in a normal room. In a big one (more than 12) a game of a hundred drawings would take all night, so
+    // ten players, chosen at random, draw and everyone else guesses.
+    this.turnsTotal = this.order.length > BIG_ROOM ? Math.min(MAX_DRAWINGS, this.order.length * this.s.turns) : this.order.length * this.s.turns;
     this.turn = 0;
     this.used = new Set();
     this.stats = new Map();

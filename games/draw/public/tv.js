@@ -73,10 +73,14 @@ function play(s) {
       const tiles = h('div', { class: 'tiles' },
         g.hint.map((c) => (c === ' ' ? h('span', { class: 'gap' }) : h('span', { class: 'tile' + (c === '_' ? '' : ' shown') }, c === '_' ? '' : c))),
       );
-      const chips = g.guessers
-        .map((id) => get(id))
-        .filter(Boolean)
-        .map((p) => h('span', { class: 'chip ' + (g.guessed.includes(p.id) ? 'done' : 'wait') }, avatar(p), p.name, g.guessed.includes(p.id) && h('span', { class: 'mark' }, '✓')));
+      // With many guessers, show a count and the first few who got it, instead of a chip for everyone.
+      const crowded = g.guessers.length > 12;
+      const chips = crowded
+        ? [h('span', { class: 'chip' }, `${g.guessed.length} of ${g.guessers.length} got it`), ...g.guessed.slice(0, 8).map((id) => get(id)).filter(Boolean).map((p) => h('span', { class: 'chip done' }, avatar(p), p.name, h('span', { class: 'mark' }, '✓')))]
+        : g.guessers
+          .map((id) => get(id))
+          .filter(Boolean)
+          .map((p) => h('span', { class: 'chip ' + (g.guessed.includes(p.id) ? 'done' : 'wait') }, avatar(p), p.name, g.guessed.includes(p.id) && h('span', { class: 'mark' }, '✓')));
       const feed = g.feed
         .slice()
         .reverse()

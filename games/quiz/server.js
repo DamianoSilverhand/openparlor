@@ -21,7 +21,20 @@ const TEAM_DEFS = [
   { name: 'Blue Whales', color: '#6fb3e0' },
   { name: 'Green Frogs', color: '#6baa4f' },
   { name: 'Gold Lions', color: '#f2b632' },
+  { name: 'Pink Octopuses', color: '#f29bb5' },
+  { name: 'Teal Turtles', color: '#2e9c9c' },
+  { name: 'Orange Tigers', color: '#f28c38' },
+  { name: 'Navy Penguins', color: '#3e5c99' },
+  { name: 'Sand Camels', color: '#d9b88f' },
+  { name: 'Brown Owls', color: '#b5523b' },
+  { name: 'Mint Pandas', color: '#9ad1b0' },
+  { name: 'Coral Unicorns', color: '#ff9f8f' },
+  { name: 'Purple Bats', color: '#8e6bbf' },
+  { name: 'Lime Parrots', color: '#a4c639' },
+  { name: 'Grey Koalas', color: '#9a9a9a' },
+  { name: 'Amber Bears', color: '#c98a00' },
 ];
+const MAX_TEAMS = TEAM_DEFS.length;
 const SOLO_COLORS = ['#e8472b', '#6fb3e0', '#6baa4f', '#f2b632', '#f29bb5', '#2e9c9c', '#f28c38', '#3e5c99', '#d9b88f', '#b5523b', '#9ad1b0', '#ff9f8f'];
 
 class Quiz extends GameBase {
@@ -55,7 +68,9 @@ class Quiz extends GameBase {
   assignTeams() {
     const players = shuffle([...this.room.players.values()].filter((p) => p.connected)).sort((a, b) => RANK[tierOf(b)] - RANK[tierOf(a)]);
     const n = players.length;
-    const k = this.s.teams === 'solo' ? n : Math.min(this.s.teams, n);
+    // "auto" is two teams in a normal room and teams of about six in a big one; everyone-solo does not work past 24 people.
+    const wanted = this.s.teams === 'auto' || (this.s.teams === 'solo' && n > 24) ? (n <= 12 ? 2 : Math.ceil(n / 6)) : this.s.teams;
+    const k = wanted === 'solo' ? n : Math.min(wanted, n, MAX_TEAMS);
     this.teams = [];
     this.teamOf = new Map();
     if (k === n) {
@@ -132,6 +147,7 @@ class Quiz extends GameBase {
     this.catId = this.cats[this.round - 1];
     this.doubleAt = 2 + Math.floor(Math.random() * 3); // question 2, 3 or 4
     this.targets = this.slotTargets();
+    this.clearPoll();
     this.phase = 'category';
     this.later(CATEGORY_MS, () => this.nextQuestion());
     this.room.update();
@@ -180,6 +196,7 @@ class Quiz extends GameBase {
   }
 
   openQuestion(seconds) {
+    this.openPoll(this.cur.options.map((_, i) => 'ABCD'[i])); // the audience can guess too; it never scores
     this.answers = new Map();
     this.suggestions = new Map(); // teamId -> Map(pid -> idx)
     this.tapped = new Set(); // players who have tapped at least once
@@ -227,6 +244,7 @@ class Quiz extends GameBase {
   }
 
   reveal() {
+    this.closePoll();
     if (this.phase !== 'question') return;
     this.gains = new Map();
     this.results = [];
@@ -302,6 +320,7 @@ class Quiz extends GameBase {
     this.cur = this.pickQuestion(cats[0], finalLevel);
     this.cur.double = false;
     this.gains = new Map();
+    this.clearPoll();
     this.phase = 'wager';
     this.later(WAGER_MS, () => this.startFinaleQuestion());
     this.room.update();
@@ -467,9 +486,9 @@ class Quiz extends GameBase {
 
 module.exports = {
   available: () => Object.keys(CATS).length > 0,
-  defaults: { teams: 2, rounds: 3, time: 30, finale: 'on', read: 'off', cats: 'mix' },
+  defaults: { teams: 'auto', rounds: 3, time: 30, finale: 'on', read: 'off', cats: 'mix' },
   options: [
-    { key: 'teams', label: 'Teams', values: [[2, '2 teams'], [3, '3 teams'], [4, '4 teams'], ['solo', 'Everyone solo']] },
+    { key: 'teams', label: 'Teams', values: [['auto', 'Automatic'], [2, '2 teams'], [3, '3 teams'], [4, '4 teams'], ['solo', 'Everyone solo']] },
     { key: 'rounds', label: 'Rounds', values: [[2, '2'], [3, '3'], [4, '4']] },
     { key: 'time', label: 'Time per question', values: [[15, '15s'], [20, '20s'], [30, '30s'], [45, '45s']] },
     { key: 'finale', label: 'Final wager', values: [['on', 'On'], ['off', 'Off']] },

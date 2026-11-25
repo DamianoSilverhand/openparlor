@@ -1,5 +1,5 @@
 import { h, timer, byId } from '/shared/ui.js';
-import { hostButton } from '/sdk/play.js';
+import { hostButton, topAndMe } from '/sdk/play.js';
 import { tierLabel } from '/shared/config.js';
 import { t as tr } from '/shared/i18n.js';
 
@@ -49,7 +49,7 @@ function intro(s, ctx) {
   const get = byId(s.players);
   const t = myTeam(g);
   const t2 = timer();
-  const mates = t.members.filter((id) => id !== s.me).map((id) => get(id)).filter(Boolean);
+  const mates = t.members.filter((id) => id !== s.me).slice(0, 6).map((id) => get(id)).filter(Boolean); // a big team shows a few names
   const el = h('div', { class: 'screen' },
     h('p', { class: 'lead' }, g.solo ? "You're playing on your own." : "You're on team"),
     h('div', { class: 'card pad team-hero', style: { '--tc': t.color } }, h('h1', null, t.name)),
@@ -115,7 +115,7 @@ function question(s, ctx) {
       b.classList.toggle('on', i === chosen);
       b.classList.toggle('suggested', !g.canAnswer && i === mySug);
       const names = list.filter((x) => x.idx === i).map((x) => (get(x.id) ? get(x.id).name : '')).filter(Boolean);
-      sugs.get(i).textContent = names.length ? `💡 ${names.join(', ')}` : '';
+      sugs.get(i).textContent = names.length ? `💡 ${names.length > 3 ? `${names.length} teammates` : names.join(', ')}` : '';
     });
   };
   paint(g.suggestions);
@@ -202,13 +202,15 @@ function wager(s, ctx) {
 // ---- scores / final ---------------------------------------------------------------------------------------
 function list(s) {
   const g = s.game;
+  const { rows, hidden } = topAndMe(g.standings, (x) => x.id === g.myTeam);
   return h('div', { class: 'rank-list' },
-    g.standings.map((x, i) =>
-      h('div', { class: 'r' + (x.id === g.myTeam ? ' me' : '') },
+    rows.map(({ x, i, gap }) =>
+      h('div', { class: 'r' + (x.id === g.myTeam ? ' me' : '') + (gap ? ' gap' : '') },
         h('span', { class: 'tag' }, h('b', null, i + 1), h('span', { class: 'swatch', style: { '--tc': x.color } }), x.name),
         h('span', null, x.gain !== 0 && h('span', { class: 'gain' }, `${x.gain > 0 ? '+' : ''}${x.gain}`), x.score),
       ),
     ),
+    hidden > 0 && h('p', { class: 'more-note' }, `+${hidden} more`),
   );
 }
 

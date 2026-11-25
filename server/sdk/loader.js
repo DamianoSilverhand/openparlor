@@ -39,6 +39,8 @@ function checkManifest(m, where, report) {
     usesLevels: !!m.usesBands,
     levelHint: isStr(m.bandHint) ? m.bandHint : '',
     order: Number.isInteger(m.order) ? m.order : 100,
+    maxSeats: Number.isInteger(m.maxSeats) && m.maxSeats >= 2 && m.maxSeats <= 1000 ? m.maxSeats : null, // more players than this: the rest watch
+    lateJoin: m.lateJoin === true, // may someone who arrives mid-game take part right away?
     rules: Array.isArray(rules.steps) && rules.steps.every(isStr) && rules.steps.length ? { steps: rules.steps, scoring: isStr(rules.scoring) ? rules.scoring : '' } : null,
     tv: m.tv,
     play: m.play,
