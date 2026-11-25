@@ -11,7 +11,7 @@ It works for a family, a classroom, a club or a party. Group names, difficulty l
 
 Open the "On your network" address it prints (for example `http://192.168.1.20:3100`) on the TV, tap **Put it on the big screen**, and scan the QR code with phones. Phones can also open **Practice on your own** (`/solo`) without a TV.
 
-Needs Node 20 or newer. Use `PORT=4000 npm start` to change the port.
+Needs **Node 22.13 or newer** (`nvm use` picks the right one). Use `PORT=4000 npm start` to change the port.
 
 ## Games
 
@@ -52,9 +52,9 @@ See [docs/CONFIG.md](docs/CONFIG.md) for every option, how to define your own ba
 
 Questions, prompts and word lists are plain JSON in `content/`. To add your own, drop a file into `content/packs/` and restart. No code needed. See [docs/CONTENT-PACKS.md](docs/CONTENT-PACKS.md) for the formats. Run `npm run validate` to check your files.
 
-## Profiles and Solo Practice
+## Profiles, scores and Solo Practice
 
-If profiles are enabled (the default), tapping a saved profile on `/play` or `/solo` remembers your name, animal and band. Personal bests and daily streaks are saved in `data/profiles.json`, and group records in `data/records.json` (neither is committed). Turn profiles off in the config if you do not want anything saved about people.
+If profiles are enabled (the default), tapping a saved profile on `/play` or `/solo` remembers your name, animal and band. Personal bests, daily streaks, every finished game and the group records are saved in a SQLite database (`data/openparlor.db`), with a daily backup. `/stats` shows the best scores and recent games, and each person can download or delete their own data. Turn profiles off in the config if you do not want anything saved about people. See [docs/DATA.md](docs/DATA.md).
 
 ## Sound and theme
 
@@ -64,6 +64,7 @@ Sound effects are generated in the browser, so there are no audio files. The TV 
 
     npm test            # robustness, configuration and game-flow tests
     npm run validate    # checks every content file and exits 1 if a pack is broken
+    npm run backup      # writes a database backup now
 
 A broken content pack never stops the server from starting: invalid items are skipped with a message that names the file, and a game with no usable content is hidden from the lobby.
 
