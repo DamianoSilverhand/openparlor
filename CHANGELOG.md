@@ -14,6 +14,12 @@ First public version, preparing for 0.1.0.
   control for your own data.
 - Host controls: pause, pass host, and (optionally) let anyone take over.
 
+- Rooms of 100: updates are batched and slimmed down, 144 distinguishable avatars, and the games scale (Who Said That? shows 12
+  answers a round with 8-name ballots, Draw & Guess has ten artists in big rooms, the quiz makes teams automatically, long
+  lists show the top and your own place). Tested with 100 simulated phones.
+- Audience: people can choose to watch, the host can move players, latecomers watch until the game ends, and watchers send
+  emoji reactions to the TV and vote in a quiz crowd poll. They never score. No limit on players by default.
+
 ### Configuration and content
 
 - Configurable bands (difficulty groups) with presets for family, classroom and party, a configurable brand name, limits and

@@ -48,6 +48,8 @@ Only `public/` is sent to browsers. `server.js` and `game.json` are never served
 | `usesBands` | `true` if the game wants every player to choose a band (a difficulty group such as Kid or Adult). The lobby then asks. |
 | `bandHint` | Text shown under the band picker, when `usesBands` is true. |
 | `order` | Where it sits in the game list. Built-in games use 10 to 40; the default is 100. |
+| `maxSeats` | Optional. The most people who can play at once (2 to 1000). When more are in the room, the latest arrivals watch as the audience until the game ends. Default: no limit. |
+| `lateJoin` | Optional, default `false`. Whether someone who arrives while the game is running can take part at once. If `false` they watch until it ends. |
 | `rules` | `{ "steps": ["..."], "scoring": "..." }`. Shown on the How to play screen before the game starts. |
 | `tv`, `play` | Paths, inside `public/`, of the two view modules. |
 | `styles` | Optional list of CSS paths inside `public/`. |
@@ -117,6 +119,17 @@ Rules of thumb:
 - Custom messages to the TV: `room.toTvs({ t: 'game', game: 'my-game', ev: 'something', ... })`. They reach `onEvent` in your `tv.js`.
 
 When a game reaches `'final'`, the room saves everyone's score to the history automatically.
+
+### Big rooms and the audience
+
+A room can hold a hundred people, so design for it:
+
+- **Games only ever see players.** People who are only watching (the audience) are kept in `room.audience`, never in `room.players`, so they cannot get a turn, a team, a vote that counts or a score. Do not look for them in your game.
+- **Crowd poll.** Call `this.openPoll(['A', 'B', 'C', 'D'])` to let the audience vote, and `this.closePoll()` when voting is over (`clearPoll()` removes it). The room adds `poll: { labels, counts, total, open }` to every state, and each watcher also gets `myVote`. Show the result on the big screen. Votes never change scores.
+- **Reactions** (emoji from anyone) are handled by the room and shown on the TV; you do nothing.
+- **Do not list everyone.** With 100 players, show the top few and the viewer's own place (`topAndMe(items, isMe, n)` in `/sdk/play.js`), a count instead of a chip for each person, and choose a sample when a round would otherwise take all night (Who Said That? shows 12 answers a round, with 8-name ballots; Draw & Guess has ten artists above 12 players; the quiz makes teams of about six).
+- **State size matters.** Every state change goes to every phone. Keep `phoneState` small, and do not repeat lists the phone already has.
+- Updates are throttled by the room (the first change goes out at once, the rest are folded into one send about every 80 ms), so calling `room.update()` often is fine.
 
 ### public/tv.js and public/play.js
 

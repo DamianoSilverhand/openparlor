@@ -18,7 +18,7 @@ A file that cannot be read or is not valid JSON is reported in the server log an
 | `brand.tagline` | | Short line of text about your group or event. |
 | `brand.accent` | `null` | A CSS colour, for example `"#2e7d32"`, used for the main accent. |
 | `language` | `"en"` | Which file in `public/locales/` supplies the interface text. Missing keys fall back to English. |
-| `limits.maxPlayers` | `12` | Players per room. `0` means no limit. |
+| `limits.maxPlayers` | `0` | Seats per room. `0` means no limit (rooms of 100 are tested). When a limit is set, extra people join the audience instead of being turned away: they can react and vote, but not play. |
 | `limits.maxRooms` | `500` | Rooms at once (`MAX_ROOMS`). |
 | `limits.maxConnections` | `2000` | Browser connections at once (`MAX_CONNECTIONS`). |
 | `host.allowClaim` | `true` | Whether any player in the lobby can take over as host. Set `false` so only the host can pass host on. |

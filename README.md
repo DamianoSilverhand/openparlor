@@ -2,7 +2,7 @@
 
 **Party games for the room you are in.** One computer runs the server, a TV (or any big screen) shows the game, and everyone plays on their own phone by scanning a QR code. No accounts, and no internet once it is running.
 
-It works for a family, a classroom, a club or a party. Group names, difficulty levels, branding and content are all configurable, and you can add your own games.
+It works for a family, a classroom, a club or a party, and a room can hold a hundred people: anyone who just wants to watch joins the audience, sends emoji reactions to the big screen and votes in the quiz's crowd poll. Group names, difficulty levels, branding and content are all configurable, and you can add your own games.
 
 | The big screen | Everyone's phone |
 |---|---|

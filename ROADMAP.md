@@ -5,9 +5,9 @@ and priorities follow what people actually need.
 
 ## Before a first stable release
 
-- **Rooms of 100.** Remove the hard player limit (it is 12 by default today), add an audience mode where extra people can
-  react and vote, make each game scale (for example fewer answers per vote in Who Said That? and several artists in
-  Draw & Guess), distinguish avatars beyond twelve, send smaller state updates, and load-test with 100 simulated phones.
+- **More audience features.** Rooms of 100 work today (audience mode, scaled games, smaller updates, tested with 100
+  simulated phones). Still to do: crowd polls beyond the quiz, a way to choose how many seats each game has from the lobby,
+  and checking big rooms on real TVs and phones.
 - **More neutral content.** The built-in bank is small (about 120 questions, 47 prompts, 120 drawing words). The goal is
   300 questions, 120 prompts and 250 drawing words, original wording, each question checked against a source.
 - **Interface text in the string table.** Most screens still have English text inline; moving it to `public/locales/` makes
