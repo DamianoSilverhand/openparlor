@@ -99,12 +99,20 @@ function joinScreen(message) {
     const n = name.value.trim();
     if (!n) return name.focus();
     let profileId = null;
+    let useName = n;
+    let useAvatar = pick;
+    let useLevel = lvl;
     try {
       const r = await fetch('/api/profiles', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: n, avatar: pick, level: lvl }) });
       const data = await r.json();
-      if (data.profile) profileId = data.profile.id;
+      if (data.profile) {
+        profileId = data.profile.id;
+        useName = data.profile.name;
+        useAvatar = data.profile.avatar;
+        useLevel = data.profile.level;
+      }
     } catch {}
-    joinWith(n, pick, lvl, profileId);
+    joinWith(useName, useAvatar, useLevel, profileId);
   };
   name.addEventListener('keydown', (e) => e.key === 'Enter' && submit());
   mount('join', () => ({
@@ -180,9 +188,11 @@ function render(s) {
 // ---- how to play ------------------------------------------------------------------------
 function briefing(s) {
   const r = s.briefing.rules;
+  const me = byId(s.players)(s.me);
   const isHost = s.me === s.hostId;
   const t = timer();
   const el = h('div', { class: 'screen' },
+    h('div', { class: 'me' }, h('span', { class: 'who' }, me && avatar(me), me && me.name), soundToggle()),
     h('h1', { class: 'title' }, 'How to play'),
     h('p', { class: 'lead', style: { fontWeight: 800 } }, s.gameName),
     h('ol', { class: 'rule-list' }, r.steps.map((x) => h('li', null, x))),
@@ -203,7 +213,10 @@ function seg(options, value, onPick) {
 
 function lobby(s) {
   const el = h('div', { class: 'screen' });
+  let settingsOpen = false;
   function update(s) {
+    const prevDetails = el.querySelector('.rules-toggle');
+    if (prevDetails) settingsOpen = prevDetails.open;
     const get = byId(s.players);
     const me = get(s.me);
     const isHost = s.me === s.hostId;
@@ -213,6 +226,7 @@ function lobby(s) {
     el.replaceChildren(...[
       h('div', { class: 'me' }, h('span', { class: 'who' }, me && avatar(me), me && me.name), soundToggle()),
       h('h1', { class: 'title' }, isHost ? "You're the host" : "You're in"),
+      s.lobbyNote && h('div', { class: 'err' }, s.lobbyNote),
       h('p', { class: 'lead' }, isHost
         ? need > 0
           ? `${s.gameName} needs ${s.minPlayers} players. Share the code ${s.code} with ${need} more.`
@@ -236,7 +250,7 @@ function lobby(s) {
       isHost && h('div', { class: 'card pad' },
         h('div', { class: 'seg-label', style: { marginTop: 0 } }, 'Game'),
         seg(s.games.map((g) => [g.id, g.name]), s.gameId, (v) => send({ t: 'pickGame', id: v })),
-        h('details', { class: 'rules-toggle' },
+        h('details', { class: 'rules-toggle', open: settingsOpen, ontoggle: (e) => { settingsOpen = e.currentTarget.open; } },
           h('summary', null, 'Game settings'),
           s.options.map((o) => [h('div', { class: 'seg-label' }, o.label), seg(o.values, s.settings[o.key], (v) => set({ [o.key]: v }))]),
         ),

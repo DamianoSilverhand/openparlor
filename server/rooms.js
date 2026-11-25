@@ -97,6 +97,11 @@ class Room {
   playerChanged() {
     this.touched = Date.now();
     this.reassignHost();
+    if (this.briefing && !this.canStart()) {
+      this.lobbyNote = 'A player left before the game started.';
+      this.cancelBrief();
+      return;
+    }
     if (this.game && this.game.onPlayerChange) this.game.onPlayerChange();
     this.update();
   }
@@ -116,8 +121,10 @@ class Room {
   // Show the how-to-play screen first. It ends when the host taps Start, or after a while.
   brief() {
     if (this.game || this.briefing || !this.canStart()) return;
-    this.briefing = { until: Date.now() + BRIEF_MS, total: BRIEF_MS };
-    this.briefTimer = setTimeout(() => this.endBrief(), BRIEF_MS);
+    this.lobbyNote = '';
+    const ms = this.gameId === 'minigames' ? 12000 : BRIEF_MS;
+    this.briefing = { until: Date.now() + ms, total: ms };
+    this.briefTimer = setTimeout(() => this.endBrief(), ms);
     this.update();
   }
 
@@ -126,7 +133,7 @@ class Room {
     this.briefTimer = null;
     if (!this.briefing) return;
     this.briefing = null;
-    this.startGame();
+    if (!this.startGame()) this.lobbyNote = 'Not enough players ready to start.';
     this.update();
   }
 
@@ -254,6 +261,7 @@ class Room {
       games: Object.values(GAMES).map((g) => ({ id: g.id, name: g.name })),
       settings: this.settings,
       inGame: !!this.game,
+      lobbyNote: this.lobbyNote || '',
       briefing: this.briefing && !this.game ? { until: this.briefing.until, total: this.briefing.total, rules: def.rules || null } : null,
       players: [...this.players.values()].map((p) => ({
         id: p.id,

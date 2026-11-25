@@ -122,7 +122,9 @@ function lobby(s) {
     const need = s.minPlayers - s.players.filter((p) => p.connected).length;
     const host = get(s.hostId);
     hint.replaceChildren(
-      s.waitingOn && s.waitingOn.length > 0
+      s.lobbyNote
+        ? h('span', { style: { color: 'var(--tomato)', fontWeight: 800 } }, s.lobbyNote)
+        : s.waitingOn && s.waitingOn.length > 0
         ? h('span', null, `Waiting for ${s.waitingOn.join(', ')} to pick Kid, Teen or Grown-up on their phone.`)
         : need > 0
         ? h('span', null, `Waiting for ${need} more ${need === 1 ? 'player' : 'players'}. `)
@@ -155,7 +157,8 @@ function cues(s) {
   prevState = s;
   if (!prev) return;
   if (!s.inGame) {
-    if (prev.inGame) play('whoosh');
+    if (s.briefing && !prev.briefing) play('whoosh');
+    else if (prev.inGame) play('whoosh');
     else if (s.players.length > prev.players.length) play('pop');
     return;
   }
