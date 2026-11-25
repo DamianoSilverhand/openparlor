@@ -8,8 +8,9 @@ and priorities follow what people actually need.
 - **More audience features.** Rooms of 100 work today (audience mode, scaled games, smaller updates, tested with 100
   simulated phones). Still to do: crowd polls beyond the quiz, a way to choose how many seats each game has from the lobby,
   and checking big rooms on real TVs and phones.
-- **More neutral content.** The built-in bank is small (about 120 questions, 47 prompts, 120 drawing words). The goal is
-  300 questions, 120 prompts and 250 drawing words, original wording, each question checked against a source.
+- **Human fact-check of the content.** The first-release bank is written (300 quiz questions, 120 prompts, 250 drawing
+  words, 80 Word Builder words and 40 Word Match items per band) but was drafted with AI help, so every quiz answer needs
+  checking against a source before 0.1.0. Next: more topics, and community packs.
 - **Interface text in the string table.** Most screens still have English text inline; moving it to `public/locales/` makes
   translation possible.
 - **Real-device testing** of the installable app (home-screen install, offline Solo Practice, https, keeping screens awake)

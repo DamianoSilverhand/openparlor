@@ -9,6 +9,9 @@ First public version, preparing for 0.1.0.
 
 ### Games and play
 
+- Neutral built-in content: 300 quiz questions, 120 prompts (plus an opt-in Grown-ups pack), 250 drawing words, 80 Word Builder
+  words and 40 Word Match items per level. Still to be fact-checked by a person before release.
+
 - Four games: Who Said That?, Draw & Guess, Quiz Show and Mini-Games (eight mini-games), each with a How to play screen.
 - Solo Practice with saved profiles, personal bests and daily streaks, a scores page, and a download, import and delete
   control for your own data.
