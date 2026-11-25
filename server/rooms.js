@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 const { clean } = require('./util');
 const { config, bands } = require('./config');
+const history = require('./history');
 
 // A null-prototype map, so ids such as "__proto__" or "constructor" are not games.
 const GAMES = Object.assign(Object.create(null), {
@@ -164,7 +165,26 @@ class Room {
     if (!def || this.connectedCount() < def.minPlayers || this.unchosen().length) return false;
     if (this.game) this.game.destroy();
     this.game = def.create(this);
+    this.game.startedAt = Date.now();
     return true;
+  }
+
+  // When a game reaches its final screen, keep the result for the history and leaderboards (once per game).
+  recordHistory() {
+    const g = this.game;
+    if (!g || g.phase !== 'final' || g.historyDone || !config.profiles.enabled) return;
+    g.historyDone = true;
+    try {
+      const ranked = [...this.players.values()].sort((a, b) => b.score - a.score);
+      let rank = 0;
+      const results = ranked.map((p, i) => {
+        if (i === 0 || p.score !== ranked[i - 1].score) rank = i;
+        return { profileId: p.profileId, name: p.name, band: p.level, score: p.score, rank };
+      });
+      history.recordGame({ gameId: this.gameId, roomCode: this.code, startedAt: g.startedAt || Date.now(), endedAt: Date.now(), settings: this.settings, results });
+    } catch (err) {
+      console.error('[history] could not save the game:', err);
+    }
   }
 
   endGame() {
@@ -268,6 +288,7 @@ class Room {
   }
 
   update() {
+    this.recordHistory();
     const def = GAMES[this.gameId];
     const base = {
       t: 'state',

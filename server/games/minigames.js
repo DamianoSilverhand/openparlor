@@ -1,30 +1,7 @@
-const fs = require('fs');
-const path = require('path');
 const { shuffle, schedulePhase, toggleGamePause } = require('../util');
-const { bands } = require('../config');
+const { bands, config } = require('../config');
 const profiles = require('../profiles');
-
-// Group records for "play together" mode, kept between sessions. The key is the game, the number of players
-// who started the round and the handicap setting (handicaps change scores).
-const RECORDS_FILE = path.join(require('../config').config.dataDir, 'records.json');
-let RECORDS = {};
-try {
-  RECORDS = JSON.parse(fs.readFileSync(RECORDS_FILE, 'utf8'));
-  // Older records had a trailing content setting ("...:off"). Keep the ones that had it off.
-  for (const [k, v] of Object.entries({ ...RECORDS })) {
-    if (/:(on|off):(off|mixed|only)$/.test(k)) {
-      delete RECORDS[k];
-      if (k.endsWith(':off')) RECORDS[k.replace(/:off$/, '')] = v;
-    }
-  }
-} catch {}
-function saveRecord(key, total) {
-  RECORDS[key] = { total, date: new Date().toISOString().slice(0, 10) };
-  try {
-    fs.mkdirSync(path.dirname(RECORDS_FILE), { recursive: true });
-    fs.writeFileSync(RECORDS_FILE, JSON.stringify(RECORDS, null, 2));
-  } catch {}
-}
+const records = require('../records');
 
 // The mini-games themselves run on the phones. The server picks the set, hands out a shared seed and
 // start time, collects each player's score, and awards points for finishing 1st, 2nd, 3rd and so on.
@@ -149,9 +126,9 @@ class MiniGames {
       // A record needs a score from everyone who started the round, so a dropped phone can't set a low one.
       const complete = rows.length === count;
       const key = `${this.id}:${count}:${this.s.handicap}`;
-      const previous = RECORDS[key] ? RECORDS[key].total : 0;
+      const previous = (records.get(key) || { total: 0 }).total;
       const record = complete && count >= 2 && total > previous;
-      if (record) saveRecord(key, total);
+      if (record) records.save(key, total);
       // A plain-English description of what this record is for, so every message can say what it compares against.
       const scope = `${count} players, handicaps ${this.s.handicap}`;
       this.teamRound = { total, previous, record, count, complete, scope };
@@ -172,8 +149,8 @@ class MiniGames {
     this.personalBests = [];
     rows.forEach((r) => {
       const p = this.room.players.get(r.id);
-      if (p && p.profileId && require('../config').config.profiles.enabled) {
-        const res = profiles.record(p.profileId, this.id, r.score);
+      if (p && p.profileId && config.profiles.enabled) {
+        const res = profiles.record(p.profileId, this.id, r.score, 0, 'room');
         if (res && res.isNewBest) this.personalBests.push(r.id);
       }
     });

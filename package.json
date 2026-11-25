@@ -3,15 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node server/index.js",
+    "start": "node --disable-warning=ExperimentalWarning server/index.js",
     "validate": "node scripts/validate-content.js",
-    "test": "node --test test/"
+    "backup": "node --disable-warning=ExperimentalWarning scripts/backup.js",
+    "test": "node --disable-warning=ExperimentalWarning --test"
   },
   "dependencies": {
     "ws": "^8.18.0",
     "qrcode": "^1.5.4"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22.13"
   }
 }

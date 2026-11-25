@@ -24,7 +24,7 @@ async function startServer(env = {}) {
   const port = await freePort();
   // Tests never touch the real data folder: each server gets its own temporary one.
   const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'op-data-'));
-  const child = spawn(process.execPath, ['server/index.js'], { cwd: ROOT, env: { ...process.env, PORT: String(port), DATA_DIR: dataDir, ...env }, stdio: ['ignore', 'pipe', 'pipe'] });
+  const child = spawn(process.execPath, ['--disable-warning=ExperimentalWarning', 'server/index.js'], { cwd: ROOT, env: { ...process.env, PORT: String(port), DATA_DIR: dataDir, ...env }, stdio: ['ignore', 'pipe', 'pipe'] });
   let log = '';
   child.stdout.on('data', (d) => (log += d));
   child.stderr.on('data', (d) => (log += d));
@@ -42,7 +42,9 @@ async function startServer(env = {}) {
       return false;
     }
   };
-  return { port, base, child, alive, log: () => log, stop: () => new Promise((r) => { child.once('exit', () => { fs.rmSync(dataDir, { recursive: true, force: true }); r(); }); child.kill('SIGTERM'); setTimeout(() => child.kill('SIGKILL'), 3000).unref(); }) };
+  return { port, base, child, alive, log: () => log, stop: () => new Promise((r) => {
+      if (child.exitCode !== null || child.signalCode) return r();
+      child.once('exit', () => { fs.rmSync(dataDir, { recursive: true, force: true }); r(); }); child.kill('SIGTERM'); setTimeout(() => child.kill('SIGKILL'), 3000).unref(); }) };
 }
 
 const createRoom = async (base) => (await (await fetch(`${base}/api/room`, { method: 'POST' })).json()).code;

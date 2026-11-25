@@ -1,3 +1,4 @@
+require('./check-node');
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
@@ -8,6 +9,10 @@ const { Rooms } = require('./rooms');
 const { config, publicConfig } = require('./config');
 const profiles = require('./profiles');
 const content = require('./content');
+const history = require('./history');
+const records = require('./records');
+const { getDb, closeDb } = require('./db');
+const { startBackups } = require('./backup');
 
 const PORT = Number(process.env.PORT) || 3100;
 const PUBLIC = path.join(__dirname, '..', 'public');
@@ -133,6 +138,36 @@ async function handleRequest(req, res) {
   if (pathname === '/api/room' && req.method === 'GET') {
     const room = rooms.get(url.searchParams.get('code'));
     return json(res, 200, { exists: !!room });
+  }
+  // Group records are about the group, not people, so they stay available when profiles are off.
+  if (pathname === '/api/records' && req.method === 'GET') return json(res, 200, { records: records.all() });
+
+  // ---- scores, history and one person's data. All of these are off when profiles are off. ----
+  if (pathname.startsWith('/api/leaderboard') || pathname === '/api/history' || /^\/api\/profiles\/[^/]+/.test(pathname) || pathname === '/api/profiles/import') {
+    if (!config.profiles.enabled) return json(res, 404, { error: 'profiles are turned off' });
+    if (pathname === '/api/leaderboard' && req.method === 'GET') {
+      const game = url.searchParams.get('game');
+      if (!profiles.GAME_IDS.includes(game)) return json(res, 400, { error: 'unknown game' });
+      return json(res, 200, { game, entries: profiles.leaderboard(game, url.searchParams.get('limit')) });
+    }
+    if (pathname === '/api/history' && req.method === 'GET') return json(res, 200, { games: history.recent(url.searchParams.get('limit')) });
+    if (pathname === '/api/profiles/import' && req.method === 'POST') {
+      const body = await readBody(req);
+      if (body === null) return;
+      const out = profiles.importProfile(body);
+      return out.error ? json(res, 400, out) : json(res, 200, out);
+    }
+    const m = pathname.match(/^\/api\/profiles\/(p_[0-9a-f]{8})(?:\/(export|history))?$/);
+    if (m) {
+      const [, id, what] = m;
+      if (!profiles.get(id)) return json(res, 404, { error: 'profile not found' });
+      if (req.method === 'GET' && what === 'export') {
+        res.setHeader('Content-Disposition', `attachment; filename="openparlor-${id}.json"`);
+        return json(res, 200, profiles.exportProfile(id));
+      }
+      if (req.method === 'GET' && what === 'history') return json(res, 200, { games: history.forProfile(id, url.searchParams.get('limit')) });
+      if (req.method === 'DELETE' && !what) return json(res, 200, { deleted: profiles.remove(id) });
+    }
   }
   if (pathname === '/api/profiles' && req.method === 'GET') {
     if (!config.profiles.enabled) return json(res, 404, { error: 'profiles are turned off' });
@@ -280,6 +315,15 @@ setInterval(() => {
   }
 }, 25000).unref();
 
+// Open the database now, so a problem shows up at start-up with a clear message instead of in the middle of a game.
+try {
+  getDb();
+  startBackups();
+} catch (err) {
+  console.error(`\nCould not open the database in ${config.dataDir}:\n  ${err.message}\n`);
+  process.exit(1);
+}
+
 // A bug should be logged, not end everyone's game night.
 process.on('uncaughtException', (err) => console.error('[process] uncaught exception:', err));
 process.on('unhandledRejection', (err) => console.error('[process] unhandled rejection:', err));
@@ -287,7 +331,10 @@ process.on('unhandledRejection', (err) => console.error('[process] unhandled rej
 function shutdown(signal) {
   console.log(`\n${signal} received, shutting down.`);
   for (const ws of wss.clients) ws.close(1001, 'server stopping');
-  server.close(() => process.exit(0));
+  server.close(() => {
+    closeDb();
+    process.exit(0);
+  });
   setTimeout(() => process.exit(0), 2000).unref();
 }
 process.on('SIGINT', () => shutdown('SIGINT'));
