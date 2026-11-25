@@ -66,8 +66,9 @@ class Draw {
     toggleGamePause(this);
   }
   clearHints() {
-    this.hintTimers.forEach(clearTimeout);
-    this.hintTimers = [];
+    clearInterval(this.hintInterval);
+    this.hintInterval = null;
+    this.hintThresholds = [];
   }
   destroy() {
     clearTimeout(this.timer);
@@ -136,21 +137,23 @@ class Draw {
     this.phase = 'draw';
     const ms = this.s.drawTime * 1000;
     this.later(ms, () => this.endTurn());
-    // Reveal letters over time.
+    // Reveal letters over time based on remaining draw time (honours pause).
     const letters = [...this.word].map((ch, idx) => (ch === ' ' ? -1 : idx)).filter((x) => x >= 0);
     this.reveal = shuffle(letters);
     this.revealed = 0;
     const maxHints = letters.length >= 7 ? 2 : letters.length >= 4 ? 1 : 0;
-    const self = this;
-    [0.4, 0.7].slice(0, maxHints).forEach((f) => {
-      this.hintTimers.push(
-        setTimeout(function tick() {
-          if (self.paused) return void self.hintTimers.push(setTimeout(tick, 1000));
-          self.revealed++;
-          self.room.update();
-        }, ms * f),
-      );
-    });
+    this.hintThresholds = [0.4, 0.7].slice(0, maxHints).map((f) => ms * (1 - f));
+    this.hintInterval = setInterval(() => {
+      if (this.paused || this.phase !== 'draw') return;
+      const left = Math.max(0, this.deadline - Date.now());
+      let changed = false;
+      while (this.hintThresholds.length && left <= this.hintThresholds[0]) {
+        this.hintThresholds.shift();
+        this.revealed++;
+        changed = true;
+      }
+      if (changed) this.room.update();
+    }, 500);
     this.room.update();
   }
 
