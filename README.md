@@ -22,6 +22,10 @@ Needs **Node 22.13 or newer** (`nvm use` picks the right one). Use `PORT=4000 np
 
 Every game starts with a **How to play** screen on the TV and phones. The host can skip it, pause timers, pass host to someone else, or let anyone take over as host (this can be switched off).
 
+## Use it like an app
+
+On a phone, use **Add to Home Screen** to open it full screen with its own icon. Screens stay awake during a game, and a phone that locks or loses Wi-Fi reconnects by itself. For offline Solo Practice and the install prompt, turn on https with `npm run cert`. See [docs/PWA.md](docs/PWA.md).
+
 ## Add your own games
 
 Games and mini-games are plugins. Copy a folder into `plugins/`, restart, and it appears in the lobby. Two complete examples are in `examples/`, and [docs/GAME-SDK.md](docs/GAME-SDK.md) explains the format. Plugins are trusted code that runs inside the server, so only install ones you trust.
@@ -69,6 +73,8 @@ Sound effects are generated in the browser, so there are no audio files. The TV 
     npm test            # robustness, configuration, plugin and whole-game tests
     npm run validate    # checks every content file and exits 1 if a pack is broken
     npm run backup      # writes a database backup now
+    npm run cert        # makes a certificate so the server can use https
+    npm run icons       # redraws the app icons
 
 A broken content pack never stops the server from starting: invalid items are skipped with a message that names the file, and a game with no usable content is hidden from the lobby.
 
