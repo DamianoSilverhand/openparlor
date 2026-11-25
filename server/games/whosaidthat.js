@@ -1,8 +1,6 @@
-const fs = require('fs');
-const path = require('path');
 const { clean, shuffle, filterLocal, LOCAL_OPTION, schedulePhase, toggleGamePause } = require('../util');
 
-const CONTENT = JSON.parse(fs.readFileSync(path.join(__dirname, '../../content/prompts.json'), 'utf8'));
+const CONTENT = { packs: require('../content').prompts };
 
 const VOTE_MS = 25000;
 const REVEAL_MS = 14000;
@@ -331,6 +329,7 @@ const PACKS = Object.fromEntries(Object.entries(CONTENT.packs).map(([k, v]) => [
 module.exports = {
   id: 'whosaidthat',
   name: 'Who Said That?',
+  available: () => Object.keys(CONTENT.packs).length > 0,
   desc: 'Answer silly prompts, then guess who wrote what.',
   rules: {
     steps: [

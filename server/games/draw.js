@@ -1,8 +1,6 @@
-const fs = require('fs');
-const path = require('path');
 const { clean, shuffle, filterLocal, LOCAL_OPTION, schedulePhase, toggleGamePause } = require('../util');
 
-const WORDS = JSON.parse(fs.readFileSync(path.join(__dirname, '../../content/words.json'), 'utf8')).packs;
+const WORDS = require('../content').words;
 
 const CHOOSE_MS = 15000;
 const RESULT_MS = 9000;
@@ -355,6 +353,7 @@ class Draw {
 module.exports = {
   id: 'draw',
   name: 'Draw & Guess',
+  available: () => Object.keys(WORDS).length > 0,
   desc: 'One person draws on their phone while everyone else guesses.',
   rules: {
     steps: [

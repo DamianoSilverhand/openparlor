@@ -1,16 +1,8 @@
-const fs = require('fs');
-const path = require('path');
 const { shuffle, filterLocal, LOCAL_OPTION, schedulePhase, toggleGamePause } = require('../util');
 
-const read = (f) => {
-  try {
-    return JSON.parse(fs.readFileSync(path.join(__dirname, '../../content', f), 'utf8'));
-  } catch {
-    return null;
-  }
-};
-const BANK = read('questions.json').categories;
-const FAMILY = ((read('family-questions.json') || {}).questions || []).filter((q) => q && q.q && q.a && Array.isArray(q.w) && q.w.length >= 1);
+const content = require('../content');
+const BANK = content.questions;
+const FAMILY = content.family.filter((q) => q.w.length >= 1);
 const CATS = { ...BANK };
 if (FAMILY.length >= 4) CATS.family = { name: 'Our Family', questions: FAMILY, always: true };
 
@@ -493,6 +485,7 @@ class Quiz {
 module.exports = {
   id: 'quiz',
   name: 'Family Quiz Show',
+  available: () => Object.keys(CATS).length > 0,
   desc: 'Teams of mixed ages answer questions, with a big final wager.',
   rules: {
     steps: [
