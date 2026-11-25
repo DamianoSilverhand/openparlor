@@ -1,0 +1,11 @@
+{
+  "sdk": 1,
+  "id": "tap-storm",
+  "name": "Tap Storm",
+  "description": "Tap the button as many times as you can.",
+  "howto": "Tap the big button as fast as you can until time runs out. Every tap is worth 10 points.",
+  "duration": 15,
+  "max": 3000,
+  "group": "speed",
+  "client": "client.js"
+}

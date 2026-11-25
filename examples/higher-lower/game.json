@@ -1,0 +1,20 @@
+{
+  "sdk": 1,
+  "id": "higher-lower",
+  "name": "Higher or Lower",
+  "description": "Guess whether the next number is higher or lower than the one on screen.",
+  "minPlayers": 2,
+  "usesBands": false,
+  "order": 200,
+  "rules": {
+    "steps": [
+      "A number from 1 to 99 appears on the TV.",
+      "On your phone, tap Higher or Lower to guess whether the next number will be bigger or smaller.",
+      "Then the next number is revealed. Everyone who guessed right scores."
+    ],
+    "scoring": "Each right guess is 100 points, plus up to 100 more for answering quickly."
+  },
+  "tv": "tv.js",
+  "play": "play.js",
+  "styles": ["styles.css"]
+}

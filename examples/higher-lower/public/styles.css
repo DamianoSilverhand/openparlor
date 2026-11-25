@@ -1,0 +1,7 @@
+/* A game's own styles. Use the theme tokens (--card, --ink, --on-color ...) so dark mode works, and prefix your classes. */
+.hl-number { font-family: var(--display); font-weight: 900; font-size: 5rem; text-align: center; margin: 12px 0; }
+.hl-note { text-align: center; color: var(--soft); font-weight: 700; }
+.hl-who { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
+.hl-btn { margin-top: 10px; font-size: 1.3rem; }
+.center-msg .hl-number { font-size: 8rem; white-space: nowrap; }
+.center-msg .hl-note { font-size: 2rem; }
