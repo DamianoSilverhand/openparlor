@@ -1,5 +1,5 @@
 import { h, avatar, tag, timer, byId, serverNow, onTick } from '/shared/ui.js';
-import { finalScreen, confetti } from '/tv/common.js';
+import { finalScreen, confetti } from '/sdk/tv.js';
 import { t as tx } from '/shared/i18n.js';
 
 const bar = (s) => (s && s.gameName ? s.gameName.toUpperCase() : tx('mini.bar').toUpperCase());
@@ -170,3 +170,20 @@ function final(s) {
     update() {},
   };
 }
+
+// ---- sounds ---------------------------------------------------------------------------------
+const len = (a) => (Array.isArray(a) ? a.length : 0);
+export const cues = {
+  onPhase: (g, sfx) => { if (g.phase === 'results') sfx('coin'); else if (g.phase === 'intro') sfx('whoosh'); },
+  onChange: (g, pg, sfx) => { if (len(g.done) > len(pg.done)) sfx('lock'); },
+  // The 3-2-1-GO before each mini-game and the last three seconds. Returns { tag, sound } or null.
+  tick(g, now) {
+    if (g.phase !== 'play') return null;
+    const left = g.startAt - now;
+    const remain = g.endAt - now;
+    if (left > 0) return { tag: `count:${Math.ceil(left / 1000)}`, sound: 'tick' };
+    if (left > -400) return { tag: 'go', sound: 'go' };
+    if (remain > 0 && remain <= 3000) return { tag: `end:${Math.ceil(remain / 1000)}`, sound: 'tick' };
+    return null;
+  },
+};

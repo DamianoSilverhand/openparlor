@@ -16,5 +16,8 @@
   },
   "profiles": {
     "enabled": true
+  },
+  "plugins": {
+    "enabled": true
   }
 }

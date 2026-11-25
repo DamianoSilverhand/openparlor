@@ -1,5 +1,5 @@
 import { h, avatar, timer, byId, ordinal } from '/shared/ui.js';
-import { hostButton } from '/play/whosaidthat.js';
+import { hostButton } from '/sdk/play.js';
 import { tierLabel } from '/shared/config.js';
 import { t as tr } from '/shared/i18n.js';
 
@@ -239,3 +239,14 @@ function final(s, ctx) {
   );
   return { el, update() {} };
 }
+
+// ---- sounds on your own phone ---------------------------------------------------------------
+export const cues = {
+  onChange(s, ps, changed, sfx) {
+    const g = s.game;
+    if (changed && g.phase === 'reveal') {
+      const r = g.results.find((x) => x.team === g.myTeam);
+      if (r) sfx(r.correct ? 'correct' : 'wrong');
+    }
+  },
+};

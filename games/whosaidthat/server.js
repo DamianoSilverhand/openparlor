@@ -1,6 +1,6 @@
-const { clean, shuffle, schedulePhase, toggleGamePause } = require('../util');
+const { GameBase, clean, shuffle, content } = require('../../server/sdk');
 
-const CONTENT = { packs: require('../content').prompts };
+const CONTENT = { packs: content.prompts };
 
 const VOTE_MS = 25000;
 const REVEAL_MS = 14000;
@@ -15,18 +15,14 @@ function promptPool(pack) {
   return Object.values(CONTENT.packs).filter((p) => p.mixIn !== false).flatMap((p) => p.prompts); // "Mix": every pack that has not opted out
 }
 
-class WhoSaidThat {
+class WhoSaidThat extends GameBase {
   constructor(room) {
-    this.room = room;
-    this.s = { ...room.settings };
+    super(room);
     const pool = shuffle(promptPool(this.s.pack));
     this.totalRounds = Math.min(this.s.rounds, pool.length);
     this.prompts = pool.slice(0, this.totalRounds);
     this.round = 0;
     this.stats = new Map();
-    this.timer = null;
-    this.deadline = 0;
-    this.timerTotal = 0;
     for (const p of room.players.values()) p.score = 0;
     this.startRound();
   }
@@ -36,26 +32,8 @@ class WhoSaidThat {
     if (!this.stats.has(pid)) this.stats.set(pid, { correct: 0, fooled: 0, laughs: 0 });
     return this.stats.get(pid);
   }
-  add(pid, pts) {
-    const p = this.room.players.get(pid);
-    if (!p) return;
-    p.score += pts;
-    this.gains.set(pid, (this.gains.get(pid) || 0) + pts);
-  }
-  later(ms, fn) {
-    schedulePhase(this, ms, fn);
-  }
-  togglePause() {
-    toggleGamePause(this);
-  }
-  connected() {
-    return [...this.room.players.values()].filter((p) => p.connected);
-  }
   get cur() {
     return this.items && this.items[this.idx];
-  }
-  destroy() {
-    clearTimeout(this.timer);
   }
 
   // ---- phases ------------------------------------------------------------
@@ -326,20 +304,7 @@ class WhoSaidThat {
 const PACKS = Object.fromEntries(Object.entries(CONTENT.packs).map(([k, v]) => [k, v.name]));
 
 module.exports = {
-  id: 'whosaidthat',
-  name: 'Who Said That?',
   available: () => Object.keys(CONTENT.packs).length > 0,
-  desc: 'Answer silly prompts, then guess who wrote what.',
-  rules: {
-    steps: [
-      'A prompt appears on the TV. Write your answer on your phone. Nobody sees who wrote what.',
-      'Then each answer is shown. Guess who wrote it by tapping a name. You never vote on your own.',
-      'Tap the laugh button on answers you love.',
-      "Don't want to answer a prompt? Tap Pass. The host can hide an answer that isn't suitable.",
-    ],
-    scoring: 'Guess the right writer: 100 points. Fool someone with your answer: 50 points each. Every laugh you get: 10 points.',
-  },
-  minPlayers: 3,
   defaults: { rounds: 5, answerTime: 45, pack: 'mix' },
   options: [
     { key: 'rounds', label: 'Rounds', values: [[3, '3'], [5, '5'], [8, '8']] },

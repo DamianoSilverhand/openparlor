@@ -2,17 +2,13 @@ const crypto = require('crypto');
 const { clean } = require('./util');
 const { config, bands } = require('./config');
 const history = require('./history');
+const { loadGames } = require('./sdk/loader');
 
-// A null-prototype map, so ids such as "__proto__" or "constructor" are not games.
-const GAMES = Object.assign(Object.create(null), {
-  whosaidthat: require('./games/whosaidthat'),
-  draw: require('./games/draw'),
-  quiz: require('./games/quiz'),
-  minigames: require('./games/minigames'),
-});
+// Every game found in games/ and plugins/, as a null-prototype map so ids such as "__proto__" are not games.
+const { games: GAMES, problems: gameProblems } = loadGames();
 // A game whose content packs are missing or invalid is hidden instead of crashing.
 const usable = (id) => typeof id === 'string' && !!GAMES[id] && (typeof GAMES[id].available !== 'function' || GAMES[id].available());
-const firstUsable = () => Object.keys(GAMES).find(usable) || 'minigames';
+const firstUsable = () => Object.keys(GAMES).find(usable) || Object.keys(GAMES)[0];
 const MAX_ROOMS = config.limits.maxRooms;
 // Preset or local config may change a game's default settings, but only to values the game really offers.
 function configuredDefaults(def) {
@@ -37,7 +33,7 @@ class Room {
     this.game = null;
     this.briefing = null; // { until, total } while the how-to-play screen is up
     this.briefTimer = null;
-    this.gameId = usable('whosaidthat') ? 'whosaidthat' : firstUsable();
+    this.gameId = firstUsable();
     this.settingsAll = {};
     for (const [id, def] of Object.entries(GAMES)) this.settingsAll[id] = { ...def.defaults, ...configuredDefaults(def) };
     this.touched = Date.now();
@@ -303,7 +299,7 @@ class Room {
       levelHint: def.levelHint || '',
       waitingOn: this.unchosen().map((p) => p.name),
       options: def.options,
-      games: Object.values(GAMES).filter((g) => usable(g.id)).map((g) => ({ id: g.id, name: g.name })),
+      games: Object.values(GAMES).filter((g) => usable(g.id)).map((g) => ({ id: g.id, name: g.name, client: { tv: `/games/${g.id}/${g.client.tv}`, play: `/games/${g.id}/${g.client.play}`, styles: g.client.styles.map((f) => `/games/${g.id}/${f}`) } })),
       settings: this.settings,
       inGame: !!this.game,
       lobbyNote: this.lobbyNote || '',
@@ -317,7 +313,8 @@ class Room {
         connected: p.connected,
       })),
     };
-    const wrap = (st) => (this.game ? { paused: !!this.game.paused, pausedLeft: this.game.pausedLeft || 0, ...st } : null);
+    const canPause = this.game ? (typeof this.game.canPause === 'function' ? this.game.canPause() : this.game.phase !== 'final') : false;
+    const wrap = (st) => (this.game ? { paused: !!this.game.paused, pausedLeft: this.game.pausedLeft || 0, canPause, ...st } : null);
     for (const ws of this.tvs) this.send(ws, { ...base, view: 'tv', game: wrap(this.game && this.game.tvState()) });
     for (const p of this.players.values()) {
       if (p.ws) this.send(p.ws, { ...base, view: 'phone', me: p.id, game: wrap(this.game && this.game.phoneState(p.id)) });
@@ -360,4 +357,4 @@ class Rooms {
   }
 }
 
-module.exports = { Rooms };
+module.exports = { Rooms, GAMES, gameProblems };

@@ -1,0 +1,20 @@
+{
+  "sdk": 1,
+  "id": "draw",
+  "name": "Draw & Guess",
+  "description": "One person draws on their phone while everyone else guesses.",
+  "order": 20,
+  "minPlayers": 3,
+  "usesBands": false,
+  "rules": {
+    "steps": [
+      "Each turn, one player is the artist. They pick a word on their phone and draw it. Everyone sees it live on the TV.",
+      "Everyone else types guesses on their phone. No speaking the answer out loud, and no writing letters in the drawing.",
+      "Letters of the word are revealed as time runs out, so the clues get easier.",
+      "When the turn ends, the next player draws. Everyone gets a turn."
+    ],
+    "scoring": "Guess sooner for more points. Harder words are worth more. The artist earns points for every person who guesses it, plus a bonus if everyone does."
+  },
+  "tv": "tv.js",
+  "play": "play.js"
+}

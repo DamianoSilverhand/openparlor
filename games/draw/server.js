@@ -1,6 +1,6 @@
-const { clean, shuffle, schedulePhase, toggleGamePause } = require('../util');
+const { GameBase, clean, shuffle, content } = require('../../server/sdk');
 
-const WORDS = require('../content').words;
+const WORDS = content.words;
 
 const CHOOSE_MS = 15000;
 const RESULT_MS = 9000;
@@ -27,20 +27,16 @@ function wordPool(pack, tier) {
   return packs.flatMap((p) => p[tier] || []);
 }
 
-class Draw {
+class Draw extends GameBase {
   constructor(room) {
-    this.room = room;
-    this.s = { ...room.settings };
+    super(room);
     this.order = shuffle([...room.players.values()].filter((p) => p.connected).map((p) => p.id));
     this.turnsTotal = this.order.length * this.s.turns;
     this.turn = 0;
     this.used = new Set();
     this.stats = new Map();
     this.gallery = [];
-    this.timer = null;
     this.hintTimers = [];
-    this.deadline = 0;
-    this.timerTotal = 0;
     this.strokes = [];
     for (const p of room.players.values()) p.score = 0;
     this.startTurn();
@@ -51,25 +47,12 @@ class Draw {
     if (!this.stats.has(pid)) this.stats.set(pid, { artist: 0, correct: 0 });
     return this.stats.get(pid);
   }
-  add(pid, pts) {
-    const p = this.room.players.get(pid);
-    if (!p || !pts) return;
-    p.score += pts;
-    this.gains.set(pid, (this.gains.get(pid) || 0) + pts);
-  }
-  later(ms, fn) {
-    schedulePhase(this, ms, fn);
-  }
-  togglePause() {
-    toggleGamePause(this);
-  }
   clearHints() {
     clearInterval(this.hintInterval);
     this.hintInterval = null;
     this.hintThresholds = [];
   }
-  destroy() {
-    clearTimeout(this.timer);
+  onDestroy() {
     this.clearHints();
   }
   connectedIds() {
@@ -90,10 +73,10 @@ class Draw {
     return out;
   }
   broadcastStrokes() {
-    this.room.toTvs({ t: 'draw', ev: 'full', strokes: this.strokes });
+    this.room.toTvs({ t: 'game', game: 'draw', ev: 'full', strokes: this.strokes });
   }
   onTvConnect(ws) {
-    this.room.send(ws, { t: 'draw', ev: 'full', strokes: this.strokes });
+    this.room.send(ws, { t: 'game', game: 'draw', ev: 'full', strokes: this.strokes });
   }
 
   // ---- turn flow ---------------------------------------------------------
@@ -229,7 +212,7 @@ class Draw {
         }
         if (st.p.length + pts.length > MAX_POINTS) return;
         st.p.push(...pts);
-        room.toTvs({ t: 'draw', ev: 'seg', id: msg.id, c: st.c, s: st.s, pts });
+        room.toTvs({ t: 'game', game: 'draw', ev: 'seg', id: msg.id, c: st.c, s: st.s, pts });
         return;
       }
       case 'undo':
@@ -351,20 +334,7 @@ class Draw {
 }
 
 module.exports = {
-  id: 'draw',
-  name: 'Draw & Guess',
   available: () => Object.keys(WORDS).length > 0,
-  desc: 'One person draws on their phone while everyone else guesses.',
-  rules: {
-    steps: [
-      'Each turn, one player is the artist. They pick a word on their phone and draw it. Everyone sees it live on the TV.',
-      'Everyone else types guesses on their phone. No speaking the answer out loud, and no writing letters in the drawing.',
-      'Letters of the word are revealed as time runs out, so the clues get easier.',
-      'When the turn ends, the next player draws. Everyone gets a turn.',
-    ],
-    scoring: 'Guess sooner for more points. Harder words are worth more. The artist earns points for every person who guesses it, plus a bonus if everyone does.',
-  },
-  minPlayers: 3,
   defaults: { turns: 1, drawTime: 60, difficulty: 'mostly-easy', pack: 'mix' },
   options: [
     { key: 'turns', label: 'Drawings each', values: [[1, '1'], [2, '2'], [3, '3']] },

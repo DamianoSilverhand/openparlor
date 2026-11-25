@@ -1,0 +1,20 @@
+{
+  "sdk": 1,
+  "id": "minigames",
+  "name": "Mini-Games",
+  "description": "Quick rounds of memory, words, reflexes and numbers. Everyone gets a chance to shine.",
+  "order": 40,
+  "minPlayers": 2,
+  "usesBands": true,
+  "bandHint": "Players in easier groups get a gentler challenge (smaller boards, easier words and sums, extra lives, a bigger reaction window), so everyone has a fair shot.",
+  "rules": {
+    "steps": [
+      "Everyone plays a short game on their own phone at the same time. Before each game you get a how-to and a countdown.",
+      "Players in an easier group get an easier version, so everyone has a fair shot.",
+      "Race mode ranks you against each other. Play together mode adds everyone's scores into one group total to beat."
+    ],
+    "scoring": "Race: 1st place 10 points, 2nd 7, 3rd 5, everyone else 3. Play together: the group total is saved as a record."
+  },
+  "tv": "tv.js",
+  "play": "play.js"
+}

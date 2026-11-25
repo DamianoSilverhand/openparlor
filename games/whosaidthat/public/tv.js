@@ -1,5 +1,5 @@
 import { h, avatar, tag, timer, byId } from '/shared/ui.js';
-import { finalScreen } from '/tv/common.js';
+import { finalScreen } from '/sdk/tv.js';
 
 
 const chipFor = (p, done) =>
@@ -145,3 +145,14 @@ function final(s) {
     update() {},
   };
 }
+
+// ---- sounds (the TV plays the shared cues) -------------------------------------------------
+const len = (a) => (Array.isArray(a) ? a.length : 0);
+export const cues = {
+  timedPhases: ['answer', 'vote'], // the last three seconds tick in these phases
+  onPhase: (g, sfx) => sfx(g.phase === 'reveal' ? 'drum' : 'whoosh'), // a new screen
+  onChange: (g, pg, sfx) => { // something changed within the same screen
+    if (len(g.answered) > len(pg.answered) || len(g.voted) > len(pg.voted)) sfx('lock');
+    if ((g.laughs || 0) > (pg.laughs || 0)) sfx('pop');
+  },
+};

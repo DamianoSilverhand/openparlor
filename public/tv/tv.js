@@ -3,12 +3,31 @@ import { play, isRunning, isMuted, onChange } from '/shared/sound.js';
 import { connect } from '/shared/net.js';
 import { config } from '/shared/config.js';
 import { t } from '/shared/i18n.js';
-import * as whosaidthat from '/tv/whosaidthat.js';
-import * as draw from '/tv/draw.js';
-import * as quiz from '/tv/quiz.js';
-import * as minigames from '/tv/minigames.js';
 
-const GAMES = { whosaidthat, draw, quiz, minigames };
+// Games are loaded on demand from the paths the server lists in s.games (see docs/GAME-SDK.md). `loaded` holds each
+// game's module once it is ready; events the server sends before that are kept and replayed.
+const loaded = new Map();
+const loading = new Map();
+const waiting = new Map();
+
+function ensureGame(s) {
+  const id = s.gameId;
+  const meta = (s.games || []).find((g) => g.id === id);
+  if (!meta || loaded.has(id) || loading.has(id)) return loaded.get(id) || null;
+  for (const href of meta.client.styles || []) {
+    if (!document.querySelector(`link[href="${href}"]`)) document.head.append(Object.assign(document.createElement('link'), { rel: 'stylesheet', href }));
+  }
+  loading.set(id, import(meta.client.tv).then((mod) => {
+    loaded.set(id, mod);
+    for (const ev of waiting.get(id) || []) if (mod.onEvent) mod.onEvent(ev);
+    waiting.delete(id);
+    if (last) render(last);
+  }).catch((err) => {
+    console.error(`Could not load the screens for "${id}"`, err);
+    loading.set(id, null);
+  }));
+  return null;
+}
 const app = document.getElementById('app');
 const room = (new URLSearchParams(location.search).get('room') || '').toUpperCase();
 let info = null;
@@ -21,7 +40,13 @@ const net = connect({
   onOpen: () => net.send({ t: 'tv', room }),
   onMessage: (m) => {
     if (m.t === 'error') return showError(m.message);
-    if (m.t === 'draw') return draw.onEvent(m);
+    if (m.t === 'game') {
+      // A custom event from one game's server code, for example live drawing strokes.
+      const mod = loaded.get(m.game);
+      if (mod && mod.onEvent) return mod.onEvent(m);
+      if (!waiting.has(m.game)) waiting.set(m.game, []);
+      return waiting.get(m.game).push(m);
+    }
     if (m.t !== 'state') return;
     setServerNow(m.now);
     last = m;
@@ -49,8 +74,9 @@ function showError(message) {
 }
 
 function render(s) {
+  const mod = ensureGame(s); // start loading the chosen game as soon as it is picked
   if (s.inGame && s.game) {
-    const mod = GAMES[s.gameId];
+    if (!mod) return mount('loading', () => ({ el: h('div', { class: 'center-msg' }, h('h1', null, '...')) }), s);
     const scr = mod.screen(s);
     return mount(`game:${s.gameId}:${scr.key}`, scr.build, s);
   }
@@ -155,12 +181,12 @@ window.addEventListener('keydown', (e) => {
   if (e.key === 'm' || e.key === 'M') snd.click();
 });
 
-const TIMED = { whosaidthat: ['answer', 'vote'], draw: ['choose', 'draw'], quiz: ['question', 'wager'] };
 let prevState = null;
 let tickTag = null;
 const len = (a) => (Array.isArray(a) ? a.length : 0);
 const keyOf = (s) => (s.inGame && s.game ? [s.gameId, s.game.phase, s.game.round, s.game.idx, s.game.qi, s.game.turn].join(':') : 'lobby');
 
+// Sound cues. Shared ones live here; each game adds its own through the `cues` it exports (see docs/GAME-SDK.md).
 function cues(s) {
   const prev = prevState;
   prevState = s;
@@ -173,57 +199,31 @@ function cues(s) {
   }
   const g = s.game;
   const pg = prev.inGame ? prev.game : null;
+  const mod = loaded.get(s.gameId);
+  const own = (mod && mod.cues) || {};
   if (keyOf(s) !== keyOf(prev)) {
     tickTag = null;
-    return onPhase(s.gameId, g);
+    if (g.phase === 'final') return play('fanfare');
+    if (g.phase === 'scores') return play('coin');
+    return own.onPhase && own.onPhase(g, play);
   }
-  if (!pg) return;
-  if (s.gameId === 'draw') {
-    if (len(g.guessed) > len(pg.guessed)) play('correct');
-  } else if (s.gameId === 'whosaidthat') {
-    if (len(g.answered) > len(pg.answered) || len(g.voted) > len(pg.voted)) play('lock');
-    if ((g.laughs || 0) > (pg.laughs || 0)) play('pop');
-  } else if (s.gameId === 'quiz') {
-    if (len(g.answered) > len(pg.answered) || len(g.wagered) > len(pg.wagered)) play('lock');
-  } else if (s.gameId === 'minigames') {
-    if (len(g.done) > len(pg.done)) play('lock');
-  }
+  if (pg && own.onChange) own.onChange(g, pg, play);
 }
 
-function onPhase(id, g) {
-  const P = g.phase;
-  if (P === 'final') return play('fanfare');
-  if (P === 'scores') return play('coin');
-  if (id === 'whosaidthat') play(P === 'reveal' ? 'drum' : 'whoosh');
-  else if (id === 'draw') play(P === 'draw' ? 'go' : P === 'result' ? (len(g.guessed) ? 'coin' : 'wrong') : 'whoosh');
-  else if (id === 'quiz') {
-    if (P === 'reveal') play(g.results.some((r) => r.correct) ? 'correct' : 'wrong');
-    else if (P === 'wager') play('drum');
-    else play(P === 'question' ? (g.finale ? 'drum' : 'go') : 'whoosh');
-  } else if (id === 'minigames') {
-    if (P === 'results') play('coin');
-    else if (P === 'intro') play('whoosh');
-  }
-}
-
-// Last-three-seconds ticks, and the 3-2-1-GO before each mini-game.
+// Ticks in the last three seconds of a timed phase, or whatever a game's own tick(g, now) asks for.
 setInterval(() => {
   const s = prevState;
   if (!s || !s.inGame || !s.game) return;
   const g = s.game;
+  const own = (loaded.get(s.gameId) || {}).cues || {};
   let target = null;
-  if (s.gameId === 'minigames' && g.phase === 'play') {
-    const left = g.startAt - serverNow();
-    const remain = g.endAt - serverNow();
-    if (left > 0) target = `count:${Math.ceil(left / 1000)}`;
-    else if (left > -400) target = 'go';
-    else if (remain > 0 && remain <= 3000) target = `end:${Math.ceil(remain / 1000)}`;
-  } else if (g.deadline && (TIMED[s.gameId] || []).includes(g.phase)) {
+  if (own.tick) target = own.tick(g, serverNow());
+  else if (g.deadline && (own.timedPhases || []).includes(g.phase)) {
     const left = Math.ceil((g.deadline - serverNow()) / 1000);
-    if (left >= 1 && left <= 3) target = `t:${left}`;
+    if (left >= 1 && left <= 3) target = { tag: `t:${left}`, sound: 'tick' };
   }
-  if (target && target !== tickTag) {
-    tickTag = target;
-    play(target === 'go' ? 'go' : 'tick');
+  if (target && target.tag !== tickTag) {
+    tickTag = target.tag;
+    play(target.sound);
   }
 }, 150);

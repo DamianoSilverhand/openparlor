@@ -1,4 +1,5 @@
-import { h, avatar, timer, byId, soundToggle } from '/shared/ui.js';
+import { h, avatar, timer, byId } from '/shared/ui.js';
+import { game, meBar, hostButton, list, final } from '/sdk/play.js';
 
 export function screen(s, ctx) {
   const g = s.game;
@@ -11,26 +12,8 @@ export function screen(s, ctx) {
   return { key, build: (s) => b(s, ctx) };
 }
 
-const game = (a, extra) => ({ t: 'g', a, ...extra });
 
-export function meBar(s) {
-  const me = byId(s.players)(s.me);
-  return h('div', { class: 'me' },
-    h('span', { class: 'who' }, me && avatar(me), me && me.name),
-    h('span', { class: 'me-r' }, h('span', { class: 'score' }, h('small', null, 'Score'), me ? me.score : 0), soundToggle()),
-  );
-}
 
-export function hostButton(s, ctx, label, primary) {
-  if (s.me !== s.hostId) return null;
-  const g = s.game || {};
-  const canPause = g.phase && g.phase !== 'final' && !(s.gameId === 'minigames' && g.phase === 'play');
-  const pauseBtn = canPause && h('button', { class: 'link', onclick: () => ctx.send({ t: 'pause' }) }, g.paused ? '▶ Resume' : '⏸ Pause');
-  const nextBtn = primary
-    ? h('button', { class: 'btn block', onclick: () => ctx.send(game('next')) }, label)
-    : h('button', { class: 'link', onclick: () => ctx.send(game('next')) }, label);
-  return h('div', { class: primary ? 'host-bar push' : 'host-bar' }, nextBtn, pauseBtn);
-}
 
 // Lets the host remove an answer from the round if it is awkward or unsuitable.
 function hideLink(s, ctx) {
@@ -198,19 +181,6 @@ function reveal(s, ctx) {
 }
 
 // ---- scores / final --------------------------------------------------------------
-export function list(s) {
-  const g = s.game;
-  const get = byId(s.players);
-  return h('div', { class: 'rank-list' },
-    g.standings.map((x, i) => {
-      const p = get(x.id);
-      return h('div', { class: 'r' + (x.id === s.me ? ' me' : '') },
-        h('span', { class: 'tag' }, h('b', null, i + 1), avatar(p), p.name),
-        h('span', null, x.gain > 0 && h('span', { class: 'gain' }, `+${x.gain}`), x.score),
-      );
-    }),
-  );
-}
 
 function scores(s, ctx) {
   const g = s.game;
@@ -228,16 +198,14 @@ function scores(s, ctx) {
   return { el, update: (s) => t.update(s.game) };
 }
 
-export function final(s, ctx) {
-  const g = s.game;
-  const place = g.standings.findIndex((x) => x.id === s.me);
-  const words = ['You won!', 'Second place', 'Third place'];
-  const el = h('div', { class: 'screen' },
-    meBar(s),
-    h('h1', { class: 'title' }, place >= 0 && place < 3 ? words[place] : 'Game over'),
-    list(s),
-    h('button', { class: 'btn block push', onclick: () => ctx.send({ t: 'again' }) }, 'Play again'),
-    h('button', { class: 'btn plain block', onclick: () => ctx.send({ t: 'lobby' }) }, 'Back to the lobby'),
-  );
-  return { el, update() {} };
-}
+// ---- sounds on your own phone ---------------------------------------------------------------
+export const cues = {
+  onChange(s, ps, changed, sfx) {
+    const g = s.game;
+    if (changed && g.phase === 'reveal') {
+      if (g.isAuthor) sfx(g.fooled.length ? 'correct' : 'wrong');
+      else if (g.correct.includes(s.me)) sfx('correct');
+      else if (g.myVote) sfx('wrong');
+    }
+  },
+};

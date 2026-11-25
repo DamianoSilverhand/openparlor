@@ -1,5 +1,5 @@
 import { h, avatar, timer, byId, ordinal } from '/shared/ui.js';
-import { confetti } from '/tv/common.js';
+import { confetti } from '/sdk/tv.js';
 import { isMuted } from '/shared/sound.js';
 import { tierLabel } from '/shared/config.js';
 import { t } from '/shared/i18n.js';
@@ -241,3 +241,15 @@ function final(s) {
   );
   return { el, update() {} };
 }
+
+// ---- sounds ---------------------------------------------------------------------------------
+const len = (a) => (Array.isArray(a) ? a.length : 0);
+export const cues = {
+  timedPhases: ['question', 'wager'],
+  onPhase: (g, sfx) => {
+    if (g.phase === 'reveal') sfx(g.results.some((r) => r.correct) ? 'correct' : 'wrong');
+    else if (g.phase === 'wager') sfx('drum');
+    else sfx(g.phase === 'question' ? (g.finale ? 'drum' : 'go') : 'whoosh');
+  },
+  onChange: (g, pg, sfx) => { if (len(g.answered) > len(pg.answered) || len(g.wagered) > len(pg.wagered)) sfx('lock'); },
+};

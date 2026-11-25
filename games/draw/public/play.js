@@ -1,6 +1,6 @@
 import { h, avatar, timer, byId } from '/shared/ui.js';
 import { prepare, redraw, drawStroke, COLORS, SIZES, BG } from '/shared/canvas.js';
-import { meBar, hostButton, final } from '/play/whosaidthat.js';
+import { meBar, hostButton, final } from '/sdk/play.js';
 
 const game = (a, extra) => ({ t: 'g', a, ...extra });
 const TIER = { easy: 'Easy', medium: 'Medium', hard: 'Hard' };
@@ -217,3 +217,18 @@ function result(s, ctx) {
   t.update(g);
   return { el, update: (s) => t.update(s.game) };
 }
+
+// ---- sounds on your own phone ---------------------------------------------------------------
+export const cues = {
+  onChange(s, ps, changed, sfx) {
+    const g = s.game;
+    const pg = ps.game;
+    if (g.phase === 'draw' && !pg.iGuessed && g.iGuessed) sfx('correct');
+    else if (g.phase === 'draw' && g.myGuesses && pg.myGuesses && g.myGuesses.length > pg.myGuesses.length) sfx(g.myGuesses[g.myGuesses.length - 1].close ? 'good' : 'bad');
+    if (changed && g.phase === 'result') {
+      const mine = g.gains.find((x) => x.id === s.me);
+      if (mine) sfx('coin');
+      else if (g.drawer !== s.me) sfx('bad');
+    }
+  },
+};

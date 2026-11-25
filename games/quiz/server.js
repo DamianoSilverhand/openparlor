@@ -1,7 +1,5 @@
-const { shuffle, schedulePhase, toggleGamePause } = require('../util');
-const { bands } = require('../config');
+const { GameBase, shuffle, bands, content } = require('../../server/sdk');
 
-const content = require('../content');
 const CATS = content.questions;
 
 const INTRO_MS = 12000;
@@ -26,13 +24,9 @@ const TEAM_DEFS = [
 ];
 const SOLO_COLORS = ['#e8472b', '#6fb3e0', '#6baa4f', '#f2b632', '#f29bb5', '#2e9c9c', '#f28c38', '#3e5c99', '#d9b88f', '#b5523b', '#9ad1b0', '#ff9f8f'];
 
-class Quiz {
+class Quiz extends GameBase {
   constructor(room) {
-    this.room = room;
-    this.s = { ...room.settings };
-    this.timer = null;
-    this.deadline = 0;
-    this.timerTotal = 0;
+    super(room);
     this.used = new Set();
     this.round = 0;
     this.qi = 0;
@@ -97,15 +91,6 @@ class Quiz {
   }
 
   // ---- helpers -----------------------------------------------------------
-  later(ms, fn) {
-    schedulePhase(this, ms, fn);
-  }
-  togglePause() {
-    toggleGamePause(this);
-  }
-  destroy() {
-    clearTimeout(this.timer);
-  }
 
   // Pick an unused question whose difficulty suits the tier it is aimed at.
   pickQuestion(catId, level) {
@@ -481,22 +466,7 @@ class Quiz {
 }
 
 module.exports = {
-  id: 'quiz',
-  name: 'Quiz Show',
   available: () => Object.keys(CATS).length > 0,
-  desc: 'Teams of mixed ages answer questions, with a big final wager.',
-  rules: {
-    steps: [
-      'You play in teams. Each round has a topic and a few multiple-choice questions.',
-      'Every question is aimed at one group, based on the level each player chose in the lobby. The player on your team from that group locks in the answer. Everyone else taps a suggestion to help them.',
-      'One question each round is worth double points.',
-      'The last question is a final wager: bet some of your points before you see it. Get it right and you win the bet. Get it wrong and you lose it.',
-    ],
-    scoring: 'Right answer: 200 points, plus a bonus for answering quickly. A wrong answer scores nothing. If a different group answers, it is worth half points.',
-  },
-  minPlayers: 2,
-  usesLevels: true,
-  levelHint: 'Each question is aimed at one group, easier for some and harder for others. The player on your team from that group answers, and the rest help. Teams get a mix of groups.',
   defaults: { teams: 2, rounds: 3, time: 30, finale: 'on', read: 'off', cats: 'mix' },
   options: [
     { key: 'teams', label: 'Teams', values: [[2, '2 teams'], [3, '3 teams'], [4, '4 teams'], ['solo', 'Everyone solo']] },

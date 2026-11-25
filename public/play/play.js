@@ -3,12 +3,27 @@ import { play } from '/shared/sound.js';
 import { config, bands, bandId, bandLabel } from '/shared/config.js';
 import { t } from '/shared/i18n.js';
 import { connect } from '/shared/net.js';
-import * as whosaidthat from '/play/whosaidthat.js';
-import * as draw from '/play/draw.js';
-import * as quiz from '/play/quiz.js';
-import * as minigames from '/play/minigames.js';
 
-const GAMES = { whosaidthat, draw, quiz, minigames };
+// Games are loaded on demand from the paths the server lists in s.games (see docs/GAME-SDK.md).
+const loaded = new Map();
+const loading = new Map();
+
+function ensureGame(s) {
+  const id = s.gameId;
+  const meta = (s.games || []).find((g) => g.id === id);
+  if (!meta || loaded.has(id) || loading.has(id)) return loaded.get(id) || null;
+  for (const href of meta.client.styles || []) {
+    if (!document.querySelector(`link[href="${href}"]`)) document.head.append(Object.assign(document.createElement('link'), { rel: 'stylesheet', href }));
+  }
+  loading.set(id, import(meta.client.play).then((mod) => {
+    loaded.set(id, mod);
+    if (last) render(last);
+  }).catch((err) => {
+    console.error(`Could not load the screens for "${id}"`, err);
+    loading.set(id, null);
+  }));
+  return null;
+}
 const app = document.getElementById('app');
 const room = (new URLSearchParams(location.search).get('room') || '').toUpperCase().slice(0, 4);
 
@@ -179,8 +194,10 @@ if (!room) {
 }
 
 function render(s) {
+  const mod = ensureGame(s); // start loading the chosen game as soon as it is picked
   if (s.inGame && s.game) {
-    const scr = GAMES[s.gameId].screen(s, { send });
+    if (!mod) return mount('loading', () => ({ el: h('div', { class: 'screen' }, h('h1', { class: 'title' }, '...')) }), s);
+    const scr = mod.screen(s, { send });
     return mount(`game:${s.gameId}:${scr.key}`, scr.build, s);
   }
   if (s.briefing && s.briefing.rules) return mount('briefing:' + s.gameId, briefing, s);
@@ -285,29 +302,6 @@ function cues(s) {
     const place = g.myTeam !== undefined ? g.standings.findIndex((x) => x.id === g.myTeam) : g.standings.findIndex((x) => x.id === s.me);
     return play(place === 0 ? 'fanfare' : place > 0 && place < 3 ? 'coin' : 'tap');
   }
-  if (s.gameId === 'whosaidthat') {
-    if (changed && g.phase === 'reveal') {
-      if (g.isAuthor) play(g.fooled.length ? 'correct' : 'wrong');
-      else if (g.correct.includes(s.me)) play('correct');
-      else if (g.myVote) play('wrong');
-    }
-  } else if (s.gameId === 'draw') {
-    if (g.phase === 'draw' && !pg.iGuessed && g.iGuessed) play('correct');
-    else if (g.phase === 'draw' && g.myGuesses && pg.myGuesses && g.myGuesses.length > pg.myGuesses.length) play(g.myGuesses[g.myGuesses.length - 1].close ? 'good' : 'bad');
-    if (changed && g.phase === 'result') {
-      const mine = g.gains.find((x) => x.id === s.me);
-      if (mine) play('coin');
-      else if (g.drawer !== s.me) play('bad');
-    }
-  } else if (s.gameId === 'quiz') {
-    if (changed && g.phase === 'reveal') {
-      const r = g.results.find((x) => x.team === g.myTeam);
-      if (r) play(r.correct ? 'correct' : 'wrong');
-    }
-  } else if (s.gameId === 'minigames') {
-    if (changed && g.phase === 'results') {
-      const mine = g.rows.find((r) => r.id === s.me);
-      if (mine) play(mine.rank === 0 ? 'fanfare' : 'coin');
-    }
-  }
+  const own = (loaded.get(s.gameId) || {}).cues;
+  if (own && own.onChange) own.onChange(s, p, changed, play);
 }

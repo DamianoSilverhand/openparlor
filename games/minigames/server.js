@@ -1,7 +1,4 @@
-const { shuffle, schedulePhase, toggleGamePause } = require('../util');
-const { bands, config } = require('../config');
-const profiles = require('../profiles');
-const records = require('../records');
+const { GameBase, shuffle, bands, profiles, records, settings: sdkSettings } = require('../../server/sdk');
 
 // The mini-games themselves run on the phones. The server picks the set, hands out a shared seed and
 // start time, collects each player's score, and awards points for finishing 1st, 2nd, 3rd and so on.
@@ -28,20 +25,16 @@ const FOCUS = {
   speed: ['reaction', 'pattern', 'clash'],
 };
 
-class MiniGames {
+class MiniGames extends GameBase {
   constructor(room) {
-    this.room = room;
-    this.s = { ...room.settings };
+    super(room);
     const pool = FOCUS[this.s.focus] || FOCUS.mix;
     const picked = shuffle(pool);
     while (picked.length < this.s.games) picked.push(...shuffle(Object.keys(MINI)).filter((k) => !picked.includes(k)));
     this.order = picked.slice(0, this.s.games);
     this.total = this.order.length;
     this.idx = 0;
-    this.timer = null;
     this.liveTimer = null;
-    this.deadline = 0;
-    this.timerTotal = 0;
     this.stats = new Map();
     this.gains = new Map();
     this.setRecords = [];
@@ -50,14 +43,11 @@ class MiniGames {
   }
 
   // ---- helpers -----------------------------------------------------------
-  later(ms, fn) {
-    schedulePhase(this, ms, fn);
+  // The mini-games run on the phones with their own clocks, so the round cannot be paused while it is being played.
+  canPause() {
+    return this.phase !== 'play' && this.phase !== 'final';
   }
-  togglePause() {
-    toggleGamePause(this, this.phase !== 'play');
-  }
-  destroy() {
-    clearTimeout(this.timer);
+  onDestroy() {
     clearTimeout(this.liveTimer);
   }
   stat(id) {
@@ -149,7 +139,7 @@ class MiniGames {
     this.personalBests = [];
     rows.forEach((r) => {
       const p = this.room.players.get(r.id);
-      if (p && p.profileId && config.profiles.enabled) {
+      if (p && p.profileId && sdkSettings.profilesEnabled) {
         const res = profiles.record(p.profileId, this.id, r.score, 0, 'room');
         if (res && res.isNewBest) this.personalBests.push(r.id);
       }
@@ -276,20 +266,6 @@ class MiniGames {
 }
 
 module.exports = {
-  id: 'minigames',
-  name: 'Mini-Games',
-  desc: 'Quick rounds of memory, words, reflexes and numbers. Everyone gets a chance to shine.',
-  rules: {
-    steps: [
-      'Everyone plays a short game on their own phone at the same time. Before each game you get a how-to and a countdown.',
-      'Players in an easier group get an easier version, so everyone has a fair shot.',
-      "Race mode ranks you against each other. Play together mode adds everyone's scores into one group total to beat.",
-    ],
-    scoring: 'Race: 1st place 10 points, 2nd 7, 3rd 5, everyone else 3. Play together: the group total is saved as a record.',
-  },
-  minPlayers: 2,
-  usesLevels: true,
-  levelHint: 'Players in easier groups get a gentler challenge (smaller boards, easier words and sums, extra lives, a bigger reaction window), so everyone has a fair shot.',
   defaults: { games: 5, focus: 'mix', handicap: 'on', mode: 'race' },
   options: [
     { key: 'games', label: 'Games in the set', values: [[3, '3'], [4, '4'], [5, '5'], [6, '6']] },

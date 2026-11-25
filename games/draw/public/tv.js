@@ -1,6 +1,6 @@
 import { h, avatar, tag, timer, byId } from '/shared/ui.js';
 import { prepare, redraw, drawStroke } from '/shared/canvas.js';
-import { finalScreen } from '/tv/common.js';
+import { finalScreen } from '/sdk/tv.js';
 
 // The live drawing lives outside the screen so it survives re-renders and TV reconnects.
 let strokes = [];
@@ -146,3 +146,11 @@ function final(s) {
   }, 12000);
   return { el, update() {} };
 }
+
+// ---- sounds ---------------------------------------------------------------------------------
+const len = (a) => (Array.isArray(a) ? a.length : 0);
+export const cues = {
+  timedPhases: ['choose', 'draw'],
+  onPhase: (g, sfx) => sfx(g.phase === 'draw' ? 'go' : g.phase === 'result' ? (len(g.guessed) ? 'coin' : 'wrong') : 'whoosh'),
+  onChange: (g, pg, sfx) => { if (len(g.guessed) > len(pg.guessed)) sfx('correct'); },
+};

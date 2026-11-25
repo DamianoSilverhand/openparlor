@@ -5,7 +5,7 @@ const path = require('path');
 const os = require('os');
 const { WebSocketServer } = require('ws');
 const QRCode = require('qrcode');
-const { Rooms } = require('./rooms');
+const { Rooms, GAMES, gameProblems } = require('./rooms');
 const { config, publicConfig } = require('./config');
 const profiles = require('./profiles');
 const content = require('./content');
@@ -62,6 +62,28 @@ function readBody(req) {
         resolve({});
       }
     });
+  });
+}
+
+// Each game's screens are served from its own public/ folder at /games/<id>/..., and nothing else in the game folder
+// is reachable. Games are trusted code (see docs/GAME-SDK.md), but their server.js is still not served.
+function serveGameAsset(req, res, pathname) {
+  const m = pathname.match(/^\/games\/([a-z][a-z0-9-]*)\/(.+)$/);
+  const game = m && GAMES[m[1]];
+  let rel;
+  try {
+    rel = m && decodeURIComponent(m[2]);
+  } catch {
+    return json(res, 400, { error: 'bad request' });
+  }
+  if (!game || rel.includes('\0')) return json(res, 404, { error: 'not found' });
+  const file = path.join(game.publicDir, rel);
+  const inside = path.relative(game.publicDir, file);
+  if (inside.startsWith('..') || path.isAbsolute(inside)) return json(res, 403, { error: 'forbidden' });
+  fs.readFile(file, (err, data) => {
+    if (err) return json(res, 404, { error: 'not found' });
+    res.writeHead(200, { 'Content-Type': MIME[path.extname(file)] || 'application/octet-stream', 'Cache-Control': 'no-cache' });
+    res.end(data);
   });
 }
 
@@ -200,6 +222,7 @@ async function handleRequest(req, res) {
       return json(res, 400, { error: 'bad qr' });
     }
   }
+  if (pathname.startsWith('/games/')) return serveGameAsset(req, res, pathname);
   serveStatic(req, res, pathname);
 }
 
@@ -346,5 +369,6 @@ server.listen(PORT, '0.0.0.0', () => {
   console.log(`  On this computer:  http://localhost:${PORT}`);
   for (const ip of ips) console.log(`  On your network:   http://${ip}:${PORT}`);
   console.log('\nOpen the network address on the TV, then scan the QR code with phones.\n');
+  if (gameProblems.length) console.log(`Some games could not be loaded (${gameProblems.length}); see the messages above.\n`);
   if (content.problems.length) console.log(`Some content packs have problems (${content.problems.length}); run "npm run validate" for details.\n`);
 });

@@ -1,7 +1,7 @@
 import { h, avatar, timer, byId, serverNow, onTick, ordinal } from '/shared/ui.js';
 import { play as sfx } from '/shared/sound.js';
 import { t as tx } from '/shared/i18n.js';
-import { meBar, hostButton, final } from '/play/whosaidthat.js';
+import { meBar, hostButton, final } from '/sdk/play.js';
 import * as memory from '/play/mg/memory.js';
 import * as scramble from '/play/mg/scramble.js';
 import * as reaction from '/play/mg/reaction.js';
@@ -182,3 +182,14 @@ function finalTogether(s, ctx) {
   );
   return { el, update() {} };
 }
+
+// ---- sounds on your own phone ---------------------------------------------------------------
+export const cues = {
+  onChange(s, ps, changed, sfx) {
+    const g = s.game;
+    if (changed && g.phase === 'results') {
+      const mine = g.rows.find((r) => r.id === s.me);
+      if (mine) sfx(mine.rank === 0 ? 'fanfare' : 'coin');
+    }
+  },
+};
