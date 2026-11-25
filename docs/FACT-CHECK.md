@@ -21,3 +21,11 @@ was too close to the true value. Nothing else looked wrong, but this was a revie
 
 Things a human reviewer should look at closely: record-style facts that can change (largest, longest, most), "about"
 figures, and questions that assume one country's customs (for example Halloween, the four seasons).
+
+## Word Match and Word Builder (skimmed)
+
+All 120 Word Match items and 240 Word Builder clues were read once. Fixed: two Word Builder clues that gave away each
+other's answers (planet and earth, animal and creature) and one Word Match answer much longer than its wrong options.
+Spelling follows British English (colour, neighbour, centre), so an American-English pack would need its own spellings.
+Word Builder accepts only the target word plus any `ok` alternatives, so anagram pairs such as earth and heart are not
+accepted for each other; the clue decides which word is meant.
