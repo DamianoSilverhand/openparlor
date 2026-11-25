@@ -41,15 +41,6 @@
     </div>
     <p class="foot" id="addr"></p>
   </main>
-  <script>
-    document.getElementById('host').onclick = async () => {
-      const r = await fetch('/api/room', { method: 'POST' });
-      const { code } = await r.json();
-      location.href = '/tv?room=' + code;
-    };
-    fetch('/api/info').then(r => r.json()).then(i => {
-      document.getElementById('addr').textContent = 'Phones can find this at ' + i.base.replace('http://', '');
-    });
-  </script>
+  <script src="/home.js"></script>
 </body>
 </html>

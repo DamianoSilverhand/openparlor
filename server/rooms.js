@@ -1,12 +1,17 @@
 const crypto = require('crypto');
 const { clean } = require('./util');
 
-const GAMES = {
+// A null-prototype map, so ids such as "__proto__" or "constructor" are not games.
+const GAMES = Object.assign(Object.create(null), {
   whosaidthat: require('./games/whosaidthat'),
   draw: require('./games/draw'),
   quiz: require('./games/quiz'),
   minigames: require('./games/minigames'),
-};
+});
+// A game whose content packs are missing or invalid is hidden instead of crashing.
+const usable = (id) => typeof id === 'string' && !!GAMES[id] && (typeof GAMES[id].available !== 'function' || GAMES[id].available());
+const firstUsable = () => Object.keys(GAMES).find(usable) || 'minigames';
+const MAX_ROOMS = Number(process.env.MAX_ROOMS) || 500;
 
 const CODE_LETTERS = 'ABCDEFGHJKMNPQRSTUVWXYZ';
 const MAX_PLAYERS = 12;
@@ -22,7 +27,7 @@ class Room {
     this.game = null;
     this.briefing = null; // { until, total } while the how-to-play screen is up
     this.briefTimer = null;
-    this.gameId = 'whosaidthat';
+    this.gameId = usable('whosaidthat') ? 'whosaidthat' : firstUsable();
     this.settingsAll = {};
     for (const [id, def] of Object.entries(GAMES)) this.settingsAll[id] = { ...def.defaults };
     this.touched = Date.now();
@@ -164,7 +169,16 @@ class Room {
     return !!this.game && this.game.phase === 'final';
   }
 
+  // One bad message must never take the server down: log it and carry on.
   handle(pid, msg) {
+    try {
+      this.dispatch(pid, msg);
+    } catch (err) {
+      console.error(`[room ${this.code}] error handling "${msg && msg.t}":`, err);
+    }
+  }
+
+  dispatch(pid, msg) {
     this.touched = Date.now();
     const isHost = pid === this.hostId;
     switch (msg.t) {
@@ -176,7 +190,7 @@ class Room {
         }
         return;
       case 'pickGame':
-        if (isHost && !this.game && GAMES[msg.id]) {
+        if (isHost && !this.game && usable(msg.id)) {
           this.gameId = msg.id;
           this.update();
         }
@@ -200,7 +214,7 @@ class Room {
         return;
       case 'settings': {
         if (!isHost || this.game) return;
-        const incoming = msg.settings || {};
+        const incoming = msg.settings !== null && typeof msg.settings === 'object' && !Array.isArray(msg.settings) ? msg.settings : {};
         for (const opt of GAMES[this.gameId].options) {
           if (opt.values.some(([v]) => v === incoming[opt.key])) this.settings[opt.key] = incoming[opt.key];
         }
@@ -258,7 +272,7 @@ class Room {
       levelHint: def.levelHint || '',
       waitingOn: this.unchosen().map((p) => p.name),
       options: def.options,
-      games: Object.values(GAMES).map((g) => ({ id: g.id, name: g.name })),
+      games: Object.values(GAMES).filter((g) => usable(g.id)).map((g) => ({ id: g.id, name: g.name })),
       settings: this.settings,
       inGame: !!this.game,
       lobbyNote: this.lobbyNote || '',
@@ -286,7 +300,10 @@ class Rooms {
     setInterval(() => this.sweep(), 10 * 60 * 1000).unref();
   }
 
+  // Returns null when the server is full of rooms (MAX_ROOMS). Empty rooms older than ten minutes are reclaimed first.
   create() {
+    if (this.map.size >= MAX_ROOMS) this.sweep(10 * 60 * 1000);
+    if (this.map.size >= MAX_ROOMS) return null;
     let code;
     do {
       code = Array.from({ length: 4 }, () => CODE_LETTERS[Math.floor(Math.random() * CODE_LETTERS.length)]).join('');
@@ -300,8 +317,8 @@ class Rooms {
     return this.map.get(String(code || '').toUpperCase());
   }
 
-  sweep() {
-    const cutoff = Date.now() - 3 * 60 * 60 * 1000;
+  sweep(maxAge = 3 * 60 * 60 * 1000) {
+    const cutoff = Date.now() - maxAge;
     for (const [code, room] of this.map) {
       if (room.isEmpty() && room.touched < cutoff) {
         if (room.game) room.game.destroy();

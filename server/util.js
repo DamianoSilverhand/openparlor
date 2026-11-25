@@ -33,10 +33,18 @@ function schedulePhase(game, ms, fn, keepTotal = false) {
   clearTimeout(game.timer);
   game.paused = false;
   game.pausedLeft = 0;
+  // A throwing timer callback is logged, never fatal.
+  const safe = () => {
+    try {
+      fn();
+    } catch (err) {
+      console.error('[game] error in a timer:', err);
+    }
+  };
   game._timerFn = fn;
   if (!keepTotal) game.timerTotal = ms;
   game.deadline = Date.now() + ms;
-  game.timer = setTimeout(fn, ms);
+  game.timer = setTimeout(safe, ms);
 }
 
 function toggleGamePause(game, canPause = true) {
