@@ -27,5 +27,19 @@
   "solo.addPerson": "+ Add a person",
   "profile.tap": "Tap your profile",
   "profile.orNew": "Or enter a new name",
-  "profile.name": "Your name"
+  "profile.name": "Your name",
+  "stats.title": "Scores",
+  "stats.home": "← Home",
+  "stats.off": "Saved scores are turned off on this server.",
+  "stats.best": "Best scores",
+  "stats.none": "No scores yet.",
+  "stats.recent": "Recent games",
+  "stats.noGames": "No games played yet.",
+  "stats.records": "Group records",
+  "home.stats.title": "Scores and history",
+  "home.stats.text": "Best scores, recent games and group records.",
+  "solo.download": "Download my data",
+  "solo.delete": "Delete my profile",
+  "solo.deleteConfirm": "Delete {name} and all their saved scores? This cannot be undone.",
+  "solo.import": "Import a profile"
 }

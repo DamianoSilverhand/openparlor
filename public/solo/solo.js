@@ -105,6 +105,7 @@ function profileScreen() {
         h('div', { class: 'field' }, h('label', null, 'Animal'), grid),
         h('button', { class: 'btn block', style: { marginTop: '10px' }, onclick: create }, 'Save & Start'),
       ),
+      h('label', { class: 'link import-link' }, t('solo.import'), h('input', { type: 'file', accept: 'application/json,.json', hidden: true, onchange: (e) => importProfile(e.target) })),
     ),
   );
 }
@@ -130,8 +131,37 @@ function hubScreen() {
           );
         }),
       ),
+      h('div', { class: 'data-links' },
+        h('a', { class: 'link', href: `/api/profiles/${profile.id}/export`, download: `openparlor-${profile.name}.json` }, t('solo.download')),
+        h('button', { class: 'link', onclick: deleteProfile }, t('solo.delete')),
+      ),
     ),
   );
+}
+
+async function deleteProfile() {
+  if (!confirm(t('solo.deleteConfirm', { name: profile.name }))) return;
+  try {
+    await fetch(`/api/profiles/${profile.id}`, { method: 'DELETE' });
+  } catch {}
+  profile = null;
+  await loadProfiles();
+  profileScreen();
+}
+
+// Reads an exported profile file and adds it (or merges its scores into the profile it came from).
+function importProfile(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+  file.text().then((text) => fetch('/api/profiles/import', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: text })).then((r) => r.json()).then(async (d) => {
+    if (d.profile) {
+      profile = d.profile;
+      await loadProfiles();
+      hubScreen();
+    } else {
+      alert(d.error || 'That file could not be imported.');
+    }
+  }).catch(() => alert('That file could not be imported.'));
 }
 
 function playGame(g) {

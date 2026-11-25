@@ -7,7 +7,7 @@ const words = config.brand.name.split(' ');
 const last = words.pop();
 brand.replaceChildren(...(words.length ? [words.join(' '), Object.assign(document.createElement('span'), { textContent: last })] : [Object.assign(document.createElement('span'), { textContent: last })]));
 document.querySelectorAll('[data-i18n]').forEach((el) => (el.textContent = t(el.dataset.i18n)));
-if (!config.profiles.enabled) document.querySelectorAll('a[href="/solo"]').forEach((a) => (a.hidden = true));
+if (!config.profiles.enabled) document.querySelectorAll('a[href="/solo"], a[href="/stats"]').forEach((a) => (a.hidden = true));
 
 const note = document.getElementById('addr');
 
