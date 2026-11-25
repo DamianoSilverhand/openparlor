@@ -1,5 +1,6 @@
 // Sound effects made on the fly with the Web Audio API, so there are no audio files and it works offline.
-const KEY = 'fgn:mute';
+import '/shared/store.js'; // moves old "fgn:" keys to "op:" before anything reads them
+const KEY = 'op:mute';
 let muted = false;
 try {
   muted = localStorage.getItem(KEY) === '1';

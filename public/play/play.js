@@ -1,5 +1,6 @@
 import { h, avatar, AVATARS, byId, setServerNow, soundToggle, timer } from '/shared/ui.js';
 import '/shared/pwa.js';
+import '/shared/store.js';
 import { play } from '/shared/sound.js';
 import { config, bands, bandId, bandLabel } from '/shared/config.js';
 import { t } from '/shared/i18n.js';
@@ -34,7 +35,7 @@ const store = {
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
   del(k) { try { localStorage.removeItem(k); } catch {} },
 };
-const saveKey = `fgn:${room}`;
+const saveKey = `op:${room}`;
 
 let current = { key: null, api: null };
 let last = null;
@@ -71,10 +72,10 @@ function entryScreen(message) {
 
 // ---- join form --------------------------------------------------------------------
 function joinScreen(message) {
-  let pick = store.get('fgn:avatar');
+  let pick = store.get('op:avatar');
   if (!Number.isInteger(pick)) pick = Math.floor(Math.random() * AVATARS.length);
-  let lvl = bandId(store.get('fgn:level')) || bands[0].id;
-  const name = h('input', { class: 'input', maxlength: 14, placeholder: 'Your name', autocomplete: 'nickname', value: store.get('fgn:name') || '' });
+  let lvl = bandId(store.get('op:level')) || bands[0].id;
+  const name = h('input', { class: 'input', maxlength: 14, placeholder: 'Your name', autocomplete: 'nickname', value: store.get('op:name') || '' });
   const grid = h('div', { class: 'avatars' });
   const savedBox = h('div', { class: 'prof-list' });
   const lvlSeg = h('div', { class: 'seg' });
@@ -92,9 +93,9 @@ function joinScreen(message) {
   draw();
 
   const joinWith = (n, av, level, profileId) => {
-    store.set('fgn:name', n);
-    store.set('fgn:avatar', av);
-    if (level) store.set('fgn:level', level);
+    store.set('op:name', n);
+    store.set('op:avatar', av);
+    if (level) store.set('op:level', level);
     send({ t: 'join', room, name: n, avatar: av, level, profileId });
   };
 
@@ -166,7 +167,7 @@ if (!room) {
     onOpen: () => {
       const saved = store.get(saveKey);
       if (saved && saved.token) {
-        send({ t: 'join', room, token: saved.token, name: saved.name || store.get('fgn:name') || 'Player', avatar: saved.avatar });
+        send({ t: 'join', room, token: saved.token, name: saved.name || store.get('op:name') || 'Player', avatar: saved.avatar });
       } else if (!joined) {
         joinScreen();
       }
@@ -175,7 +176,7 @@ if (!room) {
       if (m.t === 'welcome') {
         joined = true;
         store.set(saveKey, { token: m.token, name: m.name, avatar: m.avatar });
-        const savedLvl = bandId(store.get('fgn:level'));
+        const savedLvl = bandId(store.get('op:level'));
         if (savedLvl && bands.length > 1) send({ t: 'level', level: savedLvl });
       } else if (m.t === 'error') {
         store.del(saveKey);
@@ -270,7 +271,7 @@ function lobby(s) {
       s.usesLevels && bands.length > 1 && h('div', { class: 'card pad' },
         h('div', { class: 'seg-label', style: { marginTop: 0 } }, t('level.whoHolding')),
         me && !me.level && h('p', { class: 'lead', style: { fontSize: '0.9rem', color: 'var(--tomato)', fontWeight: 800, marginBottom: '6px' } }, t('level.pickOne')),
-        seg(bands.map((b) => [b.id, b.hint ? `${b.label} (${b.hint})` : b.label]), me ? me.level : null, (v) => { store.set('fgn:level', v); send({ t: 'level', level: v }); }),
+        seg(bands.map((b) => [b.id, b.hint ? `${b.label} (${b.hint})` : b.label]), me ? me.level : null, (v) => { store.set('op:level', v); send({ t: 'level', level: v }); }),
         h('p', { class: 'lead', style: { fontSize: '0.9rem', marginTop: '8px' } }, s.levelHint),
       ),
       isHost && h('div', { class: 'card pad' },

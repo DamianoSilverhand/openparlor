@@ -96,7 +96,6 @@ function play(s) {
         h('div', { class: 'feed' }, feed),
       );
     } else {
-      const guessers = g.order.map((id) => get(id)).filter(Boolean);
       side.replaceChildren(
         h('p', { class: 'sub', style: { margin: 0 } }, 'The word was'),
         h('h2', { class: 'the-word' }, g.word),

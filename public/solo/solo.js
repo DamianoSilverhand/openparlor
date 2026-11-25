@@ -64,7 +64,7 @@ function profileScreen() {
   const create = async () => {
     const n = name.value.trim();
     if (!n) return name.focus();
-    let d = {};
+    let d;
     try {
       const r = await fetch('/api/profiles', {
         method: 'POST',

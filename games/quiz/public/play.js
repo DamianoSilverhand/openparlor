@@ -1,4 +1,4 @@
-import { h, avatar, timer, byId, ordinal } from '/shared/ui.js';
+import { h, timer, byId } from '/shared/ui.js';
 import { hostButton } from '/sdk/play.js';
 import { tierLabel } from '/shared/config.js';
 import { t as tr } from '/shared/i18n.js';
@@ -55,8 +55,8 @@ function intro(s, ctx) {
     h('div', { class: 'card pad team-hero', style: { '--tc': t.color } }, h('h1', null, t.name)),
     mates.length > 0 && h('p', { class: 'lead' }, 'With ', mates.map((p, i) => [i ? ', ' : '', h('b', { style: { color: 'var(--ink)' } }, p.name)])),
     h('p', { class: 'lead' }, g.solo
-      ? 'Each question is aimed at one age group: full points for that group, half points for everyone else.'
-      : 'Each question is aimed at one age group. The player on your team at that level answers, and everyone else helps.'),
+      ? 'Each question is aimed at one group: full points for that group, half points for everyone else.'
+      : 'Each question is aimed at one group. The player on your team at that level answers, and everyone else helps.'),
     t2.el,
     hostButton(s, ctx, 'Skip ahead', false),
   );
@@ -152,7 +152,7 @@ function reveal(s, ctx) {
   const right = g.options[g.correct];
   const t = timer();
   let card;
-  if (r && r.correct) card = h('div', { class: 'card pad big-result good' }, h('h2', null, 'Correct!'), h('p', null, `+${r.pts} points${g.double ? ' (double!)' : ''}${r.half ? ' (half: this one was for another age group)' : ''}`));
+  if (r && r.correct) card = h('div', { class: 'card pad big-result good' }, h('h2', null, 'Correct!'), h('p', null, `+${r.pts} points${g.double ? ' (double!)' : ''}${r.half ? ' (half: this one was for another group)' : ''}`));
   else if (r && r.choice != null) card = h('div', { class: 'card pad big-result' }, h('h2', null, 'Not quite'), h('p', null, r.pts < 0 ? `${r.pts} points` : 'No points this time'));
   else card = h('div', { class: 'card pad big-result' }, h('h2', null, 'Out of time'), h('p', null, r && r.pts < 0 ? `${r.pts} points` : 'No answer from your team'));
   const el = h('div', { class: 'screen' },

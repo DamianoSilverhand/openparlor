@@ -46,7 +46,7 @@ function load(log = console.error) {
   if (config.plugins.enabled) dirs.push({ dir: path.resolve(process.env.PLUGINS_DIR || path.join(ROOT, 'plugins')), source: 'plugin' });
   const found = [];
   for (const { dir, source } of dirs) {
-    let names = [];
+    let names;
     try {
       names = fs.readdirSync(dir, { withFileTypes: true }).filter((d) => d.isDirectory() && !d.name.startsWith('.')).map((d) => d.name).sort();
     } catch {

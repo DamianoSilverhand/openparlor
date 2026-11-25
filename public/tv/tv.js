@@ -121,7 +121,6 @@ function lobby(s) {
   const hint = h('p', { class: 'hint' });
   const gameName = h('div', { class: 'pill', style: { marginTop: '1.4rem', fontSize: '1.2rem' } });
   const gameDesc = h('p', { class: 'hint', style: { marginTop: '0.8rem' } });
-  const startable = () => last && last.players.filter((p) => p.connected).length >= last.minPlayers;
 
   const el = h('div', { class: 'stage' },
     h('div', { class: 'lobby' },
@@ -188,7 +187,6 @@ window.addEventListener('keydown', (e) => {
 
 let prevState = null;
 let tickTag = null;
-const len = (a) => (Array.isArray(a) ? a.length : 0);
 const keyOf = (s) => (s.inGame && s.game ? [s.gameId, s.game.phase, s.game.round, s.game.idx, s.game.qi, s.game.turn].join(':') : 'lobby');
 
 // Sound cues. Shared ones live here; each game adds its own through the `cues` it exports (see docs/GAME-SDK.md).

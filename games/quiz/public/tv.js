@@ -8,7 +8,6 @@ const upper = (s) => (s.gameName || '').toUpperCase();
 const target = (tier) => t('quiz.target', { label: tierLabel(tier) });
 
 export const LETTERS = ['A', 'B', 'C', 'D'];
-const hint = (t) => h('div', { class: 'hint-line' }, t);
 
 export function screen(s) {
   const g = s.game;
@@ -49,8 +48,8 @@ function intro(s) {
       ),
     ),
     h('p', { class: 'sub', style: { textAlign: 'center', marginTop: '1.4rem' } }, g.solo
-      ? 'Each question is aimed at one age group. It is worth full points to that group and half points to everyone else.'
-      : 'Each question is aimed at one age group. The player in your team at that level answers, and the rest of the team helps.'),
+      ? 'Each question is aimed at one group. It is worth full points to that group and half points to everyone else.'
+      : 'Each question is aimed at one group. The player in your team at that level answers, and the rest of the team helps.'),
     h('div', { class: 'big-timer' }, t.el),
   );
   t.update(g);
@@ -124,7 +123,7 @@ function question(s) {
       const spotOf = (id) => (g.spots.find((x) => x.team === id) || {}).pid;
       chips.replaceChildren(...teams.map((tm) => teamChip(tm, s, g.answered.includes(tm.id), spotOf(tm.id))));
       results.replaceChildren(chips);
-      fact.textContent = g.target ? (g.solo ? 'Full points if this is your age group, half points if it is not.' : 'The player in each team at this age group answers. Everyone else helps.') : '';
+      fact.textContent = g.target ? (g.solo ? 'Full points if this is your group, half points if it is not.' : 'The player in each team at this group answers. Everyone else helps.') : '';
     } else {
       results.replaceChildren(
         ...g.results.map((r) => {

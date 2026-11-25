@@ -9,7 +9,6 @@ export function screen(s, ctx) {
 }
 
 function play(s, ctx) {
-  const g = s.game;
   const t = timer();
   const number = h('div', { class: 'hl-number' });
   const status = h('p', { class: 'status' });
