@@ -38,3 +38,12 @@ Play-together records are saved in `data/records.json` (not committed), keyed by
 
 - **Evening / Dark Mode**: automatically follows the device's `prefers-color-scheme: dark` setting.
 - **Sound**: sound effects are generated in the browser (no audio files). The TV plays shared cues and each phone plays private feedback. Click anywhere on the TV page once to enable audio, and use the speaker button (or press `M` on the TV) to mute.
+
+## Development
+
+    npm test            # robustness and flow tests (needs no extra setup)
+    npm run validate    # checks every file in content/ and exits 1 if a pack is broken
+
+A broken content pack never stops the server from starting: invalid items are skipped with a message that names the file, and a game with no usable content is hidden from the lobby. Run `npm run validate` to see everything that is wrong.
+
+Optional environment variables: `PORT` (default 3100), `MAX_ROOMS` (default 500), `MAX_CONNECTIONS` (default 2000), and `CONTENT_DIR` to load packs from another folder.
