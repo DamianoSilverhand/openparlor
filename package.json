@@ -24,7 +24,8 @@
     "cert": "node scripts/make-cert.js",
     "icons": "node scripts/make-icons.js",
     "licenses": "node scripts/licenses.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "review": "node --disable-warning=ExperimentalWarning scripts/export-review.js"
   },
   "dependencies": {
     "qrcode": "^1.5.4",
