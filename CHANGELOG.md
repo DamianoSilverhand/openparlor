@@ -7,6 +7,11 @@ uses [Semantic Versioning](https://semver.org/) once it has a first release.
 
 First public version, preparing for 0.1.0.
 
+### Brand
+
+- A logo: an open doorway with a p in it and a dot for you in the room. SVG files are in `brand/`, the app icons are drawn from
+  the same shapes, and `docs/BRAND.md` explains how to use it.
+
 ### Games and play
 
 - Neutral built-in content: 300 quiz questions, 120 prompts (plus an opt-in Grown-ups pack), 250 drawing words, 80 Word Builder

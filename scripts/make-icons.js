@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Draws the app icons (public/icons/*.png and icon.svg) with no image library: a teal disc with a white star on a mustard tile in
+// Draws the app icons (public/icons/*.png and icon.svg) with no image library: the OpenParlor mark (a lit doorway with a p in it) on a mustard tile in
 // the printed-box-game style. Run `node scripts/make-icons.js` after changing the design, and commit the result.
 const fs = require('fs');
 const path = require('path');
@@ -11,35 +11,31 @@ const TEAL = [35, 128, 128];
 const INK = [29, 26, 23];
 const PAPER = [255, 251, 242];
 
-// Point-in-polygon (even-odd), used for the star.
-function inPolygon(x, y, pts) {
-  let inside = false;
-  for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
-    const [xi, yi] = pts[i];
-    const [xj, yj] = pts[j];
-    if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
-  }
-  return inside;
-}
-const STAR = Array.from({ length: 10 }, (_, k) => {
-  const a = -Math.PI / 2 + (k * Math.PI) / 5;
-  const r = k % 2 ? 0.07 : 0.155;
-  return [0.5 + r * Math.cos(a), 0.51 + r * Math.sin(a)];
-});
-
-function color(x, y) {
-  const dx = x - 0.5;
-  const dy = y - 0.5;
-  const r = 0.27;
-  const ring = 0.028;
-  if (inPolygon(x, y, STAR)) return PAPER;
-  if (Math.hypot(dx, dy) < r - ring) return TEAL;
-  if (Math.hypot(dx, dy) < r) return INK;
-  if (Math.hypot(dx - 0.035, dy - 0.035) < r) return INK; // the hard offset shadow
+// The OpenParlor mark (see scripts/make-brand.js, which draws the same shapes as SVG), in a 100 x 100 box.
+const inArch = (x, y, grow = 0, dx = 0, dy = 0) => {
+  const l = 24 - grow + dx, r = 76 + grow + dx, cy = 40 + dy, b = 80 + grow + dy, rad = 26 + grow;
+  if (y > b || x < l || x > r) return false;
+  return y >= cy || Math.hypot(x - (50 + dx), y - cy) <= rad;
+};
+const inFloor = (x, y, dx = 0, dy = 0) => {
+  const cx = Math.min(Math.max(x, 21 + dx), 79 + dx), cy = 83 + dy;
+  return Math.hypot(x - cx, y - cy) <= 4;
+};
+const segDist = (x, y, x1, y1, y2) => Math.hypot(x - x1, y - Math.min(Math.max(y, y1), y2));
+function color(u, v, scale) {
+  const x = 50 + (u * 100 - 50) / scale; // scale < 1 shrinks the artwork towards the middle (used for the maskable icon)
+  const y = 50 + (v * 100 - 50) / scale;
+  const d = Math.hypot(x - 52, y - 41);
+  if (inArch(x, y) && Math.abs(d - 12) <= 3.5) return PAPER; // the bowl of the p
+  if (inArch(x, y) && d < 4) return MUSTARD; // the dot: you, in the room
+  if (inArch(x, y) && segDist(x, y, 39.5, 29, 65) <= 3.5) return PAPER; // the stem of the p
+  if (inArch(x, y)) return TEAL;
+  if (inArch(x, y, 1.6) || inFloor(x, y)) return INK;
+  if (inArch(x, y, 1.6, 3.5, 3.5) || inFloor(x, y, 3.5, 3.5)) return INK; // the hard offset shadow
   return MUSTARD;
 }
 
-function render(size) {
+function render(size, scale) {
   const px = Buffer.alloc(size * size * 4);
   const n = 3; // 3 x 3 samples per pixel for smooth edges
   for (let y = 0; y < size; y++) {
@@ -47,7 +43,7 @@ function render(size) {
       let r = 0, g = 0, b = 0;
       for (let j = 0; j < n; j++) {
         for (let i = 0; i < n; i++) {
-          const c = color((x + (i + 0.5) / n) / size, (y + (j + 0.5) / n) / size);
+          const c = color((x + (i + 0.5) / n) / size, (y + (j + 0.5) / n) / size, scale);
           r += c[0]; g += c[1]; b += c[2];
         }
       }
@@ -83,8 +79,8 @@ function chunk(type, data) {
   crc.writeUInt32BE(crc32(body));
   return Buffer.concat([len, body, crc]);
 }
-function png(size) {
-  const rgba = render(size);
+function png(size, scale = 1) {
+  const rgba = render(size, scale);
   const raw = Buffer.alloc((size * 4 + 1) * size);
   for (let y = 0; y < size; y++) {
     raw[y * (size * 4 + 1)] = 0; // filter: none
@@ -99,16 +95,9 @@ function png(size) {
 }
 
 fs.mkdirSync(OUT, { recursive: true });
-// The same artwork serves every purpose: its content stays inside the central 60%, so it is safe as a "maskable" icon.
-for (const [name, size] of [['icon-192.png', 192], ['icon-512.png', 512], ['maskable-512.png', 512], ['apple-touch-icon.png', 180], ['favicon-32.png', 32]]) {
-  fs.writeFileSync(path.join(OUT, name), png(size));
+// "Maskable" icons are cropped to a circle by some phones, so their artwork is drawn smaller to stay inside the safe zone.
+for (const [name, size, scale] of [['icon-192.png', 192, 1], ['icon-512.png', 512, 1], ['maskable-512.png', 512, 0.74], ['apple-touch-icon.png', 180, 1], ['favicon-32.png', 32, 1]]) {
+  fs.writeFileSync(path.join(OUT, name), png(size, scale));
 }
-fs.writeFileSync(path.join(OUT, 'icon.svg'), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <rect width="100" height="100" fill="#f2b632"/>
-  <circle cx="53.5" cy="53.5" r="27" fill="#1d1a17"/>
-  <circle cx="50" cy="50" r="27" fill="#1d1a17"/>
-  <circle cx="50" cy="50" r="24.2" fill="#238080"/>
-  <polygon points="50,35.5 54.1,45.1 64.7,46.1 56.7,52.8 59.1,63 50,57.7 40.9,63 43.3,52.8 35.3,46.1 45.9,45.1" fill="#fffbf2"/>
-</svg>
-`);
+fs.copyFileSync(path.join(__dirname, '..', 'brand', 'icon.svg'), path.join(OUT, 'icon.svg')); // run make-brand.js first
 console.log('Icons written to', OUT);

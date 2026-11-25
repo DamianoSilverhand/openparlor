@@ -1,3 +1,5 @@
+<p align="center"><img src="brand/logo.svg" alt="OpenParlor" width="420"></p>
+
 # OpenParlor
 
 **Party games for the room you are in.** One computer runs the server, a TV (or any big screen) shows the game, and everyone plays on their own phone by scanning a QR code. No accounts, and no internet once it is running.

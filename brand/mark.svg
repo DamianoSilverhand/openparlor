@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="16 10 72 86" role="img" aria-label="OpenParlor">
+  <rect x="20.5" y="82.5" width="66" height="8" rx="4" fill="#1d1a17"/>
+  <path d="M25.9,85.1 V43.5 A27.6,27.6 0 0 1 81.1,43.5 V85.1 Z" fill="#1d1a17"/>
+  <rect x="17" y="79" width="66" height="8" rx="4" fill="#1d1a17"/>
+  <path d="M22.4,81.6 V40 A27.6,27.6 0 0 1 77.6,40 V81.6 Z" fill="#1d1a17"/>
+  <path d="M24,80 V40 A26,26 0 0 1 76,40 V80 Z" fill="#238080"/>
+  <path d="M39.5,29 V65" stroke="#fffbf2" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <circle cx="52" cy="41" r="12" stroke="#fffbf2" stroke-width="7" fill="none"/>
+  <circle cx="52" cy="41" r="4" fill="#f2b632"/>
+</svg>
