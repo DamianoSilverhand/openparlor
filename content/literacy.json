@@ -1,44 +1,1088 @@
 {
   "easy": [
-    { "q": "Pick the correct spelling:", "a": "because", "w": ["becuase", "becos", "becaus"] },
-    { "q": "Pick the correct spelling:", "a": "friend", "w": ["freind", "frend", "friand"] },
-    { "q": "Pick the correct spelling:", "a": "different", "w": ["diffrent", "diferent", "differant"] },
-    { "q": "Pick the correct spelling:", "a": "enough", "w": ["enuff", "enogh", "enought"] },
-    { "q": "Pick the correct spelling:", "a": "Wednesday", "w": ["Wensday", "Wedensday", "Wednsday"] },
-    { "q": "Which word means the opposite of 'brave'?", "a": "afraid", "w": ["strong", "kind", "noisy"] },
-    { "q": "Which word means 'very big'?", "a": "enormous", "w": ["tiny", "gentle", "narrow"] },
-    { "q": "Fill the blank: ___ going to the park.", "a": "They're", "w": ["Their", "There", "Thier"] },
-    { "q": "Fill the blank: Put the book over ___.", "a": "there", "w": ["their", "they're", "thar"] },
-    { "q": "What does the prefix 'un-' mean in 'unhappy'?", "a": "not", "w": ["very", "again", "before"] },
-    { "q": "Which is the plural of 'child'?", "a": "children", "w": ["childs", "childes", "childrens"] },
-    { "q": "Which word has a silent 'k'?", "a": "knight", "w": ["kitten", "king", "basket"] },
-    { "q": "Read: 'Sam put on his coat and boots.' Why?", "a": "It was cold or rainy", "w": ["He was going to bed", "It was very hot", "He lost his shoes"] },
-    { "q": "Which word rhymes with 'bright'?", "a": "flight", "w": ["bread", "bring", "eight"] }
+    {
+      "q": "Pick the correct spelling:",
+      "a": "because",
+      "w": [
+        "becuase",
+        "becos",
+        "becaus"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "friend",
+      "w": [
+        "freind",
+        "frend",
+        "friand"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "different",
+      "w": [
+        "diffrent",
+        "diferent",
+        "differant"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "enough",
+      "w": [
+        "enuff",
+        "enogh",
+        "enought"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "Wednesday",
+      "w": [
+        "Wensday",
+        "Wedensday",
+        "Wednsday"
+      ]
+    },
+    {
+      "q": "Which word means the opposite of 'brave'?",
+      "a": "afraid",
+      "w": [
+        "strong",
+        "kind",
+        "noisy"
+      ]
+    },
+    {
+      "q": "Which word means 'very big'?",
+      "a": "enormous",
+      "w": [
+        "tiny",
+        "gentle",
+        "narrow"
+      ]
+    },
+    {
+      "q": "Fill the blank: ___ going to the park.",
+      "a": "They're",
+      "w": [
+        "Their",
+        "There",
+        "Thier"
+      ]
+    },
+    {
+      "q": "Fill the blank: Put the book over ___.",
+      "a": "there",
+      "w": [
+        "their",
+        "they're",
+        "thar"
+      ]
+    },
+    {
+      "q": "What does the prefix 'un-' mean in 'unhappy'?",
+      "a": "not",
+      "w": [
+        "very",
+        "again",
+        "before"
+      ]
+    },
+    {
+      "q": "Which is the plural of 'child'?",
+      "a": "children",
+      "w": [
+        "childs",
+        "childes",
+        "childrens"
+      ]
+    },
+    {
+      "q": "Which word has a silent 'k'?",
+      "a": "knight",
+      "w": [
+        "kitten",
+        "king",
+        "basket"
+      ]
+    },
+    {
+      "q": "Read: 'Sam put on his coat and boots.' Why?",
+      "a": "It was cold or rainy",
+      "w": [
+        "He was going to bed",
+        "It was very hot",
+        "He lost his shoes"
+      ]
+    },
+    {
+      "q": "Which word rhymes with 'bright'?",
+      "a": "flight",
+      "w": [
+        "bread",
+        "bring",
+        "eight"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "library",
+      "w": [
+        "libary",
+        "libery",
+        "lybrary"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "February",
+      "w": [
+        "Febuary",
+        "Febuery",
+        "Febrary"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "beautiful",
+      "w": [
+        "beutiful",
+        "beatiful",
+        "butiful"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "together",
+      "w": [
+        "togeather",
+        "togethor",
+        "togther"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "caught",
+      "w": [
+        "cought",
+        "cawght",
+        "caugt"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "special",
+      "w": [
+        "speshal",
+        "specail",
+        "speical"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "another",
+      "w": [
+        "anuther",
+        "anothar",
+        "anouther"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "sentence",
+      "w": [
+        "sentance",
+        "sentense",
+        "sentanse"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "tomorrow",
+      "w": [
+        "tommorow",
+        "tomorow",
+        "tomarrow"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "surprise",
+      "w": [
+        "suprise",
+        "surprize",
+        "serprise"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "neighbour",
+      "w": [
+        "nieghbour",
+        "nayber",
+        "neighbur"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "knowledge",
+      "w": [
+        "knowlege",
+        "nollage",
+        "knowladge"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "calendar",
+      "w": [
+        "calender",
+        "calandar",
+        "calendur"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "weight",
+      "w": [
+        "wieght",
+        "wate",
+        "weigt"
+      ]
+    },
+    {
+      "q": "Which word means 'very small'?",
+      "a": "tiny",
+      "w": [
+        "huge",
+        "loud",
+        "shiny"
+      ]
+    },
+    {
+      "q": "Which word is the opposite of 'ancient'?",
+      "a": "modern",
+      "w": [
+        "old",
+        "broken",
+        "empty"
+      ]
+    },
+    {
+      "q": "Which sentence is correct?",
+      "a": "She runs fast.",
+      "w": [
+        "She run fast.",
+        "She running fast.",
+        "She runned fast."
+      ]
+    },
+    {
+      "q": "Fill the blank: I ___ a sandwich for lunch yesterday.",
+      "a": "ate",
+      "w": [
+        "eaten",
+        "eating",
+        "eated"
+      ]
+    },
+    {
+      "q": "Which of these is a verb?",
+      "a": "Dance",
+      "w": [
+        "Table",
+        "Green",
+        "Softly"
+      ]
+    },
+    {
+      "q": "Which word reads the same forwards and backwards?",
+      "a": "level",
+      "w": [
+        "lever",
+        "letter",
+        "table"
+      ]
+    },
+    {
+      "q": "Fill the blank: The dog wagged ___ tail.",
+      "a": "its",
+      "w": [
+        "it's",
+        "its'",
+        "is"
+      ]
+    },
+    {
+      "q": "Fill the blank: We ___ to the beach yesterday.",
+      "a": "went",
+      "w": [
+        "go",
+        "gone",
+        "goed"
+      ]
+    },
+    {
+      "q": "Which word means 'to look at something carefully'?",
+      "a": "examine",
+      "w": [
+        "ignore",
+        "avoid",
+        "forget"
+      ]
+    },
+    {
+      "q": "Which mark goes at the end of 'Where are you going'?",
+      "a": "A question mark",
+      "w": [
+        "A full stop",
+        "A comma",
+        "A colon"
+      ]
+    },
+    {
+      "q": "What is the past tense of 'swim'?",
+      "a": "swam",
+      "w": [
+        "swimmed",
+        "swum",
+        "swimmen"
+      ]
+    },
+    {
+      "q": "Which of these is a noun?",
+      "a": "Mountain",
+      "w": [
+        "Quickly",
+        "Climb",
+        "Bright"
+      ]
+    }
   ],
   "medium": [
-    { "q": "Pick the correct spelling:", "a": "definitely", "w": ["definately", "definitly", "definetely"] },
-    { "q": "Pick the correct spelling:", "a": "separate", "w": ["seperate", "separete", "saparate"] },
-    { "q": "Pick the correct spelling:", "a": "receive", "w": ["recieve", "receve", "recive"] },
-    { "q": "Fill the blank: The weather will ___ our plans.", "a": "affect", "w": ["effect", "afflict", "infect"] },
-    { "q": "Fill the blank: The school ___ gave a speech.", "a": "principal", "w": ["principle", "principel", "princpal"] },
-    { "q": "What does the Greek root 'bio' mean?", "a": "life", "w": ["earth", "water", "time"] },
-    { "q": "What does the Latin root 'bene' mean?", "a": "good", "w": ["bad", "small", "fast"] },
-    { "q": "Which word means 'able to be trusted'?", "a": "reliable", "w": ["reluctant", "reckless", "remote"] },
-    { "q": "What does the idiom 'break the ice' mean?", "a": "Start a friendly conversation", "w": ["Make someone angry", "Drop something cold", "End a friendship"] },
-    { "q": "Read: 'Maya sighed and stared at the empty page.' How does she feel?", "a": "Stuck or frustrated", "w": ["Excited to finish", "Proud of her work", "Ready to run"] },
-    { "q": "Which word is an antonym of 'scarce'?", "a": "abundant", "w": ["rare", "tiny", "hidden"] },
-    { "q": "Pick the correct spelling:", "a": "embarrass", "w": ["embarass", "embarras", "imbarrass"] }
+    {
+      "q": "Pick the correct spelling:",
+      "a": "definitely",
+      "w": [
+        "definately",
+        "definitly",
+        "definetely"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "separate",
+      "w": [
+        "seperate",
+        "separete",
+        "saparate"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "receive",
+      "w": [
+        "recieve",
+        "receve",
+        "recive"
+      ]
+    },
+    {
+      "q": "Fill the blank: The weather will ___ our plans.",
+      "a": "affect",
+      "w": [
+        "effect",
+        "afflict",
+        "infect"
+      ]
+    },
+    {
+      "q": "Fill the blank: The school ___ gave a speech.",
+      "a": "principal",
+      "w": [
+        "principle",
+        "principel",
+        "princpal"
+      ]
+    },
+    {
+      "q": "What does the Greek root 'bio' mean?",
+      "a": "life",
+      "w": [
+        "earth",
+        "water",
+        "time"
+      ]
+    },
+    {
+      "q": "What does the Latin root 'bene' mean?",
+      "a": "good",
+      "w": [
+        "bad",
+        "small",
+        "fast"
+      ]
+    },
+    {
+      "q": "Which word means 'able to be trusted'?",
+      "a": "reliable",
+      "w": [
+        "reluctant",
+        "reckless",
+        "remote"
+      ]
+    },
+    {
+      "q": "What does the idiom 'break the ice' mean?",
+      "a": "Start a friendly conversation",
+      "w": [
+        "Make someone angry",
+        "Drop something cold",
+        "End a friendship"
+      ]
+    },
+    {
+      "q": "Read: 'Maya sighed and stared at the empty page.' How does she feel?",
+      "a": "Stuck or frustrated",
+      "w": [
+        "Excited to finish",
+        "Proud of her work",
+        "Ready to run"
+      ]
+    },
+    {
+      "q": "Which word is an antonym of 'scarce'?",
+      "a": "abundant",
+      "w": [
+        "rare",
+        "tiny",
+        "hidden"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "embarrass",
+      "w": [
+        "embarass",
+        "embarras",
+        "imbarrass"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "necessary",
+      "w": [
+        "neccessary",
+        "necesary",
+        "neccesary"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "environment",
+      "w": [
+        "enviroment",
+        "envirnoment",
+        "environmant"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "government",
+      "w": [
+        "goverment",
+        "governmant",
+        "govenment"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "restaurant",
+      "w": [
+        "restarant",
+        "restaraunt",
+        "resturant"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "address",
+      "w": [
+        "adress",
+        "addres",
+        "adres"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "business",
+      "w": [
+        "buisness",
+        "bussiness",
+        "busines"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "occasion",
+      "w": [
+        "ocassion",
+        "occassion",
+        "ocasion"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "temperature",
+      "w": [
+        "temprature",
+        "temperture",
+        "tempreture"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "independent",
+      "w": [
+        "independant",
+        "indepandent",
+        "independint"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "experience",
+      "w": [
+        "experiance",
+        "expirience",
+        "experence"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "technique",
+      "w": [
+        "techneque",
+        "tecnique",
+        "technic"
+      ]
+    },
+    {
+      "q": "What does 'reluctant' mean?",
+      "a": "Unwilling",
+      "w": [
+        "Eager",
+        "Tired",
+        "Curious"
+      ]
+    },
+    {
+      "q": "What does the prefix 'pre-' mean?",
+      "a": "Before",
+      "w": [
+        "After",
+        "Against",
+        "Again"
+      ]
+    },
+    {
+      "q": "What does 'transparent' mean?",
+      "a": "Able to be seen through",
+      "w": [
+        "Very heavy",
+        "Extremely loud",
+        "Easily broken"
+      ]
+    },
+    {
+      "q": "Which word means 'to make something better'?",
+      "a": "improve",
+      "w": [
+        "worsen",
+        "ignore",
+        "delay"
+      ]
+    },
+    {
+      "q": "Fill the blank: Neither the teacher nor the students ___ ready.",
+      "a": "were",
+      "w": [
+        "was",
+        "is",
+        "be"
+      ]
+    },
+    {
+      "q": "Fill the blank: If I ___ you, I would say sorry.",
+      "a": "were",
+      "w": [
+        "was",
+        "am",
+        "be"
+      ]
+    },
+    {
+      "q": "What does the suffix '-less' mean in 'careless'?",
+      "a": "Without",
+      "w": [
+        "Full of",
+        "More",
+        "Again"
+      ]
+    },
+    {
+      "q": "Which word is an adverb?",
+      "a": "Quickly",
+      "w": [
+        "Quick",
+        "Quicken",
+        "Quickness"
+      ]
+    },
+    {
+      "q": "What does 'abundant' mean?",
+      "a": "More than enough",
+      "w": [
+        "Very rare",
+        "Quite small",
+        "Almost empty"
+      ]
+    },
+    {
+      "q": "Which sentence uses a comma correctly?",
+      "a": "After dinner, we went for a walk.",
+      "w": [
+        "After dinner we, went for a walk.",
+        "After, dinner we went for a walk.",
+        "After dinner we went, for a walk."
+      ]
+    },
+    {
+      "q": "Which word means the same as 'enormous'?",
+      "a": "gigantic",
+      "w": [
+        "narrow",
+        "ordinary",
+        "gentle"
+      ]
+    },
+    {
+      "q": "Which word is the opposite of 'optimistic'?",
+      "a": "pessimistic",
+      "w": [
+        "cheerful",
+        "hopeful",
+        "careless"
+      ]
+    },
+    {
+      "q": "What is the plural of 'analysis'?",
+      "a": "analyses",
+      "w": [
+        "analysises",
+        "analysi",
+        "analysis'"
+      ]
+    },
+    {
+      "q": "Which word is a noun made from the verb 'decide'?",
+      "a": "decision",
+      "w": [
+        "decisive",
+        "decided",
+        "deciding"
+      ]
+    },
+    {
+      "q": "What does 'consequence' mean?",
+      "a": "A result of an action",
+      "w": [
+        "A long speech",
+        "A close friend",
+        "A small mistake"
+      ]
+    },
+    {
+      "q": "Which of these is a compound word?",
+      "a": "Sunflower",
+      "w": [
+        "Beautiful",
+        "Running",
+        "Happily"
+      ]
+    },
+    {
+      "q": "What does 'fragile' mean?",
+      "a": "Easily broken",
+      "w": [
+        "Very heavy",
+        "Quite old",
+        "Brightly coloured"
+      ]
+    }
   ],
   "hard": [
-    { "q": "Pick the correct spelling:", "a": "accommodate", "w": ["accomodate", "acommodate", "accommadate"] },
-    { "q": "Pick the correct spelling:", "a": "occurrence", "w": ["occurence", "occurrance", "ocurrence"] },
-    { "q": "Pick the correct spelling:", "a": "conscience", "w": ["concience", "consience", "conscence"] },
-    { "q": "Fill the blank: We bought pens from the ___ shop.", "a": "stationery", "w": ["stationary", "stationry", "stasionary"] },
-    { "q": "Which word means 'lasting only a very short time'?", "a": "ephemeral", "w": ["perpetual", "ubiquitous", "pragmatic"] },
-    { "q": "Which word means 'present everywhere at once'?", "a": "ubiquitous", "w": ["ambiguous", "obscure", "tenuous"] },
-    { "q": "What does 'pragmatic' mean?", "a": "Dealing with things practically", "w": ["Overly emotional", "Stubbornly traditional", "Hard to understand"] },
-    { "q": "Fill the blank: She gave me a kind ___.", "a": "compliment", "w": ["complement", "complimant", "compelment"] },
-    { "q": "Pick the correct spelling:", "a": "supersede", "w": ["supercede", "superseed", "suppersede"] },
-    { "q": "Which word means 'to make a bad situation worse'?", "a": "exacerbate", "w": ["alleviate", "corroborate", "vindicate"] }
+    {
+      "q": "Pick the correct spelling:",
+      "a": "accommodate",
+      "w": [
+        "accomodate",
+        "acommodate",
+        "accommadate"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "occurrence",
+      "w": [
+        "occurence",
+        "occurrance",
+        "ocurrence"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "conscience",
+      "w": [
+        "concience",
+        "consience",
+        "conscence"
+      ]
+    },
+    {
+      "q": "Fill the blank: We bought pens from the ___ shop.",
+      "a": "stationery",
+      "w": [
+        "stationary",
+        "stationry",
+        "stasionary"
+      ]
+    },
+    {
+      "q": "Which word means 'lasting only a very short time'?",
+      "a": "ephemeral",
+      "w": [
+        "perpetual",
+        "ubiquitous",
+        "pragmatic"
+      ]
+    },
+    {
+      "q": "Which word means 'present everywhere at once'?",
+      "a": "ubiquitous",
+      "w": [
+        "ambiguous",
+        "obscure",
+        "tenuous"
+      ]
+    },
+    {
+      "q": "What does 'pragmatic' mean?",
+      "a": "Dealing with things practically",
+      "w": [
+        "Overly emotional",
+        "Stubbornly traditional",
+        "Hard to understand"
+      ]
+    },
+    {
+      "q": "Fill the blank: She gave me a kind ___.",
+      "a": "compliment",
+      "w": [
+        "complement",
+        "complimant",
+        "compelment"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "supersede",
+      "w": [
+        "supercede",
+        "superseed",
+        "suppersede"
+      ]
+    },
+    {
+      "q": "Which word means 'to make a bad situation worse'?",
+      "a": "exacerbate",
+      "w": [
+        "alleviate",
+        "corroborate",
+        "vindicate"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "conscientious",
+      "w": [
+        "consientious",
+        "conscensious",
+        "concientious"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "Mediterranean",
+      "w": [
+        "Mediteranean",
+        "Meditteranean",
+        "Mediterranian"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "rhythm",
+      "w": [
+        "rythm",
+        "rhythem",
+        "rhythym"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "bureaucracy",
+      "w": [
+        "beaurocracy",
+        "bureacracy",
+        "bureaucrasy"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "entrepreneur",
+      "w": [
+        "entreprenuer",
+        "enterpreneur",
+        "entrepeneur"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "pharmaceutical",
+      "w": [
+        "farmaceutical",
+        "pharmacuetical",
+        "pharmaceutial"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "surveillance",
+      "w": [
+        "surveillence",
+        "survaillance",
+        "survellance"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "perseverance",
+      "w": [
+        "perseverence",
+        "perserverance",
+        "persaverance"
+      ]
+    },
+    {
+      "q": "Pick the correct spelling:",
+      "a": "idiosyncrasy",
+      "w": [
+        "idiosyncracy",
+        "idiocyncrasy",
+        "idiosincrasy"
+      ]
+    },
+    {
+      "q": "What does 'meticulous' mean?",
+      "a": "Showing great attention to detail",
+      "w": [
+        "Careless",
+        "Quick",
+        "Rude"
+      ]
+    },
+    {
+      "q": "What does 'ambivalent' mean?",
+      "a": "Having mixed feelings",
+      "w": [
+        "Completely certain",
+        "Very angry",
+        "Extremely happy"
+      ]
+    },
+    {
+      "q": "What does 'ostentatious' mean?",
+      "a": "Showy, to impress others",
+      "w": [
+        "Modest and plain",
+        "Extremely shy",
+        "Very ancient"
+      ]
+    },
+    {
+      "q": "What does 'obsolete' mean?",
+      "a": "No longer used",
+      "w": [
+        "Brand new",
+        "Very large",
+        "Hidden"
+      ]
+    },
+    {
+      "q": "What does 'lethargic' mean?",
+      "a": "Lacking energy",
+      "w": [
+        "Very excited",
+        "Extremely clever",
+        "Easily angered"
+      ]
+    },
+    {
+      "q": "What does 'ambiguous' mean?",
+      "a": "Open to more than one meaning",
+      "w": [
+        "Completely clear",
+        "Very short",
+        "Rather loud"
+      ]
+    },
+    {
+      "q": "Which word means 'to reduce in severity'?",
+      "a": "mitigate",
+      "w": [
+        "aggravate",
+        "escalate",
+        "amplify"
+      ]
+    },
+    {
+      "q": "Which word means 'happening once every two years'?",
+      "a": "biennial",
+      "w": [
+        "annual",
+        "perennial",
+        "daily"
+      ]
+    },
+    {
+      "q": "What is the figure of speech in 'The classroom was a zoo'?",
+      "a": "A metaphor",
+      "w": [
+        "A simile",
+        "Irony",
+        "An oxymoron"
+      ]
+    },
+    {
+      "q": "What is an oxymoron?",
+      "a": "A phrase with contradicting words, like 'deafening silence'",
+      "w": [
+        "A word that sounds like its meaning",
+        "Words that start with the same sound",
+        "A deliberate exaggeration"
+      ]
+    },
+    {
+      "q": "Which sentence is grammatically correct?",
+      "a": "Whom did you invite?",
+      "w": [
+        "Who did you invited?",
+        "Whom did you invited?",
+        "Who you did invite?"
+      ]
+    },
+    {
+      "q": "Which word sounds like 'principal' but means a basic rule?",
+      "a": "principle",
+      "w": [
+        "principals",
+        "principally",
+        "prince"
+      ]
+    },
+    {
+      "q": "What does 'euphemism' mean?",
+      "a": "A mild word used instead of a harsh one",
+      "w": [
+        "A very long word",
+        "A word borrowed from another language",
+        "A word spelled backwards"
+      ]
+    },
+    {
+      "q": "What does the Latin root 'port' mean in 'transport'?",
+      "a": "Carry",
+      "w": [
+        "See",
+        "Write",
+        "Break"
+      ]
+    },
+    {
+      "q": "What does the root 'chron' mean in 'chronological'?",
+      "a": "Time",
+      "w": [
+        "Word",
+        "Light",
+        "Sound"
+      ]
+    },
+    {
+      "q": "What does 'inevitable' mean?",
+      "a": "Certain to happen",
+      "w": [
+        "Very unlikely",
+        "Easily avoided",
+        "Quickly forgotten"
+      ]
+    },
+    {
+      "q": "What does 'scrutinise' mean?",
+      "a": "Examine closely",
+      "w": [
+        "Ignore",
+        "Praise",
+        "Copy"
+      ]
+    },
+    {
+      "q": "What does 'verbose' mean?",
+      "a": "Using more words than needed",
+      "w": [
+        "Very quiet",
+        "Extremely rude",
+        "Full of energy"
+      ]
+    },
+    {
+      "q": "What does 'alleviate' mean?",
+      "a": "Make less severe",
+      "w": [
+        "Make worse",
+        "Make larger",
+        "Make wetter"
+      ]
+    },
+    {
+      "q": "What does 'anomaly' mean?",
+      "a": "Something that differs from the usual",
+      "w": [
+        "A type of poem",
+        "A large crowd",
+        "A kind of map"
+      ]
+    },
+    {
+      "q": "What does 'benevolent' mean?",
+      "a": "Kind and generous",
+      "w": [
+        "Cruel and harsh",
+        "Shy and quiet",
+        "Proud and boastful"
+      ]
+    }
   ]
 }

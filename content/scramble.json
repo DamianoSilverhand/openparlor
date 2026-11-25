@@ -1,133 +1,968 @@
 {
   "easy": [
-    { "w": "because", "c": "Explains the reason why" },
-    { "w": "friend", "c": "Someone you like to play with" },
-    { "w": "school", "c": "A place where you learn" },
-    { "w": "write", "c": "Put words on paper (silent W)" },
-    { "w": "knee", "c": "The joint in the middle of your leg (silent K)" },
-    { "w": "thumb", "c": "The short thick finger on your hand (silent B)" },
-    { "w": "climb", "c": "Go up a tree or ladder (silent B)" },
-    { "w": "bright", "c": "Full of light" },
-    { "w": "laugh", "c": "The sound you make when something is funny" },
-    { "w": "island", "c": "Land with water all around it (silent S)" },
-    { "w": "castle", "c": "A big stone home for a king or queen (silent T)" },
-    { "w": "listen", "c": "Pay attention with your ears (silent T)" },
-    { "w": "answer", "c": "What you say when someone asks a question" },
-    { "w": "enough", "c": "As much as you need" },
-    { "w": "people", "c": "More than one person" },
-    { "w": "planet", "c": "Earth or Mars is one" },
-    { "w": "bridge", "c": "Built over a river so you can cross" },
-    { "w": "garden", "c": "Where flowers and vegetables grow" },
-    { "w": "pencil", "c": "You draw and write with it" },
-    { "w": "window", "c": "Glass opening in a wall" },
-    { "w": "rabbit", "c": "Hopping animal with long ears" },
-    { "w": "circle", "c": "A perfectly round shape" },
-    { "w": "butter", "c": "Yellow spread for bread" },
-    { "w": "always", "c": "Every single time" },
-    { "w": "around", "c": "In a circle or on every side" },
-    { "w": "before", "c": "Earlier in time" },
-    { "w": "little", "c": "Small in size" },
-    { "w": "middle", "c": "Right in the centre" },
-    { "w": "orange", "c": "A citrus fruit and a colour" },
-    { "w": "purple", "c": "Red mixed with blue" },
-    { "w": "summer", "c": "The warmest season" },
-    { "w": "family", "c": "Parents, brothers, and sisters" },
-    { "w": "animal", "c": "A living creature like a lion or dog" },
-    { "w": "pretty", "c": "Nice to look at" },
-    { "w": "guitar", "c": "Musical instrument with strings" },
-    { "w": "monkey", "c": "Clever animal that swings in trees" },
-    { "w": "turtle", "c": "Slow reptile with a hard shell" },
-    { "w": "rocket", "c": "Flies astronauts into space" },
-    { "w": "dragon", "c": "Mythical creature that breathes fire" },
-    { "w": "puzzle", "c": "A game that makes you think" }
+    {
+      "w": "because",
+      "c": "Explains the reason why"
+    },
+    {
+      "w": "friend",
+      "c": "Someone you like to play with"
+    },
+    {
+      "w": "school",
+      "c": "A place where you learn"
+    },
+    {
+      "w": "write",
+      "c": "Put words on paper (silent W)"
+    },
+    {
+      "w": "knee",
+      "c": "The joint in the middle of your leg (silent K)"
+    },
+    {
+      "w": "thumb",
+      "c": "The short thick finger on your hand (silent B)"
+    },
+    {
+      "w": "climb",
+      "c": "Go up a tree or ladder (silent B)"
+    },
+    {
+      "w": "bright",
+      "c": "Full of light"
+    },
+    {
+      "w": "laugh",
+      "c": "The sound you make when something is funny"
+    },
+    {
+      "w": "island",
+      "c": "Land with water all around it (silent S)"
+    },
+    {
+      "w": "castle",
+      "c": "A big stone home for a king or queen (silent T)"
+    },
+    {
+      "w": "listen",
+      "c": "Pay attention with your ears (silent T)"
+    },
+    {
+      "w": "answer",
+      "c": "What you say when someone asks a question"
+    },
+    {
+      "w": "enough",
+      "c": "As much as you need"
+    },
+    {
+      "w": "people",
+      "c": "More than one person"
+    },
+    {
+      "w": "planet",
+      "c": "Earth or Mars is one"
+    },
+    {
+      "w": "bridge",
+      "c": "Built over a river so you can cross"
+    },
+    {
+      "w": "garden",
+      "c": "Where flowers and vegetables grow"
+    },
+    {
+      "w": "pencil",
+      "c": "You draw and write with it"
+    },
+    {
+      "w": "window",
+      "c": "Glass opening in a wall"
+    },
+    {
+      "w": "rabbit",
+      "c": "Hopping animal with long ears"
+    },
+    {
+      "w": "circle",
+      "c": "A perfectly round shape"
+    },
+    {
+      "w": "butter",
+      "c": "Yellow spread for bread"
+    },
+    {
+      "w": "always",
+      "c": "Every single time"
+    },
+    {
+      "w": "around",
+      "c": "In a circle or on every side"
+    },
+    {
+      "w": "before",
+      "c": "Earlier in time"
+    },
+    {
+      "w": "little",
+      "c": "Small in size"
+    },
+    {
+      "w": "middle",
+      "c": "Right in the centre"
+    },
+    {
+      "w": "orange",
+      "c": "A citrus fruit and a colour"
+    },
+    {
+      "w": "purple",
+      "c": "Red mixed with blue"
+    },
+    {
+      "w": "summer",
+      "c": "The warmest season"
+    },
+    {
+      "w": "family",
+      "c": "Parents, brothers, and sisters"
+    },
+    {
+      "w": "animal",
+      "c": "A living creature like a lion or dog"
+    },
+    {
+      "w": "pretty",
+      "c": "Nice to look at"
+    },
+    {
+      "w": "guitar",
+      "c": "Musical instrument with strings"
+    },
+    {
+      "w": "monkey",
+      "c": "Clever animal that swings in trees"
+    },
+    {
+      "w": "turtle",
+      "c": "Slow reptile with a hard shell"
+    },
+    {
+      "w": "rocket",
+      "c": "Flies astronauts into space"
+    },
+    {
+      "w": "dragon",
+      "c": "Mythical creature that breathes fire"
+    },
+    {
+      "w": "puzzle",
+      "c": "A game that makes you think"
+    },
+    {
+      "w": "apple",
+      "c": "A crunchy fruit that keeps the doctor away"
+    },
+    {
+      "w": "bread",
+      "c": "Sliced for sandwiches and toast"
+    },
+    {
+      "w": "chair",
+      "c": "You sit on it at a table"
+    },
+    {
+      "w": "dance",
+      "c": "Move your body to music"
+    },
+    {
+      "w": "eagle",
+      "c": "A large bird of prey with sharp eyes"
+    },
+    {
+      "w": "flower",
+      "c": "It grows in a garden and smells sweet"
+    },
+    {
+      "w": "glass",
+      "c": "You drink from it, and it breaks if dropped"
+    },
+    {
+      "w": "horse",
+      "c": "You can ride this animal"
+    },
+    {
+      "w": "jungle",
+      "c": "A thick, hot forest full of wildlife"
+    },
+    {
+      "w": "kitten",
+      "c": "A baby cat"
+    },
+    {
+      "w": "lemon",
+      "c": "A sour yellow fruit"
+    },
+    {
+      "w": "mouse",
+      "c": "A tiny animal that squeaks"
+    },
+    {
+      "w": "night",
+      "c": "When it is dark and the stars come out"
+    },
+    {
+      "w": "ocean",
+      "c": "A huge body of salt water"
+    },
+    {
+      "w": "panda",
+      "c": "A black and white bear that loves bamboo"
+    },
+    {
+      "w": "queen",
+      "c": "A woman who rules a kingdom"
+    },
+    {
+      "w": "river",
+      "c": "Water that flows towards the sea"
+    },
+    {
+      "w": "snake",
+      "c": "A long animal with no legs that slithers"
+    },
+    {
+      "w": "table",
+      "c": "Furniture where you eat dinner"
+    },
+    {
+      "w": "uncle",
+      "c": "Your parent's brother"
+    },
+    {
+      "w": "violin",
+      "c": "A string instrument played with a bow"
+    },
+    {
+      "w": "water",
+      "c": "You drink it, and it falls as rain"
+    },
+    {
+      "w": "yellow",
+      "c": "The colour of a banana"
+    },
+    {
+      "w": "zebra",
+      "c": "An African animal with black and white stripes"
+    },
+    {
+      "w": "cloud",
+      "c": "A white or grey shape in the sky"
+    },
+    {
+      "w": "dream",
+      "c": "What you see while you are asleep"
+    },
+    {
+      "w": "earth",
+      "c": "The planet we live on"
+    },
+    {
+      "w": "fruit",
+      "c": "Apples and pears are this kind of food"
+    },
+    {
+      "w": "green",
+      "c": "The colour of grass"
+    },
+    {
+      "w": "happy",
+      "c": "Feeling joy"
+    },
+    {
+      "w": "jelly",
+      "c": "A wobbly sweet dessert"
+    },
+    {
+      "w": "magic",
+      "c": "What a wizard does with a wand"
+    },
+    {
+      "w": "money",
+      "c": "You use it to pay for things"
+    },
+    {
+      "w": "music",
+      "c": "Songs and tunes"
+    },
+    {
+      "w": "paint",
+      "c": "You put it on a canvas with a brush"
+    },
+    {
+      "w": "party",
+      "c": "A celebration with friends"
+    },
+    {
+      "w": "sleep",
+      "c": "What you do in bed at night"
+    },
+    {
+      "w": "smile",
+      "c": "A happy look on your face"
+    },
+    {
+      "w": "spoon",
+      "c": "You eat soup with it"
+    },
+    {
+      "w": "cookie",
+      "c": "A sweet baked treat with chocolate chips"
+    }
   ],
   "medium": [
-    { "w": "achieve", "c": "Reach a goal through effort" },
-    { "w": "ancient", "c": "Very old, from long ago" },
-    { "w": "balance", "c": "Equal weight or steadiness" },
-    { "w": "believe", "c": "Think something is true (I before E)" },
-    { "w": "breathe", "c": "Take air into your lungs" },
-    { "w": "calendar", "c": "Shows days, weeks, and months" },
-    { "w": "century", "c": "One hundred years" },
-    { "w": "climate", "c": "Usual weather of a region" },
-    { "w": "compass", "c": "Tool that points north" },
-    { "w": "courage", "c": "Being brave when scared" },
-    { "w": "curious", "c": "Eager to learn or know" },
-    { "w": "decimal", "c": "A number with a point like 0.5" },
-    { "w": "eclipse", "c": "When the moon blocks the sun" },
-    { "w": "emperor", "c": "Ruler of an empire" },
-    { "w": "foreign", "c": "From another country" },
-    { "w": "fraction", "c": "Part of a whole, like 3/4" },
-    { "w": "gravity", "c": "Force that pulls things down" },
-    { "w": "harmony", "c": "Notes or people working well together" },
-    { "w": "horizon", "c": "Line where sky meets the earth" },
-    { "w": "imagine", "c": "Picture something in your mind" },
-    { "w": "journey", "c": "A long trip from place to place" },
-    { "w": "justice", "c": "Fairness under the law" },
-    { "w": "library", "c": "Building full of books to borrow" },
-    { "w": "measure", "c": "Find the size, length, or weight" },
-    { "w": "mystery", "c": "Something hard to explain or solve" },
-    { "w": "neither", "c": "Not one and not the other" },
-    { "w": "nervous", "c": "Feeling worried before a big test" },
-    { "w": "observe", "c": "Watch carefully to learn" },
-    { "w": "opinion", "c": "What someone thinks or believes" },
-    { "w": "percent", "c": "Out of every hundred" },
-    { "w": "predict", "c": "Say what you think will happen next" },
-    { "w": "pyramid", "c": "Ancient stone tomb with triangular sides" },
-    { "w": "receipt", "c": "Paper showing you paid (silent P)" },
-    { "w": "receive", "c": "Get something sent to you (E before I)" },
-    { "w": "rhythm", "c": "A steady beat in music" },
-    { "w": "science", "c": "Study of how the world works" },
-    { "w": "stomach", "c": "Organ where food is digested" },
-    { "w": "succeed", "c": "Do well and reach your aim" },
-    { "w": "symptom", "c": "Sign that you might be unwell" },
-    { "w": "vehicle", "c": "A car, bus, or truck" }
+    {
+      "w": "achieve",
+      "c": "Reach a goal through effort"
+    },
+    {
+      "w": "ancient",
+      "c": "Very old, from long ago"
+    },
+    {
+      "w": "balance",
+      "c": "Equal weight or steadiness"
+    },
+    {
+      "w": "believe",
+      "c": "Think something is true (I before E)"
+    },
+    {
+      "w": "breathe",
+      "c": "Take air into your lungs"
+    },
+    {
+      "w": "calendar",
+      "c": "Shows days, weeks, and months"
+    },
+    {
+      "w": "century",
+      "c": "One hundred years"
+    },
+    {
+      "w": "climate",
+      "c": "Usual weather of a region"
+    },
+    {
+      "w": "compass",
+      "c": "Tool that points north"
+    },
+    {
+      "w": "courage",
+      "c": "Being brave when scared"
+    },
+    {
+      "w": "curious",
+      "c": "Eager to learn or know"
+    },
+    {
+      "w": "decimal",
+      "c": "A number with a point like 0.5"
+    },
+    {
+      "w": "eclipse",
+      "c": "When the moon blocks the sun"
+    },
+    {
+      "w": "emperor",
+      "c": "Ruler of an empire"
+    },
+    {
+      "w": "foreign",
+      "c": "From another country"
+    },
+    {
+      "w": "fraction",
+      "c": "Part of a whole, like 3/4"
+    },
+    {
+      "w": "gravity",
+      "c": "Force that pulls things down"
+    },
+    {
+      "w": "harmony",
+      "c": "Notes or people working well together"
+    },
+    {
+      "w": "horizon",
+      "c": "Line where sky meets the earth"
+    },
+    {
+      "w": "imagine",
+      "c": "Picture something in your mind"
+    },
+    {
+      "w": "journey",
+      "c": "A long trip from place to place"
+    },
+    {
+      "w": "justice",
+      "c": "Fairness under the law"
+    },
+    {
+      "w": "library",
+      "c": "Building full of books to borrow"
+    },
+    {
+      "w": "measure",
+      "c": "Find the size, length, or weight"
+    },
+    {
+      "w": "mystery",
+      "c": "Something hard to explain or solve"
+    },
+    {
+      "w": "neither",
+      "c": "Not one and not the other"
+    },
+    {
+      "w": "nervous",
+      "c": "Feeling worried before a big test"
+    },
+    {
+      "w": "observe",
+      "c": "Watch carefully to learn"
+    },
+    {
+      "w": "opinion",
+      "c": "What someone thinks or believes"
+    },
+    {
+      "w": "percent",
+      "c": "Out of every hundred"
+    },
+    {
+      "w": "predict",
+      "c": "Say what you think will happen next"
+    },
+    {
+      "w": "pyramid",
+      "c": "Ancient stone tomb with triangular sides"
+    },
+    {
+      "w": "receipt",
+      "c": "Paper showing you paid (silent P)"
+    },
+    {
+      "w": "receive",
+      "c": "Get something sent to you (E before I)"
+    },
+    {
+      "w": "rhythm",
+      "c": "A steady beat in music"
+    },
+    {
+      "w": "science",
+      "c": "Study of how the world works"
+    },
+    {
+      "w": "stomach",
+      "c": "Organ where food is digested"
+    },
+    {
+      "w": "succeed",
+      "c": "Do well and reach your aim"
+    },
+    {
+      "w": "symptom",
+      "c": "Sign that you might be unwell"
+    },
+    {
+      "w": "vehicle",
+      "c": "A car, bus, or truck"
+    },
+    {
+      "w": "adventure",
+      "c": "An exciting journey or experience"
+    },
+    {
+      "w": "ancestor",
+      "c": "A relative who lived long before you"
+    },
+    {
+      "w": "bacteria",
+      "c": "Tiny living things too small to see"
+    },
+    {
+      "w": "boundary",
+      "c": "A line that marks the edge of an area"
+    },
+    {
+      "w": "brilliant",
+      "c": "Extremely clever or very bright"
+    },
+    {
+      "w": "calculate",
+      "c": "Work out an answer using numbers"
+    },
+    {
+      "w": "canyon",
+      "c": "A deep valley with steep rocky sides"
+    },
+    {
+      "w": "capital",
+      "c": "The city where a country's government sits"
+    },
+    {
+      "w": "ceremony",
+      "c": "A formal event such as a wedding"
+    },
+    {
+      "w": "champion",
+      "c": "The winner of a competition"
+    },
+    {
+      "w": "chimney",
+      "c": "Smoke goes up through this on a roof"
+    },
+    {
+      "w": "comfortable",
+      "c": "Cosy and relaxed"
+    },
+    {
+      "w": "conflict",
+      "c": "A serious disagreement or fight"
+    },
+    {
+      "w": "continent",
+      "c": "A huge land mass such as Africa"
+    },
+    {
+      "w": "creature",
+      "c": "Any living animal"
+    },
+    {
+      "w": "culture",
+      "c": "The customs and traditions of a people"
+    },
+    {
+      "w": "dangerous",
+      "c": "Likely to cause harm"
+    },
+    {
+      "w": "delicious",
+      "c": "Tasting wonderful"
+    },
+    {
+      "w": "democracy",
+      "c": "A system where citizens vote for their leaders"
+    },
+    {
+      "w": "diameter",
+      "c": "The distance across a circle through its centre"
+    },
+    {
+      "w": "document",
+      "c": "An official paper with information"
+    },
+    {
+      "w": "electric",
+      "c": "Powered by a current"
+    },
+    {
+      "w": "engine",
+      "c": "The machine that makes a car move"
+    },
+    {
+      "w": "equator",
+      "c": "The imaginary line around the middle of the Earth"
+    },
+    {
+      "w": "evidence",
+      "c": "Facts that help prove something"
+    },
+    {
+      "w": "festival",
+      "c": "A special celebration or event"
+    },
+    {
+      "w": "glacier",
+      "c": "A slow river of ice"
+    },
+    {
+      "w": "grammar",
+      "c": "The rules of how words fit in sentences"
+    },
+    {
+      "w": "habitat",
+      "c": "The natural home of an animal or plant"
+    },
+    {
+      "w": "hurricane",
+      "c": "A violent tropical storm"
+    },
+    {
+      "w": "kingdom",
+      "c": "A country ruled by a king or queen"
+    },
+    {
+      "w": "lantern",
+      "c": "A light you carry by a handle"
+    },
+    {
+      "w": "machine",
+      "c": "A device with moving parts that does work"
+    },
+    {
+      "w": "magnet",
+      "c": "It pulls iron objects towards it"
+    },
+    {
+      "w": "mineral",
+      "c": "A natural solid such as quartz"
+    },
+    {
+      "w": "mountain",
+      "c": "A very high natural hill"
+    },
+    {
+      "w": "muscle",
+      "c": "Body tissue that lets you move"
+    },
+    {
+      "w": "navigate",
+      "c": "Find your way using a map"
+    },
+    {
+      "w": "oxygen",
+      "c": "The gas we need to breathe"
+    },
+    {
+      "w": "pollution",
+      "c": "Harmful dirt in the air or water"
+    }
   ],
   "hard": [
-    { "w": "accommodate", "c": "Provide space or adapt for (double C, double M)" },
-    { "w": "ambiguity", "c": "Having more than one possible meaning" },
-    { "w": "anonymous", "c": "With no name given" },
-    { "w": "appropriate", "c": "Suitable for the situation" },
-    { "w": "archaeology", "c": "Study of past human life via artifacts" },
-    { "w": "bureaucracy", "c": "System of complex official rules" },
-    { "w": "camouflage", "c": "Blending in with surroundings" },
-    { "w": "catastrophe", "c": "A sudden, terrible disaster" },
-    { "w": "chronological", "c": "Arranged in order of time" },
-    { "w": "collaborate", "c": "Work jointly with others" },
-    { "w": "colleague", "c": "Person you work with" },
-    { "w": "committee", "c": "Group chosen to make decisions (double M, T, E)" },
-    { "w": "compatible", "c": "Able to exist or work together" },
-    { "w": "conscience", "c": "Inner sense of right and wrong" },
-    { "w": "conscious", "c": "Awake and aware" },
-    { "w": "controversy", "c": "Public disagreement or debate" },
-    { "w": "counterfeit", "c": "Fake imitation made to deceive" },
-    { "w": "curriculum", "c": "Subjects taught in a school" },
-    { "w": "definitely", "c": "Without any doubt" },
-    { "w": "dilemma", "c": "Difficult choice between two options" },
-    { "w": "discipline", "c": "Training to follow rules or self-control" },
-    { "w": "embarrass", "c": "Make someone feel awkward (double R, double S)" },
-    { "w": "equilibrium", "c": "A state of physical or mental balance" },
-    { "w": "exaggerate", "c": "Make something seem larger than it is" },
-    { "w": "fluorescent", "c": "Brightly glowing light" },
-    { "w": "guarantee", "c": "Formal promise of quality" },
-    { "w": "hierarchy", "c": "System ranked by authority" },
-    { "w": "hypothesis", "c": "Proposed explanation to be tested" },
-    { "w": "inevitable", "c": "Certain to happen; unavoidable" },
-    { "w": "irrelevant", "c": "Not connected to the topic" },
-    { "w": "maintenance", "c": "Keeping something in good condition" },
-    { "w": "millennium", "c": "A period of one thousand years" },
-    { "w": "mischievous", "c": "Playfully causing trouble" },
-    { "w": "necessary", "c": "Needed; essential (1 C, 2 S)" },
-    { "w": "occurrence", "c": "An event or incident (double C, double R)" },
-    { "w": "parallel", "c": "Lines that never meet" },
-    { "w": "perseverance", "c": "Persistence despite difficulty" },
-    { "w": "phenomenon", "c": "Remarkable observable event" },
-    { "w": "privilege", "c": "Special right or advantage" },
-    { "w": "psychology", "c": "Study of the human mind" },
-    { "w": "questionnaire", "c": "Set of written survey questions" },
-    { "w": "recommend", "c": "Suggest as good or worthy" },
-    { "w": "rhetoric", "c": "Art of persuasive speaking or writing" },
-    { "w": "silhouette", "c": "Dark outline against a light background" },
-    { "w": "surveillance", "c": "Close observation kept over a place" }
+    {
+      "w": "accommodate",
+      "c": "Provide space or adapt for (double C, double M)"
+    },
+    {
+      "w": "ambiguity",
+      "c": "Having more than one possible meaning"
+    },
+    {
+      "w": "anonymous",
+      "c": "With no name given"
+    },
+    {
+      "w": "appropriate",
+      "c": "Suitable for the situation"
+    },
+    {
+      "w": "archaeology",
+      "c": "Study of past human life via artifacts"
+    },
+    {
+      "w": "bureaucracy",
+      "c": "System of complex official rules"
+    },
+    {
+      "w": "camouflage",
+      "c": "Blending in with surroundings"
+    },
+    {
+      "w": "catastrophe",
+      "c": "A sudden, terrible disaster"
+    },
+    {
+      "w": "chronological",
+      "c": "Arranged in order of time"
+    },
+    {
+      "w": "collaborate",
+      "c": "Work jointly with others"
+    },
+    {
+      "w": "colleague",
+      "c": "Person you work with"
+    },
+    {
+      "w": "committee",
+      "c": "Group chosen to make decisions (double M, T, E)"
+    },
+    {
+      "w": "compatible",
+      "c": "Able to exist or work together"
+    },
+    {
+      "w": "conscience",
+      "c": "Inner sense of right and wrong"
+    },
+    {
+      "w": "conscious",
+      "c": "Awake and aware"
+    },
+    {
+      "w": "controversy",
+      "c": "Public disagreement or debate"
+    },
+    {
+      "w": "counterfeit",
+      "c": "Fake imitation made to deceive"
+    },
+    {
+      "w": "curriculum",
+      "c": "Subjects taught in a school"
+    },
+    {
+      "w": "definitely",
+      "c": "Without any doubt"
+    },
+    {
+      "w": "dilemma",
+      "c": "Difficult choice between two options"
+    },
+    {
+      "w": "discipline",
+      "c": "Training to follow rules or self-control"
+    },
+    {
+      "w": "embarrass",
+      "c": "Make someone feel awkward (double R, double S)"
+    },
+    {
+      "w": "equilibrium",
+      "c": "A state of physical or mental balance"
+    },
+    {
+      "w": "exaggerate",
+      "c": "Make something seem larger than it is"
+    },
+    {
+      "w": "fluorescent",
+      "c": "Brightly glowing light"
+    },
+    {
+      "w": "guarantee",
+      "c": "Formal promise of quality"
+    },
+    {
+      "w": "hierarchy",
+      "c": "System ranked by authority"
+    },
+    {
+      "w": "hypothesis",
+      "c": "Proposed explanation to be tested"
+    },
+    {
+      "w": "inevitable",
+      "c": "Certain to happen; unavoidable"
+    },
+    {
+      "w": "irrelevant",
+      "c": "Not connected to the topic"
+    },
+    {
+      "w": "maintenance",
+      "c": "Keeping something in good condition"
+    },
+    {
+      "w": "millennium",
+      "c": "A period of one thousand years"
+    },
+    {
+      "w": "mischievous",
+      "c": "Playfully causing trouble"
+    },
+    {
+      "w": "necessary",
+      "c": "Needed; essential (1 C, 2 S)"
+    },
+    {
+      "w": "occurrence",
+      "c": "An event or incident (double C, double R)"
+    },
+    {
+      "w": "parallel",
+      "c": "Lines that never meet"
+    },
+    {
+      "w": "perseverance",
+      "c": "Persistence despite difficulty"
+    },
+    {
+      "w": "phenomenon",
+      "c": "Remarkable observable event"
+    },
+    {
+      "w": "privilege",
+      "c": "Special right or advantage"
+    },
+    {
+      "w": "psychology",
+      "c": "Study of the human mind"
+    },
+    {
+      "w": "questionnaire",
+      "c": "Set of written survey questions"
+    },
+    {
+      "w": "recommend",
+      "c": "Suggest as good or worthy"
+    },
+    {
+      "w": "rhetoric",
+      "c": "Art of persuasive speaking or writing"
+    },
+    {
+      "w": "silhouette",
+      "c": "Dark outline against a light background"
+    },
+    {
+      "w": "surveillance",
+      "c": "Close observation kept over a place"
+    },
+    {
+      "w": "acquaintance",
+      "c": "Someone you know but not closely"
+    },
+    {
+      "w": "aggressive",
+      "c": "Ready to attack or confront"
+    },
+    {
+      "w": "apparatus",
+      "c": "Equipment needed for a task"
+    },
+    {
+      "w": "auxiliary",
+      "c": "Giving extra help or support"
+    },
+    {
+      "w": "bankruptcy",
+      "c": "Being unable to pay what you owe"
+    },
+    {
+      "w": "beneficiary",
+      "c": "A person who receives a gift or benefit"
+    },
+    {
+      "w": "cemetery",
+      "c": "A place where the dead are buried"
+    },
+    {
+      "w": "commemorate",
+      "c": "Honour the memory of someone or something"
+    },
+    {
+      "w": "conscientious",
+      "c": "Careful and hard-working"
+    },
+    {
+      "w": "correspondence",
+      "c": "Letters exchanged between people"
+    },
+    {
+      "w": "deteriorate",
+      "c": "Become worse over time"
+    },
+    {
+      "w": "entrepreneur",
+      "c": "Someone who starts a business"
+    },
+    {
+      "w": "exhilarate",
+      "c": "Make someone feel very excited"
+    },
+    {
+      "w": "extraordinary",
+      "c": "Far beyond the usual"
+    },
+    {
+      "w": "fahrenheit",
+      "c": "A temperature scale used in some countries"
+    },
+    {
+      "w": "gauge",
+      "c": "An instrument that measures something"
+    },
+    {
+      "w": "grievance",
+      "c": "A formal complaint about unfair treatment"
+    },
+    {
+      "w": "idiosyncrasy",
+      "c": "A personal quirk or habit"
+    },
+    {
+      "w": "jeopardy",
+      "c": "Danger of loss or harm"
+    },
+    {
+      "w": "knowledgeable",
+      "c": "Well informed"
+    },
+    {
+      "w": "labyrinth",
+      "c": "A confusing maze of paths"
+    },
+    {
+      "w": "liaison",
+      "c": "Communication between groups"
+    },
+    {
+      "w": "lieutenant",
+      "c": "A military officer below a captain"
+    },
+    {
+      "w": "miscellaneous",
+      "c": "Made up of various different things"
+    },
+    {
+      "w": "nuisance",
+      "c": "Something that annoys you"
+    },
+    {
+      "w": "onomatopoeia",
+      "c": "A word that sounds like the noise it names"
+    },
+    {
+      "w": "pneumonia",
+      "c": "A serious infection of the lungs"
+    },
+    {
+      "w": "pronunciation",
+      "c": "The way a word is spoken"
+    },
+    {
+      "w": "rhinoceros",
+      "c": "A large horned animal with thick skin"
+    },
+    {
+      "w": "schedule",
+      "c": "A timetable of planned events"
+    },
+    {
+      "w": "sovereignty",
+      "c": "Supreme power or authority"
+    },
+    {
+      "w": "unanimous",
+      "c": "Agreed by everyone"
+    },
+    {
+      "w": "vengeance",
+      "c": "Punishment given in return for a wrong"
+    },
+    {
+      "w": "bourgeois",
+      "c": "Relating to the middle class"
+    },
+    {
+      "w": "reconnaissance",
+      "c": "A mission to gather information about an area"
+    }
   ]
 }
