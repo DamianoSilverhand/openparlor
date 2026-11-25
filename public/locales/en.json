@@ -41,5 +41,11 @@
   "solo.download": "Download my data",
   "solo.delete": "Delete my profile",
   "solo.deleteConfirm": "Delete {name} and all their saved scores? This cannot be undone.",
-  "solo.import": "Import a profile"
+  "solo.import": "Import a profile",
+  "net.reconnecting": "Reconnecting...",
+  "net.offline": "You are offline. Waiting for the network...",
+  "solo.savedOffline": "Saved on this device. It will be sent to the server when you are back online.",
+  "solo.offlineNote": "You are offline. Saved profiles still work, and new scores are kept on this device until you reconnect.",
+  "solo.pendingNote": "{count} result(s) waiting to be sent.",
+  "solo.needsConnection": "Adding a person needs a connection to the server."
 }

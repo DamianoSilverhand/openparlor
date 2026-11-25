@@ -1,6 +1,8 @@
 import { h, avatar, byId, setServerNow, serverNow, soundToggle, timer } from '/shared/ui.js';
+import '/shared/pwa.js';
 import { play, isRunning, isMuted, onChange } from '/shared/sound.js';
 import { connect } from '/shared/net.js';
+import { keepAwake } from '/shared/wake.js';
 import { config } from '/shared/config.js';
 import { t } from '/shared/i18n.js';
 
@@ -35,6 +37,9 @@ let last = null;
 let current = { key: null, api: null };
 
 fetch('/api/info').then((r) => r.json()).then((i) => { info = i; if (last) render(last); });
+
+// The big screen should never go to sleep during a game night.
+keepAwake().start();
 
 const net = connect({
   onOpen: () => net.send({ t: 'tv', room }),
@@ -136,7 +141,7 @@ function lobby(s) {
         h('img', { class: 'qr', alt: 'QR code to join', src: `/qr?text=${encodeURIComponent(joinUrl)}` }),
         h('div', { class: 'label' }, 'Or go to the address below and enter'),
         h('div', { class: 'room' }, s.code),
-        h('div', { class: 'url' }, `${base.replace('http://', '')}/play`),
+        h('div', { class: 'url' }, `${base.replace(/^https?:\/\//, '')}/play`),
       ),
     ),
   );

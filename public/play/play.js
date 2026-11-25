@@ -1,8 +1,10 @@
 import { h, avatar, AVATARS, byId, setServerNow, soundToggle, timer } from '/shared/ui.js';
+import '/shared/pwa.js';
 import { play } from '/shared/sound.js';
 import { config, bands, bandId, bandLabel } from '/shared/config.js';
 import { t } from '/shared/i18n.js';
 import { connect } from '/shared/net.js';
+import { keepAwake } from '/shared/wake.js';
 
 // Games are loaded on demand from the paths the server lists in s.games (see docs/GAME-SDK.md).
 const loaded = new Map();
@@ -193,7 +195,12 @@ if (!room) {
   });
 }
 
+// Phones stay awake while a game is on (and while the lobby waits), so nobody misses their turn.
+const wake = keepAwake();
+let wakeOn = false;
+
 function render(s) {
+  if (!wakeOn) { wakeOn = true; wake.start(); }
   const mod = ensureGame(s); // start loading the chosen game as soon as it is picked
   if (s.inGame && s.game) {
     if (!mod) return mount('loading', () => ({ el: h('div', { class: 'screen' }, h('h1', { class: 'title' }, '...')) }), s);
