@@ -16,7 +16,12 @@ function shuffle(arr) {
   return a;
 }
 
-function schedulePhase(game, ms, fn, keepTotal = false) {
+// TIME_SCALE shortens every game timer (for example 0.05 for tests that play whole games in seconds). Leave it unset
+// for normal play.
+const TIME_SCALE = Number(process.env.TIME_SCALE) > 0 ? Number(process.env.TIME_SCALE) : 1;
+
+function schedulePhase(game, ms, fn, keepTotal = false, alreadyScaled = false) {
+  if (!alreadyScaled) ms = Math.max(1, Math.round(ms * TIME_SCALE));
   clearTimeout(game.timer);
   game.paused = false;
   game.pausedLeft = 0;
@@ -41,7 +46,7 @@ function toggleGamePause(game, canPause = true) {
     const fn = game._timerFn;
     game.paused = false;
     game.pausedLeft = 0;
-    if (fn) schedulePhase(game, left, fn, true);
+    if (fn) schedulePhase(game, left, fn, true, true);
   } else if (game.deadline > Date.now()) {
     game.pausedLeft = Math.max(500, game.deadline - Date.now());
     clearTimeout(game.timer);
