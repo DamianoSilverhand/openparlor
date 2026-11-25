@@ -1,8 +1,16 @@
 # OpenParlor
 
-Party games for the room you are in. One computer runs the server, a TV (or any big screen) shows the game, and everyone plays on their own phone by scanning a QR code. No accounts, no internet needed once it is running.
+**Party games for the room you are in.** One computer runs the server, a TV (or any big screen) shows the game, and everyone plays on their own phone by scanning a QR code. No accounts, and no internet once it is running.
 
-It works for a family, a classroom, a club or a party. Group names, difficulty levels, branding and content are all configurable.
+It works for a family, a classroom, a club or a party. Group names, difficulty levels, branding and content are all configurable, and you can add your own games.
+
+| The big screen | Everyone's phone |
+|---|---|
+| ![The TV lobby with a QR code and the players who have joined](docs/images/tv-lobby.jpg) | ![A quiz question on a phone, with a double-points badge](docs/images/phone-quiz.jpg) |
+
+![The Quiz Show on the TV: a double-points question with answer choices and the teams](docs/images/tv-quiz.jpg)
+
+![Draw & Guess on the TV: one player's drawing appears live while the others guess on their phones](docs/images/tv-draw.jpg)
 
 ## Run it
 
@@ -70,6 +78,7 @@ Sound effects are generated in the browser, so there are no audio files. The TV 
 
 ## Development
 
+    npm run lint        # ESLint
     npm test            # robustness, configuration, plugin and whole-game tests
     npm run validate    # checks every content file and exits 1 if a pack is broken
     npm run backup      # writes a database backup now
@@ -80,4 +89,12 @@ A broken content pack never stops the server from starting: invalid items are sk
 
 ## Status
 
-Early. The roadmap and known gaps are tracked in the project notes. A licence will be added before the first public release.
+Early (version 0.1). See [ROADMAP.md](ROADMAP.md) for what is planned and what is missing, [CHANGELOG.md](CHANGELOG.md) for what has changed, and [SECURITY.md](SECURITY.md) for what it is, and is not, designed to withstand.
+
+## Contributing
+
+Bug reports, content, plugins and code are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md). Everyone taking part is expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md).
+
+## Licence
+
+The code is released under the [MIT License](LICENSE). The questions, prompts and word lists in `content/` are released under [CC BY-SA 4.0](LICENSE-CONTENT.md). The packages it depends on are listed in [THIRD-PARTY-LICENSES.md](THIRD-PARTY-LICENSES.md).
