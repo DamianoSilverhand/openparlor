@@ -10,7 +10,6 @@ let GAME_IDS = ['scramble', 'literacy', 'math', 'logic', 'memory', 'pattern', 'c
 const registerGameIds = (ids) => { GAME_IDS = [...ids]; };
 const isGameId = (id) => GAME_IDS.includes(id);
 const ID_RE = /^p_[0-9a-f]{8}$/;
-const day = (offset = 0) => new Date(Date.now() + offset * 86400000).toISOString().slice(0, 10);
 
 function shape(row, statRows) {
   const stats = { gamesPlayed: row.games_played, bests: {}, streaks: {} };
@@ -73,28 +72,47 @@ function upsert({ id, name, avatar, level }) {
 }
 
 // Records one mini-game result: updates the personal best and the daily streak, and keeps the score for history.
-function record(id, gameId, score, runStreak = 0, mode = 'solo') {
+//
+// Options for results that were saved offline and sent later:
+//   runId     a unique id made on the device. Sending the same runId again changes nothing (the result is not counted twice).
+//   playedAt  when the game was really played (ISO date). Accepted if it is within the last 45 days and not in the future;
+//             otherwise "now" is used. The streak follows the day it was played, and a result from before the latest streak
+//             day adds to the best and play count without touching the streak.
+function record(id, gameId, score, runStreak = 0, mode = 'solo', { runId, playedAt } = {}) {
   if (!isGameId(gameId)) return null;
   const db = getDb();
   const s = Math.max(0, Math.round(Number(score) || 0));
   const run = Math.max(0, Math.round(Number(runStreak) || 0));
+  const rid = typeof runId === 'string' && /^[\w-]{1,64}$/.test(runId) ? runId : null;
+  let when = Date.now();
+  const claimed = Date.parse(playedAt);
+  if (Number.isFinite(claimed) && claimed <= Date.now() + 3600000 && claimed >= Date.now() - 45 * 86400000) when = claimed;
+  const atDay = new Date(when).toISOString().slice(0, 10);
+  const dayBefore = new Date(when - 86400000).toISOString().slice(0, 10);
   return db.transaction(() => {
     if (!db.get('SELECT 1 AS x FROM profiles WHERE id = ?', id)) return null;
     const st = db.get('SELECT * FROM profile_game_stats WHERE profile_id = ? AND game_id = ?', id, gameId) || { best: 0, plays: 0, streak_current: 0, streak_best: 0, streak_last_date: null, best_run: 0 };
+    if (rid && db.get('SELECT 1 AS x FROM scores WHERE profile_id = ? AND run_id = ?', id, rid)) {
+      return { profile: get(id), isNewBest: false, prevBest: st.best, duplicate: true };
+    }
     const prevBest = st.best;
     const isNewBest = s > 0 && s > prevBest;
     let current = st.streak_current;
-    if (st.streak_last_date !== day()) current = st.streak_last_date === day(-1) ? current + 1 : 1;
+    let lastDate = st.streak_last_date;
+    if (!lastDate || atDay > lastDate) {
+      current = lastDate === dayBefore ? current + 1 : 1;
+      lastDate = atDay;
+    }
     db.run(
       `INSERT INTO profile_game_stats (profile_id, game_id, best, plays, streak_current, streak_best, streak_last_date, best_run)
        VALUES (?, ?, ?, 1, ?, ?, ?, ?)
        ON CONFLICT (profile_id, game_id) DO UPDATE SET best = excluded.best, plays = plays + 1, streak_current = excluded.streak_current,
          streak_best = excluded.streak_best, streak_last_date = excluded.streak_last_date, best_run = excluded.best_run`,
-      id, gameId, isNewBest ? s : prevBest, current, Math.max(st.streak_best, current), day(), Math.max(st.best_run, run),
+      id, gameId, isNewBest ? s : prevBest, current, Math.max(st.streak_best, current), lastDate, Math.max(st.best_run, run),
     );
     const now = new Date().toISOString();
     db.run('UPDATE profiles SET games_played = games_played + 1, updated_at = ? WHERE id = ?', now, id);
-    db.run('INSERT INTO scores (profile_id, game_id, score, mode, played_at) VALUES (?, ?, ?, ?, ?)', id, gameId, s, mode === 'room' ? 'room' : 'solo', now);
+    db.run('INSERT INTO scores (profile_id, game_id, score, mode, played_at, run_id) VALUES (?, ?, ?, ?, ?, ?)', id, gameId, s, mode === 'room' ? 'room' : 'solo', new Date(when).toISOString(), rid);
     return { profile: get(id), isNewBest, prevBest };
   });
 }

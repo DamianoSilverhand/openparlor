@@ -1,5 +1,6 @@
 require('./check-node');
 const http = require('http');
+const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
@@ -13,9 +14,13 @@ const history = require('./history');
 const records = require('./records');
 const { getDb, closeDb } = require('./db');
 const minigames = require('./sdk/minigames');
+const { loadTls } = require('./tls');
+const precache = require('./precache');
 const { startBackups } = require('./backup');
 
 const PORT = Number(process.env.PORT) || 3100;
+const tls = loadTls();
+const SCHEME = tls ? 'https' : 'http';
 const PUBLIC = path.join(__dirname, '..', 'public');
 const rooms = new Rooms();
 
@@ -29,6 +34,7 @@ const MIME = {
   '.ico': 'image/x-icon',
   '.mp3': 'audio/mpeg',
   '.woff2': 'font/woff2',
+  '.webmanifest': 'application/manifest+json',
 };
 
 function lanAddresses() {
@@ -169,12 +175,40 @@ async function handleRequest(req, res) {
   }
   const { pathname } = url;
 
+  // The web app manifest follows the configured brand name, so an installed icon carries your own name.
+  if (pathname === '/manifest.webmanifest') {
+    const name = config.brand.name;
+    res.writeHead(200, { 'Content-Type': 'application/manifest+json', 'Cache-Control': 'no-cache' });
+    return res.end(JSON.stringify({
+      name,
+      short_name: name.length > 12 ? name.slice(0, 12).trim() : name,
+      description: config.brand.tagline || 'Party games on a big screen and your phones.',
+      start_url: '/',
+      scope: '/',
+      display: 'standalone',
+      orientation: 'any',
+      background_color: '#f3eadb',
+      theme_color: '#f3eadb',
+      icons: [
+        { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+        { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+        { src: '/icons/maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+        { src: '/icons/icon.svg', sizes: 'any', type: 'image/svg+xml' },
+      ],
+      shortcuts: [
+        { name: 'Join a room', url: '/play', icons: [{ src: '/icons/icon-192.png', sizes: '192x192' }] },
+        { name: 'Practice on your own', url: '/solo', icons: [{ src: '/icons/icon-192.png', sizes: '192x192' }] },
+      ],
+    }));
+  }
+  // What the service worker stores for offline use, and a version that changes when any of it does.
+  if (pathname === '/api/precache') return json(res, 200, precache.build());
   if (pathname === '/api/config') return json(res, 200, publicConfig());
   // The mini-games Solo Practice offers (the same ones the Mini-Games game uses).
   if (pathname === '/api/minigames') return json(res, 200, { minigames: minigames.list.map((m) => ({ id: m.id, name: m.name, desc: m.desc, duration: m.duration, url: m.url })) });
   if (pathname === '/api/info') {
     const ips = lanAddresses();
-    return json(res, 200, { ips, port: PORT, base: `http://${ips[0] || 'localhost'}:${PORT}` });
+    return json(res, 200, { ips, port: PORT, base: `${SCHEME}://${ips[0] || 'localhost'}:${PORT}`, secure: !!tls });
   }
   if (pathname === '/api/room' && req.method === 'POST') {
     if (!roomRateOk(req.socket.remoteAddress)) return json(res, 429, { error: 'Too many rooms created. Wait a minute and try again.' });
@@ -230,7 +264,7 @@ async function handleRequest(req, res) {
     if (!config.profiles.enabled) return json(res, 404, { error: 'profiles are turned off' });
     const body = await readBody(req);
     if (body === null) return;
-    const resObj = profiles.record(body.id, body.gameId, body.score, body.streak);
+    const resObj = profiles.record(body.id, body.gameId, body.score, body.streak, 'solo', { runId: body.runId, playedAt: body.playedAt });
     return resObj ? json(res, 200, resObj) : json(res, 404, { error: 'profile not found' });
   }
   // Word Builder and Word Match read their word lists here: the core files plus anything in content/packs/.
@@ -251,13 +285,14 @@ async function handleRequest(req, res) {
   serveStatic(req, res, pathname);
 }
 
-const server = http.createServer((req, res) => {
+const onRequest = (req, res) => {
   handleRequest(req, res).catch((err) => {
     console.error('[http] error handling', req.method, req.url, err);
     if (!res.headersSent) json(res, 500, { error: 'server error' });
     else res.end();
   });
-});
+};
+const server = tls ? https.createServer({ cert: tls.cert, key: tls.key }, onRequest) : http.createServer(onRequest);
 
 // ---- WebSockets ------------------------------------------------------------
 // Messages are small (a stroke segment is the biggest), so 64 KB is generous. Larger ones close the connection.
@@ -297,6 +332,7 @@ wss.on('connection', (ws) => {
       return;
     }
     if (!msg || typeof msg.t !== 'string') return;
+    if (msg.t === 'ping') return ws.send('{"t":"pong"}'); // the browsers' heartbeat
     try {
       onMessage(msg);
     } catch (err) {
@@ -391,8 +427,8 @@ process.on('SIGTERM', () => shutdown('SIGTERM'));
 server.listen(PORT, '0.0.0.0', () => {
   const ips = lanAddresses();
   console.log(`\n${config.brand.name} is running.\n`);
-  console.log(`  On this computer:  http://localhost:${PORT}`);
-  for (const ip of ips) console.log(`  On your network:   http://${ip}:${PORT}`);
+  console.log(`  On this computer:  ${SCHEME}://localhost:${PORT}`);
+  for (const ip of ips) console.log(`  On your network:   ${SCHEME}://${ip}:${PORT}`);
   console.log('\nOpen the network address on the TV, then scan the QR code with phones.\n');
   if (minigames.problems.length) console.log(`Some mini-games could not be loaded (${minigames.problems.length}); see the messages above.\n`);
   if (gameProblems.length) console.log(`Some games could not be loaded (${gameProblems.length}); see the messages above.\n`);

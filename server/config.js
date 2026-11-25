@@ -78,6 +78,7 @@ function load() {
   cfg.dataDir = path.resolve(env.DATA_DIR || cfg.dataDir || path.join(__dirname, '..', 'data'));
   cfg.bands = cleanBands(cfg.bands) || [{ id: 'everyone', label: 'Everyone', hint: '', tier: 2 }];
   if (!isObj(cfg.gameDefaults)) cfg.gameDefaults = {};
+  cfg.https = merge({ cert: null, key: null }, cfg.https);
   cfg.plugins = merge({ enabled: true }, cfg.plugins);
   cfg.brand = merge({ name: 'OpenParlor', tagline: '', accent: null }, cfg.brand);
   return cfg;

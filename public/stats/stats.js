@@ -1,4 +1,5 @@
 import { h, avatar } from '/shared/ui.js';
+import '/shared/pwa.js';
 import { config, bandLabel } from '/shared/config.js';
 import { t } from '/shared/i18n.js';
 

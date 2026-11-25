@@ -17,6 +17,10 @@
   "profiles": {
     "enabled": true
   },
+  "https": {
+    "cert": null,
+    "key": null
+  },
   "plugins": {
     "enabled": true
   }

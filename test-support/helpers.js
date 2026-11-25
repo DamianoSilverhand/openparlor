@@ -20,7 +20,7 @@ function freePort() {
 }
 
 // Starts the real server as a child process and waits until it answers.
-async function startServer(env = {}) {
+async function startServer(env = {}, { scheme = 'http' } = {}) {
   const port = await freePort();
   // Tests never touch the real data folder: each server gets its own temporary one.
   const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'op-data-'));
@@ -28,7 +28,7 @@ async function startServer(env = {}) {
   let log = '';
   child.stdout.on('data', (d) => (log += d));
   child.stderr.on('data', (d) => (log += d));
-  const base = `http://127.0.0.1:${port}`;
+  const base = `${scheme}://127.0.0.1:${port}`;
   for (let i = 0; i < 50; i++) {
     try {
       if ((await fetch(`${base}/api/info`)).ok) break;
@@ -52,7 +52,7 @@ const createRoom = async (base) => (await (await fetch(`${base}/api/room`, { met
 // A connected player (or the TV when name is null). `last` is always the newest state message.
 function connect(server, code, name, extra = {}) {
   return new Promise((resolve, reject) => {
-    const ws = new WebSocket(`ws://127.0.0.1:${server.port}/ws`);
+    const ws = new WebSocket(`${server.base.startsWith('https') ? 'wss' : 'ws'}://127.0.0.1:${server.port}/ws`, { rejectUnauthorized: false });
     let welcomed = false;
     const c = { ws, last: null, closed: null, send: (o) => ws.send(typeof o === 'string' ? o : JSON.stringify(o)) };
     ws.on('close', (code) => (c.closed = code));

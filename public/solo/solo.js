@@ -1,4 +1,6 @@
 import { h, avatar, AVATARS, soundToggle } from '/shared/ui.js';
+import '/shared/pwa.js';
+import { cachedProfiles, cacheProfiles, applyLocally, enqueue, flush, pending, startSync, onSynced } from '/shared/offline.js';
 import { config, bands, bandLabel, tierOfBand } from '/shared/config.js';
 import { t } from '/shared/i18n.js';
 import { play as sfx } from '/shared/sound.js';
@@ -23,13 +25,19 @@ function cleanup() {
   }
 }
 
+// With no connection the profiles saved on this device are used, so Solo Practice still works (a new profile needs the
+// server, because it is the server that makes its id).
+let offline = false;
 async function loadProfiles() {
   try {
     const r = await fetch('/api/profiles');
     const d = await r.json();
     profiles = d.profiles || [];
+    cacheProfiles(profiles);
+    offline = false;
   } catch {
-    profiles = [];
+    profiles = cachedProfiles();
+    offline = true;
   }
 }
 
@@ -56,12 +64,17 @@ function profileScreen() {
   const create = async () => {
     const n = name.value.trim();
     if (!n) return name.focus();
-    const r = await fetch('/api/profiles', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: n, avatar: pick, level: lvl }),
-    });
-    const d = await r.json();
+    let d = {};
+    try {
+      const r = await fetch('/api/profiles', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: n, avatar: pick, level: lvl }),
+      });
+      d = await r.json();
+    } catch {
+      return alert(t('solo.needsConnection'));
+    }
     if (d.profile) {
       profile = d.profile;
       await loadProfiles();
@@ -74,6 +87,8 @@ function profileScreen() {
       h('div', { class: 'me' }, h('a', { class: 'link', href: '/' }, '← Home'), soundToggle()),
       h('h1', { class: 'title' }, 'Solo Practice'),
       h('p', { class: 'lead' }, 'Pick your profile to save your personal bests and daily streaks.'),
+      offline && h('p', { class: 'lead' }, t('solo.offlineNote')),
+      pending() > 0 && h('p', { class: 'lead' }, t('solo.pendingNote', { count: pending() })),
       profiles.length > 0 && h('div', { class: 'prof-grid' },
         profiles.map((p) =>
           h('button', { class: 'prof-btn', onclick: () => { profile = p; hubScreen(); } },
@@ -162,16 +177,16 @@ async function playGame(g) {
     cleanup();
     const finalScore = Math.round(score || 0);
     sfx('coin');
-    let res = {};
-    try {
-      const r = await fetch('/api/profiles/record', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: profile.id, gameId: g.id, score: finalScore, streak: extra.streak || 0 }),
-      });
-      res = await r.json();
-      if (res.profile) profile = res.profile;
-    } catch {}
+    // Local first: apply the result to the saved profile and queue it, then try to send. If the network is down the
+    // result stays in the queue and is sent later, with the same run id, so it is counted exactly once.
+    const local = applyLocally(profile, g.id, finalScore, extra.streak || 0);
+    profile = local.profile;
+    const cached = cachedProfiles().map((p) => (p.id === profile.id ? profile : p));
+    cacheProfiles(cached);
+    enqueue({ profileId: profile.id, gameId: g.id, score: finalScore, streak: extra.streak || 0 });
+    const res = { isNewBest: local.isNewBest, prevBest: local.prevBest };
+    const left = await flush();
+    const savedOffline = left > 0;
 
     app.replaceChildren(
       h('div', { class: 'screen' },
@@ -179,6 +194,7 @@ async function playGame(g) {
         res.isNewBest
           ? h('div', { class: 'card pad big-result good' }, h('h2', null, 'New Personal Best!'), h('p', null, `Score: ${finalScore} (previous: ${res.prevBest || 0})`))
           : h('div', { class: 'card pad big-result' }, h('h2', null, `Score: ${finalScore}`), h('p', null, `Personal best: ${(profile.stats && profile.stats.bests && profile.stats.bests[g.id]) || finalScore}`)),
+        savedOffline && h('p', { class: 'lead' }, t('solo.savedOffline')),
         h('button', { class: 'btn block push', onclick: () => playGame(g) }, 'Play again'),
         h('button', { class: 'btn plain block', onclick: hubScreen }, 'Pick another game'),
       ),
@@ -213,6 +229,11 @@ async function playGame(g) {
 }
 
 async function start() {
+  startSync();
+  onSynced(async () => {
+    await loadProfiles(); // the server's copy now includes the results that were waiting
+    if (profile) profile = profiles.find((p) => p.id === profile.id) || profile;
+  });
   try {
     GAMES = ((await (await fetch('/api/minigames')).json()).minigames || []).map((m) => ({ id: m.id, name: m.name, desc: m.desc, duration: m.duration, url: m.url }));
   } catch {}

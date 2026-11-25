@@ -1,4 +1,5 @@
 import { config } from '/shared/config.js';
+import '/shared/pwa.js';
 import { t } from '/shared/i18n.js';
 
 // Brand: the last word goes on its own line in the accent colour (a single word stays on one line).
@@ -26,5 +27,5 @@ document.getElementById('host').onclick = async () => {
 };
 
 fetch('/api/info').then((r) => r.json()).then((i) => {
-  note.textContent = 'Phones can find this at ' + i.base.replace('http://', '');
+  note.textContent = 'Phones can find this at ' + i.base.replace(/^https?:\/\//, '');
 }).catch(() => {});
