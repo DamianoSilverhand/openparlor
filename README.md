@@ -22,6 +22,10 @@ Needs **Node 22.13 or newer** (`nvm use` picks the right one). Use `PORT=4000 np
 
 Every game starts with a **How to play** screen on the TV and phones. The host can skip it, pause timers, pass host to someone else, or let anyone take over as host (this can be switched off).
 
+## Add your own games
+
+Games and mini-games are plugins. Copy a folder into `plugins/`, restart, and it appears in the lobby. Two complete examples are in `examples/`, and [docs/GAME-SDK.md](docs/GAME-SDK.md) explains the format. Plugins are trusted code that runs inside the server, so only install ones you trust.
+
 ## Levels (bands)
 
 Players choose a **band** when they join, for example Kid, Teen or Adult. Bands only change how hard things are: which questions you get, how big the memory board is, and so on, so a mixed group can play fairly together. You decide what the bands are called and how many there are. A preset picks them for you:
@@ -62,7 +66,7 @@ Sound effects are generated in the browser, so there are no audio files. The TV 
 
 ## Development
 
-    npm test            # robustness, configuration and game-flow tests
+    npm test            # robustness, configuration, plugin and whole-game tests
     npm run validate    # checks every content file and exits 1 if a pack is broken
     npm run backup      # writes a database backup now
 

@@ -22,11 +22,12 @@ A file that cannot be read or is not valid JSON is reported in the server log an
 | `limits.maxRooms` | `500` | Rooms at once (`MAX_ROOMS`). |
 | `limits.maxConnections` | `2000` | Browser connections at once (`MAX_CONNECTIONS`). |
 | `host.allowClaim` | `true` | Whether any player in the lobby can take over as host. Set `false` so only the host can pass host on. |
+| `plugins.enabled` | `true` | Load games and mini-games from `plugins/` (or `PLUGINS_DIR`). `false` loads only the built-in ones. |
 | `profiles.enabled` | `true` | Saved profiles, personal bests, streaks, scores and game history. `false` stores nothing about people (group records, which have no names, are still kept). |
 | `bands` | from the preset | The groups players choose from. See below. |
 | `gameDefaults` | `{}` | Default game settings, for example `{ "minigames": { "handicap": "off" } }`. Only values the game offers are accepted. |
 
-Environment variables: `PORT` (3100), `PRESET`, `MAX_ROOMS`, `MAX_CONNECTIONS`, `MAX_PLAYERS`, `CONFIG_DIR`, `CONTENT_DIR`, `DATA_DIR`.
+Environment variables: `PORT` (3100), `PRESET`, `PLUGINS_DIR`, `MAX_ROOMS`, `MAX_CONNECTIONS`, `MAX_PLAYERS`, `CONFIG_DIR`, `CONTENT_DIR`, `DATA_DIR`.
 
 ## Bands
 

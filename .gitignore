@@ -4,3 +4,5 @@ data/
 output/
 Audit.md
 config/local.json
+plugins/*
+!plugins/README.md
