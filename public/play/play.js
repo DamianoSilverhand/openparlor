@@ -62,6 +62,7 @@ function entryScreen(message) {
   input.addEventListener('keydown', (e) => e.key === 'Enter' && go());
   mount('entry', () => ({
     el: h('div', { class: 'screen' },
+      brandLogo(),
       h('h1', { class: 'title' }, 'Join the game'),
       h('p', { class: 'lead' }, 'Type the four letters you can see on the TV.'),
       message && h('div', { class: 'err' }, message),
@@ -141,6 +142,7 @@ function joinScreen(message) {
   name.addEventListener('keydown', (e) => e.key === 'Enter' && submit());
   mount('join', () => ({
     el: h('div', { class: 'screen' },
+      brandLogo(),
       h('h1', { class: 'title' }, `Room ${room}`),
       message && h('div', { class: 'err' }, message),
       savedBox,
@@ -152,6 +154,9 @@ function joinScreen(message) {
     ),
   }));
 }
+
+// The brand logo (when one is configured) above the join screens.
+const brandLogo = () => config.brand.logo && h('img', { class: 'brand-logo', src: config.brand.logo, alt: config.brand.name });
 
 function messageScreen(title, body, action) {
   mount('msg:' + title, () => ({

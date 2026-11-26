@@ -230,3 +230,4 @@
 .watch-toggle { align-self: flex-start; padding: 2px 0; }
 .more-note { text-align: center; color: var(--soft); font-weight: 700; margin: 2px 0; }
 .rank-list .r.gap { margin-top: 6px; border-style: dashed; }
+.brand-logo { display: block; height: 30px; width: auto; max-width: 70%; align-self: flex-start; margin-bottom: 2px; }
