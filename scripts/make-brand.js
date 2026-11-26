@@ -16,7 +16,7 @@ const ARCH = (grow = 0, dx = 0, dy = 0) => {
 const GLYPH = { stem: [39.5, 29, 65], bowl: [52, 41, 12], w: 7, dot: 4 };
 const FLOOR = (dx = 0, dy = 0) => `<rect x="${17 + dx}" y="${79 + dy}" width="66" height="8" rx="4"`;
 function markBody(edge = C.ink) {
-  const { stem, bowl, w, dot } = GLYPH;
+  const { stem, bowl, w } = GLYPH;
   return `${FLOOR(3.5, 3.5)} fill="${edge}"/>
   <path d="${ARCH(1.6, 3.5, 3.5)}" fill="${edge}"/>
   ${FLOOR()} fill="${edge}"/>
