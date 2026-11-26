@@ -1,7 +1,7 @@
 // The server's public configuration: brand name, bands (the groups players choose from) and feature switches.
 // Top-level await keeps every page simple: `import { config } from '/shared/config.js'` is ready to use.
 const FALLBACK = {
-  brand: { name: 'OpenParlor', tagline: '' },
+  brand: { name: 'OpenParlor', tagline: '', logo: null },
   language: 'en',
   bands: [{ id: 'everyone', label: 'Everyone', hint: '', tier: 2 }],
   host: { allowClaim: true },

@@ -127,6 +127,7 @@ function briefing(s) {
 
 // The brand name as a title: the last word goes on its own line in the accent colour.
 function brandTitle() {
+  if (config.brand.logo) return h('h1', { class: 'has-logo' }, h('img', { src: config.brand.logo, alt: config.brand.name }));
   const words = config.brand.name.split(' ');
   const last = words.pop();
   return h('h1', null, ...(words.length ? [words.join(' ')] : []), h('span', null, last));
@@ -179,7 +180,7 @@ function lobby(s) {
           !crowded && p.id === s.hostId && h('span', { class: 'host' }, 'host'),
         ),
       ),
-      crowded && h('span', { class: 'roster-count' }, `${s.players.length} players`),
+      ...(crowded ? [h('span', { class: 'roster-count' }, `${s.players.length} players`)] : []),
     );
     const need = s.minPlayers - s.players.filter((p) => p.connected).length;
     const host = get(s.hostId);
